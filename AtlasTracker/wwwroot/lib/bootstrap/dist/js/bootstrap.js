@@ -3502,9 +3502,9 @@
     }
 
     const domParser = new window.DOMParser();
-    const createdDocument = domParser.parseFromString(unsafeHtml, 'text/html');
+    const CreatedDateDocument = domParser.parseFromString(unsafeHtml, 'text/html');
     const allowlistKeys = Object.keys(allowList);
-    const elements = [].concat(...createdDocument.body.querySelectorAll('*'));
+    const elements = [].concat(...CreatedDateDocument.body.querySelectorAll('*'));
 
     for (let i = 0, len = elements.length; i < len; i++) {
       const el = elements[i];
@@ -3524,7 +3524,7 @@
       });
     }
 
-    return createdDocument.body.innerHTML;
+    return CreatedDateDocument.body.innerHTML;
   }
 
   /**

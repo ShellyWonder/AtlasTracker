@@ -16,7 +16,7 @@ namespace AtlasTracker.Models
         [DataType(DataType.Date)]
         [DisplayName("Date Added")]
 
-        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
 
         public int TicketId { get; set; }
 

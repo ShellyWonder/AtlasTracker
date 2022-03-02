@@ -14,9 +14,9 @@ namespace AtlasTracker.Models
         [DisplayName("Description of Change")]
         public string? Description { get; set; }
 
-        [DisplayName("Date Created")]
+        [DisplayName("Date CreatedDate")]
         [DataType(DataType.Date)]
-        public DateTimeOffset? Created { get; set; }
+        public DateTimeOffset? CreatedDate { get; set; }
 
         [DisplayName("Previous")]
         public string? OldValue { get; set; }

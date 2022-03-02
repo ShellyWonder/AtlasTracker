@@ -60,7 +60,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,Created,TicketId,UserId,ImageFileName,ImageFileData,ImageContentType")] TicketAttachment ticketAttachment)
+        public async Task<IActionResult> Create([Bind("Id,Description,CreatedDate,TicketId,UserId,ImageFileName,ImageFileData,ImageContentType")] TicketAttachment ticketAttachment)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Created,TicketId,UserId,ImageFileName,ImageFileData,ImageContentType")] TicketAttachment ticketAttachment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,CreatedDate,TicketId,UserId,ImageFileName,ImageFileData,ImageContentType")] TicketAttachment ticketAttachment)
         {
             if (id != ticketAttachment.Id)
             {

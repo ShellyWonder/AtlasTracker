@@ -62,7 +62,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TicketId,Title,Message,Created,ReceipientId,SenderId,Viewed,NotificationTypeId")] Notification notification)
+        public async Task<IActionResult> Create([Bind("Id,TicketId,Title,Message,CreatedDate,ReceipientId,SenderId,Viewed,NotificationTypeId")] Notification notification)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TicketId,Title,Message,Created,ReceipientId,SenderId,Viewed,NotificationTypeId")] Notification notification)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TicketId,Title,Message,CreatedDate,ReceipientId,SenderId,Viewed,NotificationTypeId")] Notification notification)
         {
             if (id != notification.Id)
             {
