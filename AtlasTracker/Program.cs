@@ -1,5 +1,7 @@
 using AtlasTracker.Data;
 using AtlasTracker.Models;
+using AtlasTracker.Services;
+using AtlasTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +22,7 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
     .AddDefaultTokenProviders();
 
 //Custom Services
-
+builder.Services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
 
 builder.Services.AddMvc();
 

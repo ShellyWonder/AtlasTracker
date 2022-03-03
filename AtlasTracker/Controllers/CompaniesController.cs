@@ -8,16 +8,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtlasTracker.Data;
 using AtlasTracker.Models;
+using AtlasTracker.Services.Interfaces;
+using AtlasTracker.Services;
 
 namespace AtlasTracker.Controllers
 {
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTCompanyInfoService _companyInfoService;
 
         public CompaniesController(ApplicationDbContext context)
         {
             _context = context;
+            _companyInfoService = companyInfoService;
         }
 
         // GET: Companies
