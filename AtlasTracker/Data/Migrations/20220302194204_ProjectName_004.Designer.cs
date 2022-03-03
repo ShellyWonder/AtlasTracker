@@ -3,6 +3,7 @@ using System;
 using AtlasTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtlasTracker.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220302194204_ProjectName_004")]
+    partial class ProjectName_004
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,7 +278,7 @@ namespace AtlasTracker.Data.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
+                    b.Property<DateTimeOffset>("CreatedDateOffset")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -284,7 +286,7 @@ namespace AtlasTracker.Data.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("EndDateOffset")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageContentType")
@@ -304,7 +306,7 @@ namespace AtlasTracker.Data.Migrations
                     b.Property<int>("ProjectPriorityId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime>("StartDateOffset")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
