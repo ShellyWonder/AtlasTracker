@@ -10,11 +10,11 @@ namespace AtlasTracker.Models
         public int? TicketId { get; set; }
         [Required]
         [DisplayName("Title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [Required]
         [DisplayName(" Message")]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayName("Date")]

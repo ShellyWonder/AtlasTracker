@@ -60,7 +60,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CompanyId,Name,Description,CreatedDate,StartDateOffset,EndDateOffset,ProjectPriorityId,ImageFileName,ImageFileData,ImageContentType,Archived")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,CompanyId,Name,Description,CreatedDate,StartDate,EndDate,ProjectPriorityId,ImageFileName,ImageFileData,ImageContentType,Archived")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CompanyId,Name,Description,CreatedDate,StartDateOffset,EndDateOffset,ProjectPriorityId,ImageFileName,ImageFileData,ImageContentType,Archived")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CompanyId,Name,Description,CreatedDate,StartDate,EndDate,ProjectPriorityId,ImageFileName,ImageFileData,ImageContentType,Archived")] Project project)
         {
             if (id != project.Id)
             {

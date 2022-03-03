@@ -11,10 +11,12 @@ namespace AtlasTracker.Models
         [StringLength(25, ErrorMessage ="The {0} must be at least {2} at most {1} characters long.", MinimumLength = 2)]
         [Display(Name ="First Name")]
         public string? FirstName { get; set; }
+
         [Required]
         [StringLength(25, ErrorMessage = "The {0} must be at least {2} at most {1} characters long.", MinimumLength = 2)]
-        [Display(Name = "First Name")]
+        [Display(Name = "Last Name")]
         public string? LastName { get; set; } 
+
         [NotMapped]
         [Display(Name = "Full Name")]
         public string? FullName { get { return $"{FirstName} {LastName}"; } }

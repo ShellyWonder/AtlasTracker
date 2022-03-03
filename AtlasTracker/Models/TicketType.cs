@@ -8,7 +8,7 @@ namespace AtlasTracker.Models
         public int Id { get; set; }
         [Required]
         [DisplayName("Type Name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
     }
 }

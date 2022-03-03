@@ -60,7 +60,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PropertyName,Description,Created,OldValue,NewValue,TicketId,UserId")] TicketHistory ticketHistory)
+        public async Task<IActionResult> Create([Bind("Id,PropertyName,Description,CreatedDate,OldValue,NewValue,TicketId,UserId")] TicketHistory ticketHistory)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace AtlasTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PropertyName,Description,Created,OldValue,NewValue,TicketId,UserId")] TicketHistory ticketHistory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PropertyName,Description,CreatedDate,OldValue,NewValue,TicketId,UserId")] TicketHistory ticketHistory)
         {
             if (id != ticketHistory.Id)
             {

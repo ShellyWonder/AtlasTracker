@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtlasTracker.Data;
+using AtlasTracker.Models;
 
-namespace AtlasTracker.Models
+namespace AtlasTracker.Controllers
 {
     public class CompaniesController : Controller
     {

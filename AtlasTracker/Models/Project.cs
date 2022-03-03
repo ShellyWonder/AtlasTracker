@@ -11,30 +11,30 @@ namespace AtlasTracker.Models
         public int CompanyId { get; set; }
 
         [Required]
-        [StringLength(25, ErrorMessage = "The {0} must be at least {2} at most {1} characters long.", MinimumLength = 2)]
+        [StringLength(240, ErrorMessage = "The {0} must be at least {2} at most {1} characters long.", MinimumLength = 2)]
         [Display(Name = "Project Name")]
         public string? Name { get; set; }
 
         [Required]
         [StringLength(2000, ErrorMessage = "The {0} must be at least {2} at most {1} characters long.", MinimumLength = 2)]
         [Display(Name = "Project Description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
        
 
         [Required]
-        [Display(Name = "CreatedDate Date")]
+        [Display(Name = "CreatedDate")]
         [DataType(DataType.Date)]
         public DateTimeOffset CreatedDate { get; set;}
 
         
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
-        public DateTime StartDateOffset { get; set;}
+        public DateTime StartDate { get; set;}
 
         
         [Display(Name = "End Date")]
         [DataType(DataType.Date)]
-        public DateTime EndDateOffset { get; set; }
+        public DateTime EndDate { get; set; }
 
         
         public int ProjectPriorityId { get; set; }
