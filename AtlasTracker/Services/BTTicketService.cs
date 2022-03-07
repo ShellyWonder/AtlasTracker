@@ -1,20 +1,97 @@
-﻿using AtlasTracker.Models;
+﻿using AtlasTracker.Data;
+using AtlasTracker.Models;
 using AtlasTracker.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AtlasTracker.Services
 {
     public class BTTicketService : IBTTicketService
     {
-        public Task AddNewTicketAsync(Ticket ticket)
+        private readonly ApplicationDbContext _context;
+
+        public BTTicketService(ApplicationDbContext context)
         {
+            _context = context;
+        }
+
+
+        //CRUD Create
+        public async Task AddNewTicketAsync(Ticket ticket)
+        {
+            try
+            {
+                _context.Tickets.Add(ticket);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             throw new NotImplementedException();
         }
 
-        public Task ArchiveTicketAsync(Ticket ticket)
+        //CRUD Read
+        public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
+            try
+            {
+                var ticket = await _context.Tickets
+                                    .Include(t => t.Title)
+                                    .Include(t => t.Description)
+                                    .Include(t => t.CreatedDate)
+                                    .Include(t => t.Updated)
+                                    .Include(t => t.Attachments)
+                                    .Include(t => t.Comments)
+                                    .Include(t => t.DeveloperUser)
+                                    .Include(t => t.DeveloperUserId)
+                                    .Include(t => t.OwnerUser)
+                                    .Include(t => t.OwnerUserId)
+                                    .Include(t => t.TicketStatusId)
+                                    .FirstOrDefaultAsync(t => t.Id == ticketId);     
+                     return  ticket!;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             throw new NotImplementedException();
         }
 
+        //CRUD Update
+        public async Task UpdateTicketAsync(Ticket ticket)
+        {
+            try
+            {
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            throw new NotImplementedException();
+        }
+
+        //CRUD Delete
+        public async Task ArchiveTicketAsync(Ticket ticket)
+        {
+            try
+            {
+                _context.Add(ticket.Archived);
+                _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            throw new NotImplementedException();
+        }
+        //******************************************************************************************************
         public Task AssignTicketAsync(int ticketId, string userId)
         {
             throw new NotImplementedException();
@@ -65,11 +142,7 @@ namespace AtlasTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<Ticket> GetTicketByIdAsync(int ticketId)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public Task<BTUser> GetTicketDeveloperAsync(int ticketId)
         {
             throw new NotImplementedException();
@@ -99,11 +172,7 @@ namespace AtlasTracker.Services
         {
             throw new NotImplementedException();
         }
-
-        public Task UpdateTicketAsync(Ticket ticket)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
 
