@@ -18,7 +18,7 @@ namespace AtlasTracker.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IBTCompanyInfoService _companyInfoService;
 
-        public CompaniesController(ApplicationDbContext context)
+        public CompaniesController(ApplicationDbContext context, IBTCompanyInfoService companyInfoService)
         {
             _context = context;
             _companyInfoService = companyInfoService;

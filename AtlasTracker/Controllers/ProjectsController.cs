@@ -8,16 +8,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtlasTracker.Data;
 using AtlasTracker.Models;
+using AtlasTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using AtlasTracker.Extensions;
 
 namespace AtlasTracker.Controllers
 {
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ProjectsController(ApplicationDbContext context)
+        private readonly IBTProjectService _projectService;
+        private readonly UserManager<BTUser> _userManager;
+        public ProjectsController(ApplicationDbContext context, IBTProjectService projectService, UserManager<BTUser> userManager)
         {
             _context = context;
+            _projectService = projectService;
+            _userManager = userManager;
         }
 
         // GET: Projects
@@ -35,10 +41,11 @@ namespace AtlasTracker.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //string userId = _userManager.GetUserId(User);
+            //BTUser btuser = _context.Users.Find(userId);
+
+            int companyId = User.Identity.GetCompanyId();
+            Project project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
             if (project == null)
             {
                 return NotFound();
@@ -65,7 +72,7 @@ namespace AtlasTracker.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(project);
-                await _context.SaveChangesAsync();
+                await _projectService.AddNewProjectAsync(project);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
@@ -107,8 +114,8 @@ namespace AtlasTracker.Controllers
             {
                 try
                 {
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
+                    
+                    await _projectService.UpdateProjectAsync(project);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
