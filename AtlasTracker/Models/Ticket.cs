@@ -59,6 +59,8 @@ namespace AtlasTracker.Models
 
         public virtual ICollection<TicketAttachment>? Attachments { get; set; } = new HashSet<TicketAttachment>();
 
+        public virtual ICollection<TicketStatus>? Statuses { get; set; } = new HashSet<TicketStatus>();
+
         public virtual ICollection<TicketHistory>? History { get; set; } = new HashSet<TicketHistory>();
 
         public virtual ICollection<Notification>? Notifications { get; set; } = new HashSet<Notification>();

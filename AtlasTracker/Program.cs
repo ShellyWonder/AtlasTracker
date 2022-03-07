@@ -1,6 +1,7 @@
 using AtlasTracker.Data;
 using AtlasTracker.Models;
 using AtlasTracker.Services;
+using AtlasTracker.Services.Factories;
 using AtlasTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddClaimsPrincipalFactory<BTUserClaimsPrincipalFactory>()
+    .AddDefaultUI()
     .AddDefaultTokenProviders();
 
 //Custom Services
 builder.Services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
+builder.Services.AddScoped<IBTRolesService, BTRolesService>();
+builder.Services.AddScoped<IBTProjectService, BTProjectService>();
+builder.Services.AddScoped<IBTTicketService, BTTicketService>();
+   
+
 
 builder.Services.AddMvc();
 

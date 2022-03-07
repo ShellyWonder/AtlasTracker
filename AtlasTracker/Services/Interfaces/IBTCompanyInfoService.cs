@@ -6,13 +6,13 @@ namespace AtlasTracker.Services.Interfaces
     {
 
         //Declaration of a method
-        public Task<List<Company>> GetCompanyInfoByIdAsync(int? companyId);
-        public Task<List<Invite>> GetAllMembersAsync(int? companyId);
+        public  Task<Company> GetCompanyInfoByIdAsync(int? companyId);
+        public Task<List<BTUser>> GetAllMembersAsync(int? companyId);
 
         public Task<List<Project>> GetAllProjectsAsync(int? companyId);
 
-        public Task<List<BTUser>> GetAllTicketsAsync(int? companyId);
-        public Task<List<BTUser>> GetAllInvitesAsync(int? companyId);
+        public Task<List<Ticket>> GetAllTicketsAsync(int? companyId);
+        public Task<List<Invite>> GetAllInvitesAsync(int? companyId);
 
     }
 }

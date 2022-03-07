@@ -22,22 +22,17 @@ namespace AtlasTracker.Services
 
         public async Task<Company> GetCompanyInfoByIdAsync(int? companyId)
         {
-
-
-
             Company? company = new();
-
-
 
             try
             {
                 if (companyId != null)
                 {
-                    company = await _context.Companies
+                    company = (await _context.Companies
                     .Include(c => c.Members)
                     .Include(c => c.Projects)
                     .Include(c => c.Invites)
-                    .FirstOrDefaultAsync(c => c.Id == companyId);
+                    .FirstOrDefaultAsync(c => c.Id == companyId)); 
                 }
                 return company!;
             }
@@ -46,7 +41,7 @@ namespace AtlasTracker.Services
                 throw;
             }
         }
-        public async Task<List<Invite>> GetAllInvitesAsync(int companyId)
+        public async Task<List<Invite>> GetAllInvitesAsync(int? companyId)
         {
             List<Invite>? invites = new();
             try
@@ -66,7 +61,7 @@ namespace AtlasTracker.Services
                 throw;
             }
         }
-        public async Task<List<BTUser>> GetAllMembersAsync(int companyId)
+        public async Task<List<BTUser>> GetAllMembersAsync(int? companyId)
         {
 
             List<BTUser>? members = new();
@@ -89,7 +84,7 @@ namespace AtlasTracker.Services
                 throw;
             }
         }
-        public async Task<List<Project>> GetAllProjectsAsync(int companyId)
+        public async Task<List<Project>> GetAllProjectsAsync(int? companyId)
         {
             List<Project>? projects = new();
             try
@@ -109,7 +104,7 @@ namespace AtlasTracker.Services
                 .Include(p => p.Tickets)!
                 .ThenInclude(t => t.OwnerUser)
                 .Include(p => p.Tickets)!
-                .ThenInclude(t => t.TicketStatus)
+                .ThenInclude(t => t.Statuses)
                 .Include(p => p.Tickets)!
                 .ThenInclude(t => t.TicketPriority)
                 .Include(p => p.Tickets)!
@@ -123,7 +118,7 @@ namespace AtlasTracker.Services
                 throw;
             }
         }
-        public async Task<List<Ticket>> GetAllTicketsAsync(int companyId)
+        public async Task<List<Ticket>> GetAllTicketsAsync(int? companyId)
         {
             List<Ticket>? tickets = new();
             List<Project>? projects = new();
