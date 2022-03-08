@@ -82,7 +82,7 @@ namespace AtlasTracker.Services
             try
             {
                 _context.Add(ticket.Archived);
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
