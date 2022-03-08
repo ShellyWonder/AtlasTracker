@@ -11,6 +11,9 @@ using AtlasTracker.Models;
 using AtlasTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using AtlasTracker.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using AtlasTracker.Models.ViewModels;
+using AtlasTracker.Models.Enums;
 
 namespace AtlasTracker.Controllers
 {
@@ -19,12 +22,22 @@ namespace AtlasTracker.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IBTProjectService _projectService;
         private readonly UserManager<BTUser> _userManager;
-        public ProjectsController(ApplicationDbContext context, IBTProjectService projectService, UserManager<BTUser> userManager)
+        private readonly IBTRolesService _rolesService;
+        private readonly IBTLookupService _lookupService;
+        public ProjectsController(ApplicationDbContext context, IBTProjectService projectService, UserManager<BTUser> userManager, IBTRolesService rolesService, IBTLookupService lookupService)
         {
             _context = context;
             _projectService = projectService;
             _userManager = userManager;
+            _rolesService = rolesService;
+            _lookupService = lookupService;
         }
+
+        /// <summary>
+        
+        
+       /// UnassignedProjects
+        
 
         // GET: Projects
         public async Task<IActionResult> Index()
@@ -32,6 +45,42 @@ namespace AtlasTracker.Controllers
             var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
             return View(await applicationDbContext.ToListAsync());
         }
+        //Get:Projects/MyProjects
+        //projects by user
+        public async Task<IActionResult> MyProjects()
+        {
+            string userId = _userManager.GetUserId(User);
+            List<Project> projects = await _projectService.GetUserProjectsAsync(userId);
+
+            return View(projects);
+        }
+
+        //Get:Projects/AllProjects
+        public async Task<IActionResult> AllProjects()
+        {
+            int companyId = User.Identity.GetCompanyId();
+            List<Project> projects = await _projectService.GetAllProjectsByCompanyAsync(companyId);
+
+            return View(projects);
+        }
+
+        /// ArchivedProjects
+        public async Task<IActionResult> ArchivedProjects()
+        {
+                int companyId = User.Identity.GetCompanyId();
+                List<Project> projects = await _projectService.GetArchivedProjectsByCompany(companyId);
+
+                return View(projects);
+        }
+        /// Unassigned Projects
+        public async Task<IActionResult> UnassignedProjects()
+        {
+                int companyId = User.Identity.GetCompanyId();
+                List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+
+                return View(projects);
+        }
+
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -53,12 +102,15 @@ namespace AtlasTracker.Controllers
 
             return View(project);
         }
-
+        [Authorize(Roles ="Admin, ProjectManager")]
         // GET: Projects/Create
-        public IActionResult Create()
+        public async Task <IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name");
+            int companyId = User.Identity.GetCompanyId();
+            AddProjectWithPMViewModel model = new();
+
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRole.ProjectManager), companyId),"Id", "FullName");
+            model.PriorityList = new SelectList(await _lookupService.GetProjectPrioritiesAsync(), "Id", "Name");
             return View();
         }
 
@@ -83,7 +135,7 @@ namespace AtlasTracker.Controllers
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (id == null)               
             {
                 return NotFound();
             }
