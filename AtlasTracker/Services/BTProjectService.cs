@@ -650,6 +650,7 @@ namespace AtlasTracker.Services
         {
             try
             {
+                project.Archived = false;
                 await UpdateProjectAsync(project);
 
                 //Archive the Tickets for the Project
@@ -668,11 +669,7 @@ namespace AtlasTracker.Services
             }
         }
 
-        public Task RestoreProjectAsync(int project)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         #endregion
 
         #region Update Project

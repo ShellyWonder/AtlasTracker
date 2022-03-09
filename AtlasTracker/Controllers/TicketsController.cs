@@ -8,16 +8,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtlasTracker.Data;
 using AtlasTracker.Models;
+using Microsoft.AspNetCore.Identity;
+using AtlasTracker.Services.Interfaces;
+using AtlasTracker.Extensions;
+using AtlasTracker.Models.Enums;
 
 namespace AtlasTracker.Controllers
 {
+     
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public TicketsController(ApplicationDbContext context)
+        private readonly UserManager<BTUser> _userManager;
+        private readonly IBTTicketService _ticketService;
+        private readonly IBTCompanyInfoService _companyInfoService;
+        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager = null, IBTTicketService ticketService = null, IBTCompanyInfoService companyInfoService = null)
         {
             _context = context;
+            _userManager = userManager;
+            _ticketService = ticketService;
+            _companyInfoService = companyInfoService;
         }
 
         // GET: Tickets
@@ -26,6 +36,42 @@ namespace AtlasTracker.Controllers
             var applicationDbContext = _context.Tickets.Include(t => t.DeveloperUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketType);
             return View(await applicationDbContext.ToListAsync());
         }
+        //GET: MY TICKETS
+
+        public async Task<IActionResult> MyTickets()
+        {
+            int companyId = User.Identity.GetCompanyId();
+            string userId = _userManager.GetUserId(User);
+            List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(userId,companyId);
+
+            return View(tickets);
+        }
+
+        public async Task<IActionResult> AllTickets()
+        {
+            List<Ticket> tickets = new();
+            int companyId = User.Identity.GetCompanyId();
+            if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+            {
+                tickets = await _companyInfoService.GetAllTicketsAsync(companyId);
+            }
+            else
+            {
+                tickets = (await _ticketService.GetAllTicketsByCompanyAsync(companyId));
+            }
+
+            return View(tickets);
+        }
+
+        /// ArchivedTickets
+        public async Task<IActionResult> ArchivedTickets()
+        {
+            int companyId = User.Identity.GetCompanyId();
+            List<Ticket> tickets = await _ticketService.GetArchivedTicketsAsync(companyId);
+
+            return View(tickets);
+        }
+
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -143,39 +189,27 @@ namespace AtlasTracker.Controllers
             return View(ticket);
         }
 
-        // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ticket = await _context.Tickets
-                .Include(t => t.DeveloperUser)
-                .Include(t => t.OwnerUser)
-                .Include(t => t.Project)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-            return View(ticket);
-        }
-
         // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> ArchiveTicket(int id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            int companyId = User.Identity.GetCompanyId();
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
+            await _ticketService.ArchiveTicketAsync(ticket);
+
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> RestoreProject(int id)
+        {
+            int companyId = User.Identity.GetCompanyId();
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
+            await _ticketService.RestoreTicketAsync(ticket);
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
         private bool TicketExists(int id)
         {

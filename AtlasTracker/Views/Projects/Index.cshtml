@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Project>
+@using AtlasTracker.Services.Interfaces
+@inject IBTProjectService ProjectService
 
 @{
     ViewData["Title"] = "Index";
@@ -22,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model=> model.StartDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)
@@ -44,6 +46,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProjectPriority)
+                
             </th>
             <th></th>
         </tr>
@@ -85,9 +88,12 @@
                 @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
             </td>
             <td>
+                    @(await ProjectService.GetProjectManagerAsync(item.Id)).FullName)
+                </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
             </td>
         </tr>
 }

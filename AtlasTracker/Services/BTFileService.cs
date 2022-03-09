@@ -1,4 +1,6 @@
-﻿namespace AtlasTracker.Services
+﻿using AtlasTracker.Services.Interfaces;
+
+namespace AtlasTracker.Services
 {
     public class BTFileService : IBTFileService
     {
