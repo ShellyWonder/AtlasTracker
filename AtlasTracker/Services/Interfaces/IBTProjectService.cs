@@ -28,7 +28,7 @@ namespace AtlasTracker.Services.Interfaces
 
         public Task<Project> GetProjectByIdAsync(int projectId, int companyId);
 
-        public Task RestoreProjectAsync(int project);
+        public Task RestoreProjectAsync(Project project);
 
         public Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId);
 

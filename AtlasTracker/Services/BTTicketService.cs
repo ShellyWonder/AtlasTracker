@@ -586,6 +586,23 @@ namespace AtlasTracker.Services
             }
         }
 
+        public async Task RestoreTicketAsync(Ticket ticket)
+        {
+            try
+            {
+                ticket.Archived = false;
+                _context.Update(ticket);
+                 await _context.SaveChangesAsync();
+
+                
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
 
         #region Update Ticket
@@ -595,6 +612,7 @@ namespace AtlasTracker.Services
             {
                 _context.Update(ticket);
                 await _context.SaveChangesAsync();
+
             }
             catch (Exception)
             {
