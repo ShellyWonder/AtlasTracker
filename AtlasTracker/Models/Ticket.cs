@@ -20,7 +20,7 @@ namespace AtlasTracker.Models
 
         [DataType(DataType.Date)]
         [Display(Name ="CreatedDate")]
-        public DateTimeOffset? CreatedDate { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Updated")]
@@ -52,6 +52,7 @@ namespace AtlasTracker.Models
         public virtual Project? Project { get; set; }
         public virtual TicketPriority? TicketPriority { get; set; }
 
+        public virtual TicketStatus? Status { get; set; } 
         public virtual TicketType? TicketType { get; set; }
 
         public virtual BTUser? OwnerUser { get; set; }
@@ -62,7 +63,6 @@ namespace AtlasTracker.Models
 
         public virtual ICollection<TicketAttachment>? Attachments { get; set; } = new HashSet<TicketAttachment>();
 
-        public virtual ICollection<TicketStatus>? Statuses { get; set; } = new HashSet<TicketStatus>();
 
         public virtual ICollection<TicketHistory>? History { get; set; } = new HashSet<TicketHistory>();
 

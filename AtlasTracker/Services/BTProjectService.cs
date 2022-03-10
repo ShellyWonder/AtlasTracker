@@ -326,7 +326,7 @@ namespace AtlasTracker.Services
         {
             try
             {
-                Project project = await _context.Projects
+                Project? project = await _context.Projects
                                         .Include(p => p.Members)
                                         .FirstOrDefaultAsync(p => p.Id == projectId);
 
