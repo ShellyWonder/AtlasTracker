@@ -23,7 +23,7 @@ namespace AtlasTracker.Controllers
         // GET: TicketStatus
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TicketStatuses.ToListAsync());
+            return View(await _context.TicketStatus.ToListAsync());
         }
 
         // GET: TicketStatus/Details/5
@@ -34,7 +34,7 @@ namespace AtlasTracker.Controllers
                 return NotFound();
             }
 
-            var ticketStatus = await _context.TicketStatuses
+            var ticketStatus = await _context.TicketStatus
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticketStatus == null)
             {
@@ -74,7 +74,7 @@ namespace AtlasTracker.Controllers
                 return NotFound();
             }
 
-            var ticketStatus = await _context.TicketStatuses.FindAsync(id);
+            var ticketStatus = await _context.TicketStatus.FindAsync(id);
             if (ticketStatus == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace AtlasTracker.Controllers
                 return NotFound();
             }
 
-            var ticketStatus = await _context.TicketStatuses
+            var ticketStatus = await _context.TicketStatus
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticketStatus == null)
             {
@@ -140,15 +140,15 @@ namespace AtlasTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticketStatus = await _context.TicketStatuses.FindAsync(id);
-            _context.TicketStatuses.Remove(ticketStatus);
+            var ticketStatus = await _context.TicketStatus.FindAsync(id);
+            _context.TicketStatus.Remove(ticketStatus);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TicketStatusExists(int id)
         {
-            return _context.TicketStatuses.Any(e => e.Id == id);
+            return _context.TicketStatus.Any(e => e.Id == id);
         }
     }
 }

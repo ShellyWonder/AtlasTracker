@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using AtlasTracker.Services.Interfaces;
 using AtlasTracker.Extensions;
 using AtlasTracker.Models.Enums;
+using AtlasTracker.Services;
 
 namespace AtlasTracker.Controllers
 {
@@ -22,12 +23,21 @@ namespace AtlasTracker.Controllers
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTTicketService _ticketService;
         private readonly IBTCompanyInfoService _companyInfoService;
-        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager = null, IBTTicketService ticketService = null, IBTCompanyInfoService companyInfoService = null)
+        private readonly IBTLookupService _lookupService; 
+        private readonly IBTProjectService _projectService;
+        public TicketsController(ApplicationDbContext context, 
+                                 UserManager<BTUser> userManager, 
+                                 IBTTicketService ticketService, 
+                                 IBTCompanyInfoService companyInfoService, 
+                                 IBTLookupService lookupService, 
+                                 IBTProjectService projectService)
         {
             _context = context;
             _userManager = userManager;
             _ticketService = ticketService;
             _companyInfoService = companyInfoService;
+            _lookupService = lookupService;
+            _projectService = projectService;
         }
 
         // GET: Tickets
@@ -97,13 +107,23 @@ namespace AtlasTracker.Controllers
         }
 
         // GET: Tickets/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description");
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name");
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
+            BTUser btuser = await _userManager.GetUserAsync(User);
+            if (User.IsInRole(nameof(BTRole.Admin)))
+            {
+            ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompanyAsync(btuser.CompanyId),"Id", "Name");
+
+            }
+            else
+            {
+                ViewData["ProjectId"] = new SelectList(await _projectService.GetUserProjectsAsync(btuser.Id), "Id", "Name");
+
+            }
+            ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
+
+
             return View();
         }
 
@@ -114,8 +134,13 @@ namespace AtlasTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,CreatedDate,Updated,Archived,ArchivedByProject,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
         {
+            ticket.OwnerUserId = _userManager.GetUserId(User);
+            ModelState.Remove("OwnerUserId");
+
             if (ModelState.IsValid)
-            {
+            {  
+                
+            string userId = _userManager.GetUserId(User);
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

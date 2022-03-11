@@ -561,7 +561,7 @@ namespace AtlasTracker.Services
         {
             try
             {
-                TicketStatus status = await _context.TicketStatuses.FirstOrDefaultAsync(p => p.Name == statusName);
+                TicketStatus status = await _context.TicketStatus.FirstOrDefaultAsync(p => p.Name == statusName);
                 return status?.Id;
             }
             catch (Exception)

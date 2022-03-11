@@ -104,7 +104,7 @@ namespace AtlasTracker.Services
                 .Include(p => p.Tickets)!
                 .ThenInclude(t => t.OwnerUser)
                 .Include(p => p.Tickets)!
-                .ThenInclude(t => t.Statuses)
+                .ThenInclude(t => t.Status)
                 .Include(p => p.Tickets)!
                 .ThenInclude(t => t.TicketPriority)
                 .Include(p => p.Tickets)!

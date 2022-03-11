@@ -21,7 +21,7 @@ namespace AtlasTracker.Models
         public DateTimeOffset CreatedDate { get; set; }
 
         [Required]
-        public string? ReceipientId { get; set; }
+        public string? RecipientId { get; set; }
 
         [Required]
         public string? SenderId { get; set; }

@@ -284,7 +284,7 @@ namespace AtlasTracker.Data.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageContentType")
@@ -304,7 +304,7 @@ namespace AtlasTracker.Data.Migrations
                     b.Property<int>("ProjectPriorityId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -347,7 +347,7 @@ namespace AtlasTracker.Data.Migrations
                     b.Property<bool>("ArchivedByProject")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset?>("CreatedDate")
+                    b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -391,6 +391,8 @@ namespace AtlasTracker.Data.Migrations
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("TicketPriorityId");
+
+                    b.HasIndex("TicketStatusId");
 
                     b.HasIndex("TicketTypeId");
 
@@ -536,14 +538,9 @@ namespace AtlasTracker.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("TicketId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("TicketStatuses");
+                    b.ToTable("TicketStatus");
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.TicketType", b =>
@@ -830,6 +827,12 @@ namespace AtlasTracker.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AtlasTracker.Models.TicketStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("TicketStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AtlasTracker.Models.TicketType", "TicketType")
                         .WithMany()
                         .HasForeignKey("TicketTypeId")
@@ -841,6 +844,8 @@ namespace AtlasTracker.Data.Migrations
                     b.Navigation("OwnerUser");
 
                     b.Navigation("Project");
+
+                    b.Navigation("Status");
 
                     b.Navigation("TicketPriority");
 
@@ -900,13 +905,6 @@ namespace AtlasTracker.Data.Migrations
                     b.Navigation("Ticket");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AtlasTracker.Models.TicketStatus", b =>
-                {
-                    b.HasOne("AtlasTracker.Models.Ticket", null)
-                        .WithMany("Statuses")
-                        .HasForeignKey("TicketId");
                 });
 
             modelBuilder.Entity("BTUserProject", b =>
@@ -998,8 +996,6 @@ namespace AtlasTracker.Data.Migrations
                     b.Navigation("History");
 
                     b.Navigation("Notifications");
-
-                    b.Navigation("Statuses");
                 });
 #pragma warning restore 612, 618
         }

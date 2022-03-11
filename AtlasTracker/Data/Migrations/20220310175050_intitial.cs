@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AtlasTracker.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class intitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,7 +78,7 @@ namespace AtlasTracker.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketStatuses",
+                name: "TicketStatus",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -87,7 +87,7 @@ namespace AtlasTracker.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketStatuses", x => x.Id);
+                    table.PrimaryKey("PK_TicketStatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,11 +168,11 @@ namespace AtlasTracker.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CompanyId = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    Name = table.Column<string>(type: "character varying(240)", maxLength: 240, nullable: false),
                     Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    StartDateOffset = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndDateOffset = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ProjectPriorityId = table.Column<int>(type: "integer", nullable: false),
                     ImageFileName = table.Column<string>(type: "text", nullable: true),
                     ImageFileData = table.Column<byte[]>(type: "bytea", nullable: true),
@@ -221,8 +221,8 @@ namespace AtlasTracker.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
@@ -266,8 +266,8 @@ namespace AtlasTracker.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -361,7 +361,7 @@ namespace AtlasTracker.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Updated = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     Archived = table.Column<bool>(type: "boolean", nullable: false),
                     ArchivedByProject = table.Column<bool>(type: "boolean", nullable: false),
@@ -399,6 +399,12 @@ namespace AtlasTracker.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Tickets_TicketStatus_TicketStatusId",
+                        column: x => x.TicketStatusId,
+                        principalTable: "TicketStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Tickets_TicketTypes_TicketTypeId",
                         column: x => x.TicketTypeId,
                         principalTable: "TicketTypes",
@@ -415,7 +421,7 @@ namespace AtlasTracker.Data.Migrations
                     TicketId = table.Column<int>(type: "integer", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Message = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ReceipientId = table.Column<string>(type: "text", nullable: false),
                     SenderId = table.Column<string>(type: "text", nullable: false),
                     Viewed = table.Column<bool>(type: "boolean", nullable: true),
@@ -456,7 +462,7 @@ namespace AtlasTracker.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     TicketId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     ImageFileName = table.Column<string>(type: "text", nullable: true),
@@ -515,7 +521,7 @@ namespace AtlasTracker.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PropertyName = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     OldValue = table.Column<string>(type: "text", nullable: true),
                     NewValue = table.Column<string>(type: "text", nullable: true),
                     TicketId = table.Column<int>(type: "integer", nullable: false),
@@ -686,6 +692,11 @@ namespace AtlasTracker.Data.Migrations
                 column: "TicketPriorityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tickets_TicketStatusId",
+                table: "Tickets",
+                column: "TicketStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_TicketTypeId",
                 table: "Tickets",
                 column: "TicketTypeId");
@@ -727,9 +738,6 @@ namespace AtlasTracker.Data.Migrations
                 name: "TicketHistories");
 
             migrationBuilder.DropTable(
-                name: "TicketStatuses");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -746,6 +754,9 @@ namespace AtlasTracker.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TicketPriorities");
+
+            migrationBuilder.DropTable(
+                name: "TicketStatus");
 
             migrationBuilder.DropTable(
                 name: "TicketTypes");

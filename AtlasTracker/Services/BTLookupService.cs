@@ -34,7 +34,7 @@ namespace AtlasTracker.Services
 
         public async Task<List<TicketStatus>> GetTicketStatusesAsync()
         {
-            return await _context.TicketStatuses.ToListAsync();
+            return await _context.TicketStatus.ToListAsync();
         }
 
         public async Task<List<TicketType>> GetTicketTypesAsync()
