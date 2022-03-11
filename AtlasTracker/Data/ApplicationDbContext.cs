@@ -22,7 +22,7 @@ namespace AtlasTracker.Data
         public DbSet<TicketComment> TicketComments { get; set; } = default!;
         public DbSet<TicketHistory> TicketHistories { get; set; } = default!;
         public DbSet<TicketPriority> TicketPriorities { get; set; } = default!;
-        public DbSet<TicketStatus> TicketStatus { get; set; } = default!;
+        public DbSet<TicketStatus> TicketStatuses { get; set; } = default!;
         public DbSet<TicketType> TicketTypes { get; set; } = default!;
     }
 }

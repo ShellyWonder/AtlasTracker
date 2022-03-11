@@ -236,7 +236,7 @@ namespace AtlasTracker.Controllers
 
 
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(AllProjects));
                 }
                 catch (Exception)
                 {

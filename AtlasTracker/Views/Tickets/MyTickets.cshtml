@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "MyTickets";
 }
 
 <h1>My Tickets</h1>
@@ -43,10 +43,10 @@
                 @Html.DisplayNameFor(model => model.TicketType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OwnerUser)
+                Submitted By
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DeveloperUser)
+                Assigned Developer
             </th>
             <th></th>
         </tr>
@@ -76,7 +76,7 @@
                 @Html.DisplayFor(modelItem => item.TicketStatusId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Project.Description)
+                @Html.DisplayFor(modelItem => item.Project.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketPriority.Name)
@@ -85,15 +85,15 @@
                 @Html.DisplayFor(modelItem => item.TicketType.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OwnerUser.Id)
+                @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeveloperUser.Id)
+                @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
             </td>
         </tr>
 }

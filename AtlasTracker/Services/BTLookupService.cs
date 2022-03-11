@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AtlasTracker.Services
 {
-    public class BTLookupService: IBTLookupService
+    public class BTLookupService : IBTLookupService
     {
         private readonly ApplicationDbContext _context;
 
@@ -27,19 +27,44 @@ namespace AtlasTracker.Services
             }
         }
 
-        public Task<List<TicketPriority>> GetTicketPrioritiesAsync()
+        public async Task<List<TicketPriority>> GetTicketPrioritiesAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.TicketPriorities.ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<List<TicketStatus>> GetTicketStatusesAsync()
         {
-            return await _context.TicketStatus.ToListAsync();
+            try
+            {
+                return await _context.TicketStatuses.ToListAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<List<TicketType>> GetTicketTypesAsync()
         {
-            return await _context.TicketTypes.ToListAsync();
+            try
+            {
+                return await _context.TicketTypes.ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<int?> LookupNotificationTypeIdAsync(string typeName)
@@ -56,8 +81,8 @@ namespace AtlasTracker.Services
             }
         }
 
-        
-    } 
+
+    }
 
 
 }

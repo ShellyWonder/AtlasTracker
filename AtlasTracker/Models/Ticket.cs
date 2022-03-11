@@ -26,7 +26,7 @@ namespace AtlasTracker.Models
         [Display(Name = "Updated")]
         public DateTimeOffset? Updated { get; set; }
 
-        [Display(Name = "Archived By Project")]
+        [Display(Name = "Archived Individually")]
         public bool Archived { get; set; }
                       
         [Display(Name = "Archived By Project")]

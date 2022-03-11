@@ -778,8 +778,8 @@ namespace AtlasTracker.Data
                     new TicketStatus() { Name = nameof(BTTicketStatus.Resolved)  },           // Ticket remains assigned to the developer but work in now complete
                 };
 
-                var dbTicketStatuses = context.TicketStatus.Select(c => c.Name).ToList();
-                await context.TicketStatus.AddRangeAsync(TicketStatus.Where(c => !dbTicketStatuses.Contains(c.Name)));
+                var dbTicketStatuses = context.TicketStatuses.Select(c => c.Name).ToList();
+                await context.TicketStatuses.AddRangeAsync(TicketStatus.Where(c => !dbTicketStatuses.Contains(c.Name)));
                 await context.SaveChangesAsync();
 
             }
@@ -842,10 +842,10 @@ namespace AtlasTracker.Data
             int priorityUrgent = context.TicketPriorities.FirstOrDefault(p => p.Name == nameof(BTTicketPriority.Urgent))!.Id;
 
             //Get ticket status Ids
-            int statusNew = context.TicketStatus.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.New))!.Id;
-            int statusDev = context.TicketStatus.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.Development))!.Id;
-            int statusTest = context.TicketStatus.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.Testing))!.Id;
-            int statusResolved = context.TicketStatus.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.Resolved))!.Id;
+            int statusNew = context.TicketStatuses.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.New))!.Id;
+            int statusDev = context.TicketStatuses.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.Development))!.Id;
+            int statusTest = context.TicketStatuses.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.Testing))!.Id;
+            int statusResolved = context.TicketStatuses.FirstOrDefault(p => p.Name == nameof(BTTicketStatus.Resolved))!.Id;
 
             //Get admin Ids
             string company1AdminId = (await userManager.FindByEmailAsync("btadmin1@bugtracker.com"))!.Id;

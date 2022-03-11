@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Unassigned Tickets";
 }
 
-<h1>Index</h1>
+<h1>Unassigned Tickets</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -31,7 +31,7 @@
                 @Html.DisplayNameFor(model => model.ArchivedByProject)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TicketStatusId)
+                @Html.DisplayNameFor(model => model.Status.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Project)
@@ -73,10 +73,10 @@
                 @Html.DisplayFor(modelItem => item.ArchivedByProject)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TicketStatusId)
+                @Html.DisplayFor(modelItem => item.Status.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Project.Description)
+                @Html.DisplayFor(modelItem => item.Project.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketPriority.Name)
