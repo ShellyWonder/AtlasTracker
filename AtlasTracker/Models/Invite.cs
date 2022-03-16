@@ -24,7 +24,6 @@ namespace AtlasTracker.Models
         [DisplayName("Invitor")]
         public string? InvitorId { get; set; }
 
-        [Required]
         [DisplayName("Invitee")]
         public string? InviteeId { get; set; }
 

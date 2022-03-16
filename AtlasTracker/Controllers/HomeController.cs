@@ -1,25 +1,47 @@
-﻿using AtlasTracker.Models;
+﻿using AtlasTracker.Extensions;
+using AtlasTracker.Models;
+using AtlasTracker.Models.ViewModels;
+using AtlasTracker.Services;
+using AtlasTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
+ 
 namespace AtlasTracker.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBTCompanyInfoService _companyInfoService;
+        private readonly UserManager<BTUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBTCompanyInfoService companyInfoService)
         {
             _logger = logger;
+            _companyInfoService = companyInfoService;
+        }
+        
+        [HttpGet]   
+        [Authorize]
+        public  async Task<IActionResult> Dashboard()
+        {
+            int companyId = User.Identity.GetCompanyId();
+            DashboardViewModel model = new();
+            model.Company = await _companyInfoService.GetCompanyInfoByIdAsync(companyId);
+            model.Projects = await _companyInfoService.GetAllProjectsAsync(companyId);
+            model.Tickets = await _companyInfoService.GetAllTicketsAsync(companyId);
+            model.Members = await _companyInfoService.GetAllMembersAsync(companyId);
+
+            return View(model);
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard", "Home");
+            }
             return View();
         }
 

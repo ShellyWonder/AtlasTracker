@@ -273,6 +273,20 @@ namespace AtlasTracker.Services
 
         #endregion
 
+        //public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+        //{
+        //    try
+        //    {
+        //        await _context.AddAsync(ticketAttachment);
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
         #region Get Project Tickets By Priority
         public async Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
         {
@@ -496,16 +510,23 @@ namespace AtlasTracker.Services
                 else if (await _rolesService.IsUserInRoleAsync(btUser, BTRole.Developer.ToString()))
                 {
                     tickets = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
-                                                    .SelectMany(p => p.Tickets).Where(t => t.DeveloperUserId == userId).ToList();
+                                                    .SelectMany(t => t.Tickets)
+                                                    .Where(t => t.DeveloperUserId == userId || t.OwnerUserId==userId).ToList();
                 }
-                else if (await _rolesService.IsUserInRoleAsync(btUser, BTRole.Submitter.ToString()))
+                else if (await _rolesService.IsUserInRoleAsync(btUser!, nameof(BTRole.Submitter)))
                 {
                     tickets = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
                                                     .SelectMany(t => t.Tickets).Where(t => t.OwnerUserId == userId).ToList();
                 }
-                else if (await _rolesService.IsUserInRoleAsync(btUser, BTRole.ProjectManager.ToString()))
+                else if (await _rolesService.IsUserInRoleAsync(btUser!, nameof(BTRole.ProjectManager)))
+
                 {
-                    tickets = (await _projectService.GetUserProjectsAsync(userId)).SelectMany(t => t.Tickets!).ToList();
+                   List<Ticket> projectTickets = (await _projectService.GetUserProjectsAsync(userId)).SelectMany(t => t.Tickets!).ToList(); 
+                   List<Ticket> submittedTickets = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
+                                                                         .SelectMany(p => p.Tickets!)
+                                                                         .Where(t => t.OwnerUserId != userId).ToList();
+                    tickets = projectTickets.Concat(submittedTickets).ToList();
+
                 }
 
                 return tickets;

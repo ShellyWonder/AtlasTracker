@@ -6,6 +6,7 @@ namespace AtlasTracker.Services.Interfaces
     {
         // CRUD Methods
         public Task AddNewTicketAsync(Ticket ticket);
+        public Task AddTicketCommentAsync(TicketComment ticketComment);
         public Task UpdateTicketAsync(Ticket ticket);
         public Task<Ticket> GetTicketByIdAsync(int ticketId);
         public Task ArchiveTicketAsync(Ticket ticket);
@@ -29,5 +30,8 @@ namespace AtlasTracker.Services.Interfaces
         public Task<int?> LookupTicketPriorityIdAsync(string priorityName);
         public Task<int?> LookupTicketStatusIdAsync(string statusName);
         public Task<int?> LookupTicketTypeIdAsync(string typeName);
+
+        public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
+
     }
 }
