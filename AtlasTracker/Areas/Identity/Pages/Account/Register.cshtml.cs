@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using AtlasTracker.Data;
+using AtlasTracker.Models.Enums;
 
 namespace AtlasTracker.Areas.Identity.Pages.Account
 {
@@ -30,13 +33,15 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<BTUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<BTUser> userManager,
             IUserStore<BTUser> userStore,
             SignInManager<BTUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +49,7 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -80,9 +86,13 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            //[Required]
-            //[Display(Name = "Company Name")]
-            //public string Company { get; set; }
+            [Required]
+            [Display(Name = "Company Name")]
+            public string Company { get; set; }
+
+            [Required]
+            [Display(Name = "Company Description")]
+            public string CompanyDescription { get; set; }
 
             [Required]
             [EmailAddress]
@@ -109,7 +119,6 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -122,10 +131,20 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-                user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
-                //user.Company = Input.Company;
+                //Create new Company
+                Company company = new()
+                {
+                    Name = Input.Company,
+                    Description = Input.CompanyDescription
+                };
+                await _context.AddAsync(company);
+                await _context.SaveChangesAsync();
+
+
+                //CREATE NEW USER
+                
+                var user = CreateUser(company.Id);
+                
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -135,6 +154,7 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User CreatedDate a new account with password.");
 
+                    await _userManager.AddToRoleAsync(user, nameof(BTRole.Admin));
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -167,11 +187,18 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private BTUser CreateUser()
+        
+
+        private BTUser CreateUser(int companyId)
         {
             try
             {
-                return Activator.CreateInstance<BTUser>();
+                BTUser btUser = Activator.CreateInstance<BTUser>();
+                btUser.FirstName = Input.FirstName;
+                btUser.LastName = Input.LastName;
+                btUser.CompanyId = companyId;
+                return btUser;
+
             }
             catch
             {
@@ -179,15 +206,15 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
                     $"Ensure that '{nameof(BTUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
-        }
 
-        private IUserEmailStore<BTUser> GetEmailStore()
-        {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<BTUser>)_userStore;
         }
+            private IUserEmailStore<BTUser> GetEmailStore()
+            {
+                if (!_userManager.SupportsUserEmail)
+                {
+                    throw new NotSupportedException("The default UI requires a user store with email support.");
+                }
+                return (IUserEmailStore<BTUser>)_userStore;
+            }
     }
 }
