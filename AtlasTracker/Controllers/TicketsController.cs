@@ -329,12 +329,29 @@ namespace AtlasTracker.Controllers
         {
             if (model.DevId != null)
             {
-                BTUser bTuser = await _userManager.GetUserAsync(User);
+                BTUser btUser = await _userManager.GetUserAsync(User);
                 Ticket ticket = model.Ticket;
                 try
                 {
                      await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DevId);
                     await _historyService.AddHistoryAsync( ticket,model.Ticket,  model.DevId);
+
+                    // Assign Developer Notification
+                    if (model.Ticket.DeveloperUserId != null)
+                    {
+                        Notification devNotification = new()
+                        {
+                            TicketId = model.Ticket.Id,
+                            NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
+                            Title = "Ticket Updated",
+                            Message = $"Ticket: {model.Ticket.Title}, was updated by {btUser.FullName}",
+                            CreatedDate = DateTime.UtcNow,
+                            SenderId = btUser.Id,
+                            RecipientId = model.Ticket.DeveloperUserId
+                        };
+                        await notificationService.AddNotificationAsync(devNotification);
+                        await notificationService.SendEmailNotificationAsync(devNotification, "Ticket Updated");
+                    }
                 }
                 catch (Exception)
                 {
