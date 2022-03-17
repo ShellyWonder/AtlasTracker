@@ -13,6 +13,8 @@ using AtlasTracker.Services.Interfaces;
 using AtlasTracker.Extensions;
 using AtlasTracker.Models.Enums;
 using AtlasTracker.Services;
+using Microsoft.AspNetCore.Authorization;
+using AtlasTracker.Models.ViewModels;
 
 namespace AtlasTracker.Controllers
 {
@@ -26,12 +28,16 @@ namespace AtlasTracker.Controllers
         private readonly IBTLookupService _lookupService;
         private readonly IBTProjectService _projectService;
         private readonly IBTFileService _fileService;
+        private readonly IBTNotificationService notificationService;
+        private readonly IBTHistoryService _historyService;
         public TicketsController(ApplicationDbContext context,
                                  UserManager<BTUser> userManager,
                                  IBTTicketService ticketService,
                                  IBTCompanyInfoService companyInfoService,
                                  IBTLookupService lookupService,
-                                 IBTProjectService projectService, IBTFileService fileService)
+                                 IBTProjectService projectService,
+                                 IBTFileService fileService,
+                                 IBTNotificationService notificationService, IBTHistoryService historyService)
         {
             _context = context;
             _userManager = userManager;
@@ -40,6 +46,8 @@ namespace AtlasTracker.Controllers
             _lookupService = lookupService;
             _projectService = projectService;
             _fileService = fileService;
+            this.notificationService = notificationService;
+            _historyService = historyService;
         }
 
 
@@ -129,13 +137,11 @@ namespace AtlasTracker.Controllers
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name");
             ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
 
-
             return View();
         }
 
         // POST: Tickets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
@@ -146,14 +152,23 @@ namespace AtlasTracker.Controllers
             {
                 ticket.OwnerUserId = _userManager.GetUserId(User);
                 ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync("New")).Value;
-
                 ticket.CreatedDate = DateTimeOffset.UtcNow;
                 await _ticketService.UpdateTicketAsync(ticket);
+
+
+                await _historyService.AddHistoryAsync(null,ticket, ticket.OwnerUserId);
+
                 return RedirectToAction(nameof(AllTickets));
             }
 
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name");
             ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
+
+             
+            //: Ticket Create Notification
+            BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
+            int companyId = User.Identity!.GetCompanyId()!;
+            Notification notification = new();         
 
 
             return View(ticket);
@@ -190,11 +205,58 @@ namespace AtlasTracker.Controllers
             ModelState.Remove("OwnerUserId");
             if (ModelState.IsValid)
             {
+                BTUser btUser  = await _userManager.GetUserAsync(User);
                 try
                 {
                     ticket.CreatedDate = DateTime.SpecifyKind(ticket.CreatedDate.DateTime, DateTimeKind.Utc);
                     ticket.Updated = DateTimeOffset.UtcNow;
                     await _ticketService.UpdateTicketAsync(ticket);
+
+                    // Ticket Edit notification
+                    BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
+                    int companyId = User.Identity!.GetCompanyId()!;
+                    Notification notification = new()
+                    {
+                        TicketId = ticket.Id,
+                        NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
+                        Title = "Ticket updated",
+                        Message = $"Ticket: {ticket.Title}, was updated by {btUser.FullName}",
+                        CreatedDate = DateTime.UtcNow,
+                        SenderId = btUser.Id,
+                        RecipientId = projectManager?.Id
+                    };
+                    // Notify PM or Admin
+                    if (projectManager != null)
+                    {
+                        await notificationService.AddNotificationAsync(notification);
+                        await notificationService.SendEmailNotificationAsync(notification, "Ticket Updated");
+                    }
+                    else
+                    {
+                        //Admin notification
+                        await notificationService.AddNotificationAsync(notification);
+                        await notificationService.SendEmailNotificationsByRoleAsync(notification, companyId, nameof(BTRole.Admin));
+                    }
+                    //Notify Developer
+                    if (ticket.DeveloperUserId != null)
+                    {
+                        Notification devNotification = new()
+                        {
+                            TicketId = ticket.Id,
+                            NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
+                            Title = "Ticket Updated",
+                            Message = $"Ticket: {ticket.Title}, was updated by {btUser.FullName}",
+                            CreatedDate = DateTimeOffset.Now,
+                            SenderId = btUser.Id,
+                            RecipientId = ticket.DeveloperUserId
+                        };
+                        await notificationService.AddNotificationAsync(devNotification);
+                        await notificationService.SendEmailNotificationAsync(devNotification, "Ticket Updated");
+                    }
+
+                    
+                    
+                        
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -257,6 +319,33 @@ namespace AtlasTracker.Controllers
             await _ticketService.ArchiveTicketAsync(ticket);
 
             return RedirectToAction(nameof(AllTickets));
+        }
+
+        //POST: Tickets/AssignDeveloper
+        [Authorize(Roles = "Admin, ProjectManager")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignDeveloper(AssignDeveloperViewModel model)
+        {
+            if (model.DevId != null)
+            {
+                BTUser bTuser = await _userManager.GetUserAsync(User);
+                Ticket ticket = model.Ticket;
+                try
+                {
+                     await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DevId);
+                    await _historyService.AddHistoryAsync( ticket,model.Ticket,  model.DevId);
+                }
+                catch (Exception)
+                {
+
+
+
+                    throw;
+                }
+                return RedirectToAction(nameof(Details), new { id = model.Ticket?.Id });
+            }
+            return RedirectToAction(nameof(AssignDeveloper), new { id = model.Ticket?.Id });
         }
 
 
