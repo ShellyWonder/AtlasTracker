@@ -58,7 +58,8 @@ namespace AtlasTracker.Controllers
         {
         int companyId = User.Identity.GetCompanyId();
         //instantiate the btUser
-        BTUser? btUser = (await _companyInfoService.GetAllMembersAsync(companyId)).FirstOrDefault(u => u.Id == member.BTUser?.Id);
+        BTUser? btUser = (await _companyInfoService.GetAllMembersAsync(companyId))
+                                                   .FirstOrDefault(u => u.Id == member.BTUser?.Id);
         IEnumerable<string> roles = await _rolesService.GetUserRolesAsync(btUser);
         //Get selected Roles for the user:
 

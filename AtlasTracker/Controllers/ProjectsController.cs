@@ -198,7 +198,7 @@ namespace AtlasTracker.Controllers
 
             model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRole.ProjectManager), companyId), "Id", "FullName");
             model.PriorityList = new SelectList(await _lookupService.GetProjectPrioritiesAsync(), "Id", "Name");
-            return View();
+            return View(model);
         }
 
         // POST: Projects/Create

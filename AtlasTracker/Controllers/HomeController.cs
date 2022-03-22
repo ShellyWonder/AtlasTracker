@@ -24,7 +24,7 @@ namespace AtlasTracker.Controllers
         
         [HttpGet]   
         [Authorize]
-        public  async Task<IActionResult> Dashboard()
+        public  async Task<IActionResult> Dashboard(string swalMessage = null!)
         {
             int companyId = User.Identity.GetCompanyId();
             DashboardViewModel model = new();
@@ -33,9 +33,13 @@ namespace AtlasTracker.Controllers
             model.Tickets = await _companyInfoService.GetAllTicketsAsync(companyId);
             model.Members = await _companyInfoService.GetAllMembersAsync(companyId);
 
+            ViewData["SwalMessage"] = swalMessage;
             return View(model);
         }
-
+        public IActionResult Landing()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -44,6 +48,11 @@ namespace AtlasTracker.Controllers
             }
             return View();
         }
+        public IActionResult Default()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

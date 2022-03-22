@@ -13,6 +13,7 @@ using AtlasTracker.Extensions;
 using Microsoft.AspNetCore.DataProtection;
 
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace AtlasTracker.Controllers
 {
@@ -24,7 +25,12 @@ namespace AtlasTracker.Controllers
         private readonly IBTCompanyInfoService _companyInfoService;
         private readonly IBTInviteService _inviteService;
         private readonly IEmailSender _emailSender;
-        public InvitesController(ApplicationDbContext context, IBTProjectService projectService, IDataProtectionProvider dataProtectionProvider, IEmailSender emailSender, IBTCompanyInfoService companyInfoService, IBTInviteService inviteService)
+        private readonly UserManager<BTUser> _userManager;
+        public InvitesController(ApplicationDbContext context,
+            IBTProjectService projectService,
+            IDataProtectionProvider dataProtectionProvider,
+            IEmailSender emailSender, IBTCompanyInfoService companyInfoService,
+            IBTInviteService inviteService, UserManager<BTUser> userManager)
         {
             _context = context;
             _projectService = projectService;
@@ -32,6 +38,7 @@ namespace AtlasTracker.Controllers
             _emailSender = emailSender;
             _companyInfoService = companyInfoService;
             _inviteService = inviteService;
+            _userManager = userManager;
         }
 
         // GET: Invites
@@ -85,12 +92,23 @@ namespace AtlasTracker.Controllers
             {
                 try
                 {
+
+                    //Create record in the Invites table
+
                     Guid guid = Guid.NewGuid();
+
                     string token = _protector.Protect(guid.ToString());
                     string email = _protector.Protect(invite.InviteeEmail);
                     string company = _protector.Protect(companyId.ToString());
 
                     string destination = invite.InviteeEmail;
+
+                    invite.CompanyToken = guid;
+                    invite.CompanyId = companyId;
+                    invite.InviteDate = DateTimeOffset.UtcNow;
+                    invite.InvitorId = _userManager.GetUserId(User);
+                    invite.IsValid = true;
+                    await _inviteService.AddNewInviteAsync(invite);
 
                     Company btCompany = await _companyInfoService.GetCompanyInfoByIdAsync(companyId);
                     string subject = $"/ AtlasTracker: {btCompany.Name} Invite";
@@ -103,11 +121,11 @@ namespace AtlasTracker.Controllers
 
                     await _emailSender.SendEmailAsync(destination, subject, body);
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Dashboard", "Home", new {swalMessage = "Invite Sent!"});
                 }
                 catch (Exception)
                 {
-
+                    return RedirectToAction("Dashboard", "Home", new { swalMessage = "error: Error sending invite!" });
                     throw;
                 }
             }
