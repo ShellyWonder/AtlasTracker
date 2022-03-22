@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -33,7 +35,7 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             IUserStore<BTUser> userStore,
             SignInManager<BTUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IBTInviteService inviteService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -41,6 +43,7 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _inviteService = inviteService;
         }
 
         /// <summary>
@@ -90,10 +93,7 @@ namespace AtlasTracker.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            //[Required]
-            //[Display(Name = "Company Name")]
-            //public string Company { get; set; }
-
+            
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
