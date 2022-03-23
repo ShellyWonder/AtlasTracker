@@ -30,6 +30,7 @@ namespace AtlasTracker.Controllers
         private readonly IBTFileService _fileService;
         private readonly IBTNotificationService notificationService;
         private readonly IBTHistoryService _historyService;
+        private readonly IBTRolesService _rolesService;
         public TicketsController(ApplicationDbContext context,
                                  UserManager<BTUser> userManager,
                                  IBTTicketService ticketService,
@@ -233,6 +234,8 @@ namespace AtlasTracker.Controllers
                     }
                     else
                     {
+                        BTUser admin = (await _rolesService.GetUsersInRoleAsync(nameof(BTRole.Admin), companyId)).FirstOrDefault();
+                        notification.RecipientId = admin?.Id;
                         //Admin notification
                         await notificationService.AddNotificationAsync(notification);
                         await notificationService.SendEmailNotificationsByRoleAsync(notification, companyId, nameof(BTRole.Admin));

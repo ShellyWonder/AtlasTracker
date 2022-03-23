@@ -110,7 +110,7 @@ namespace AtlasTracker.Services
             }
         }
 
-        
+
         public async Task SendEmailNotificationsByRoleAsync(Notification notification, int companyId, string role)
         {
             try
@@ -147,15 +147,7 @@ namespace AtlasTracker.Services
             }
         }
 
-        Task<List<Notification>> IBTNotificationService.GetReceivedNotificationsAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<List<Notification>> IBTNotificationService.GetSentNotificationsAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
+                
     }
 
 }

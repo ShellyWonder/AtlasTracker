@@ -1,6 +1,6 @@
 ﻿using AtlasTracker.Models;
 
-namespace AtlasTracker.Services
+namespace AtlasTracker.Services.Interfaces
 {
     public interface IBTNotificationService
     {
@@ -9,6 +9,8 @@ namespace AtlasTracker.Services
         public Task<List<Notification>> GetReceivedNotificationsAsync(string userId);
 
         public Task<List<Notification>> GetSentNotificationsAsync(string userId);
+
+
 
         public Task SendEmailNotificationsByRoleAsync(Notification notification, int companyId, string role);
 

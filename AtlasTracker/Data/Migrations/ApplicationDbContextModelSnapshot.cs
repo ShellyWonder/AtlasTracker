@@ -127,7 +127,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.Invite", b =>
@@ -189,7 +189,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Invites");
+                    b.ToTable("Invites", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.Notification", b =>
@@ -238,7 +238,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.NotificationType", b =>
@@ -255,7 +255,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NotificationTypes");
+                    b.ToTable("NotificationTypes", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.Project", b =>
@@ -309,7 +309,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("ProjectPriorityId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.ProjectPriority", b =>
@@ -326,7 +326,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProjectPriorities");
+                    b.ToTable("ProjectPriorities", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.Ticket", b =>
@@ -392,7 +392,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("TicketTypeId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.TicketAttachment", b =>
@@ -432,7 +432,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TicketAttachments");
+                    b.ToTable("TicketAttachments", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.TicketComment", b =>
@@ -463,7 +463,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TicketComments");
+                    b.ToTable("TicketComments", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.TicketHistory", b =>
@@ -502,7 +502,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TicketHistories");
+                    b.ToTable("TicketHistories", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.TicketPriority", b =>
@@ -519,7 +519,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketPriorities");
+                    b.ToTable("TicketPriorities", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.TicketStatus", b =>
@@ -536,7 +536,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketStatuses");
+                    b.ToTable("TicketStatuses", (string)null);
                 });
 
             modelBuilder.Entity("AtlasTracker.Models.TicketType", b =>
@@ -553,7 +553,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketTypes");
+                    b.ToTable("TicketTypes", (string)null);
                 });
 
             modelBuilder.Entity("BTUserProject", b =>
@@ -568,7 +568,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasIndex("ProjectsId");
 
-                    b.ToTable("BTUserProject");
+                    b.ToTable("BTUserProject", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
