@@ -215,14 +215,14 @@
                                                 </a>
                                             </li>
                                         
-                                          @*@if (User != User.IsInRole("Admin"))
+                                          @if (!User.IsInRole(nameof(BTRole.Admin)))
                                         {
                                             <li>
                                                 <a asp-controller="Projects" asp-action="MyProjects" class="nav-link">
                                                     My Projects
                                                 </a>
                                             </li>
-                                        }*@
+                                        }
 
                                         <li>
                                             <a asp-controller="Projects" asp-action="ArchivedProjects" class="nav-link">
@@ -249,12 +249,14 @@
                                             </a>
                                         </li>
 
-                                        <li>
-                                            <a asp-controller="Tickets" asp-action="MyTickets" class="nav-link">
-                                                My Tickets
-                                            </a>
-
-                                        </li>
+                                        @if (!User.IsInRole(nameof(BTRole.Admin)))
+                                        {
+                                            <li>
+                                                <a asp-controller="Tickets" asp-action="MyTickets" class="nav-link">
+                                                    My Tickets
+                                                </a>
+                                            </li>
+                                        }
                                         <li>
                                             <a asp-controller="Tickets" asp-action="ArchivedTickets" class="nav-link">
                                                 Archived Tickets
