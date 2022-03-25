@@ -77,7 +77,7 @@ namespace AtlasTracker.Controllers
         public async Task<IActionResult> ArchivedProjects()
         {
             int companyId = User.Identity.GetCompanyId();
-            List<Project> projects = await _projectService.GetArchivedProjectsByCompany(companyId);
+            List<Project> projects = await _projectService.GetArchivedProjectsByCompanyAsync(companyId);
 
             return View(projects);
         }

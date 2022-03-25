@@ -201,13 +201,13 @@
 
                         <div class="widget-profile-info">
                             <div class="profile-picture">
-                                <img src="img/!logged-user.jpg">
+                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px; height:80px" src="https://cdn.icon-icons.com/icons2/2331/PNG/512/task_software_platform_management_project_icon_142266.png"/>
                             </div>
                             <div class="profile-info">
-                                <h4 class="name font-weight-semibold">John Doe</h4>
-                                <h5 class="role">Administrator</h5>
+                                <h4 class="name font-weight-semibold">@btUser.FullName</h4>
+                                <h5 class="role">@((await UserManager.GetRolesAsync(btUser)).FirstOrDefault())</h5>
                                 <div class="profile-footer">
-                                    <a href="#">(edit profile)</a>
+                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Edit Profile</a>
                                 </div>
                             </div>
                         </div>

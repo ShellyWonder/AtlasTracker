@@ -1,13 +1,21 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Project>
 
 @{
-    ViewData["Title"] = "Archived Projects";
+    ViewData["Title"] = "Unassigned Projects";
 }
 
-<h1>Archived Projects</h1>
-
-
-<table class="table">
+<div class="right-wrapper text-end">
+</div>
+<div class="row">
+<div class="col">
+<section class="card">
+<header class="card-header">
+<div class="card-actions">
+<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+</div> <h2 class="card-title">Unassigned Projects</h2>
+</header>
+<div class="card-body"><table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
     <thead>
         <tr>
             <th>

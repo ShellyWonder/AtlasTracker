@@ -228,11 +228,7 @@ namespace AtlasTracker.Services
             }
         }
 
-        public Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
-        {
-            throw new NotImplementedException();
-        }
-
+        
 
         #endregion
 
@@ -289,13 +285,7 @@ namespace AtlasTracker.Services
         {
             try
             {
-                //Project project = await _context.Projects
-                //                        .Include(p => p.Tickets)
-                //                        .Include(p => p.Members)
-                //                        .Include(p => p.ProjectPriority)
-                //                        .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
-
-
+                
                 Project project = await _context.Projects
                                                 .Include(p => p.Tickets)
                                                     .ThenInclude(t => t.TicketPriority)
