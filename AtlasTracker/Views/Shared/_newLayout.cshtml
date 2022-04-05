@@ -21,7 +21,7 @@
 
     <title>Atlas Tracker | SJ Wonder</title>
     <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="description" content="Atlas Tracker">
     <meta name="author" content="okler.net">
 
     <!-- Mobile Metas -->
@@ -54,6 +54,7 @@
     <!-- Head Libs -->
     <script src="/template/vendor/modernizr/modernizr.js"></script>
 
+            
 </head>
 <body>
     <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Landing", "Home", new { area=""})">
@@ -161,19 +162,17 @@
                             @*<li>
                                 <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="bx bx-lock"></i> Lock Screen</a>
                                 </li>*@
-                            <li>
+                            @*<li>
                                 <a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="bx bx-power-off"></i> Logout</a>
-                            </li>
+                            </li>*@
                             <li>
-                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();">Sign out</a>
+                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();">Logout</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Landing", "Home", new { area = "" })">
-            </form>
             <!-- end: search & user box -->
         </header>
         <!-- end: header -->

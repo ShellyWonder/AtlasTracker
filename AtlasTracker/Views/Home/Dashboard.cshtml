@@ -22,7 +22,7 @@
                 </a>
             </li>
 
-            <li><span>Landing</span></li>
+            <li> <a asp asp-controller="Home" asp-action="Landing"><span>Landing</span></a></li>
 
             <li><span>Dashboard</span></li>
 
@@ -91,9 +91,9 @@
                             </div>
                             <div class="widget-summary-col">
                                 <div class="summary">
-                                    <h4 class="title">Support Questions</h4>
+                                    <h4 class="title">All Projects</h4>
                                     <div class="info">
-                                        <strong class="amount">1281</strong>
+                                        <strong class="amount">@Model.Projects.Count</strong>
                                         <span class="text-primary">(14 unread)</span>
                                     </div>
                                 </div>
