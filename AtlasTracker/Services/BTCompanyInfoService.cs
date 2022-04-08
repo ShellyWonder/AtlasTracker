@@ -36,7 +36,7 @@ namespace AtlasTracker.Services
                 }
                 return company!;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

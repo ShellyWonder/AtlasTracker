@@ -29,7 +29,7 @@
                             <p>@Model.Description</p>
                             <div class="progress-container progress-info m-b-25">
                                 @*Project Name and information*@
-                                <span class="progress-badge" style="font-size:small">Project: @Model.Project.Name</span>
+                                <span class="progress-badge" style="font-size:small">Project: @Model.Project!.Name</span>
                                 <div class="progress">
                                     @*Progress bar logic*@
                                     @{
@@ -94,7 +94,7 @@
                                 <h6>Comments</h6>
                                 <ul class="right_chat list-unstyled mb-0">
                                     @*Loop to show comments made for the Ticket*@
-                                    @foreach (TicketComment comment in Model.Comments)
+                                    @foreach (TicketComment comment in Model.Comments!)
                                     {
                                         <li class="online mb-4">
                                             <div class="media">
@@ -120,8 +120,6 @@
                                     }
                                 </ul>
                             </div>
-
-
                         </div>
                         <div class="card-footer">
                         </div>
@@ -146,10 +144,10 @@
                                         <div class="media-body ml-3">
                                             <label>
                                                 Description
-                                                <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
+                                                <input asp-for="@Model.Attachments!.FirstOrDefault()!.Description" type="text" class="form-control" />
                                             </label><br />
                                             <label class="btn btn-outline-primary btn-sm">
-                                                <input asp-for="@Model.Attachments.FirstOrDefault().ImageFormFile" type="file" class="form-control-file" />
+                                                <input asp-for="@Model.Attachments!.FirstOrDefault()!.ImageFormFile" type="file" class="form-control-file" />
                                             </label>
                                             <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
                                         </div>
@@ -162,19 +160,19 @@
                         <h6>Attachments</h6>
                      <div class="container">
                             <div class="row">
-                                @foreach (TicketAttachment item in Model.Attachments)
+                                @foreach (TicketAttachment item in Model.Attachments!)
                                 {
                                     <div class="col col-sm-2">
                                         <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
                                             <div class="icon">
-                                                <img src="@FileService.GetFileIcon(item.ImageFileName)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.ImageFileName" />
+                                                <img src="@FileService.GetFileIcon(item.ImageFileName!)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.ImageFileName" />
                                             </div>
                                         </a>
                                         <div style="font-size:x-small">
                                             <div class="file-name">
                                                 <strong>@item.Description</strong>
                                             </div>
-                                            <small>Size: @FileService.FormatFileSize(item.ImageFileData.Length) </small>
+                                            <small>Size: @FileService.FormatFileSize(item.ImageFileData!.Length) </small>
                                         </div>
                                     </div>
                                 }
@@ -196,7 +194,7 @@
 
                 </div>
                 <div class="card-body" style="overflow-y:auto;height:1000px;background-color:antiquewhite">
-                    @foreach (TicketHistory history in Model.History)
+                    @foreach (TicketHistory history in Model.History!)
                     {
                         <div class="">
                             <span class="date" style="font-weight:bold">@history.CreatedDate?.ToString("dd MMM yyyy")</span>
@@ -213,7 +211,7 @@
                                 }
                                 else
                                 {
-                                    <p>The ticket <b>@history.PropertyName</b>  was edited</p>
+                                    <p>The ticket <b>@history.PropertyName</b> was edited</p>
                                     <p>@($"Previous {history.PropertyName}:  ") <span style="color:red">@history.OldValue</span></p>
                                     <p>@($"Current {history.PropertyName}:  ") <span style="color:green">@history.NewValue</span></p>
                                 }
@@ -226,6 +224,6 @@
         </div>
     </div>
 </div>
-</div>
+
 
 

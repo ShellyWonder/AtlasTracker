@@ -14,7 +14,7 @@ namespace AtlasTracker.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IBTCompanyInfoService _companyInfoService;
-        private readonly UserManager<BTUser> _userManager;
+        
 
         public HomeController(ILogger<HomeController> logger, IBTCompanyInfoService companyInfoService)
         {
@@ -26,7 +26,7 @@ namespace AtlasTracker.Controllers
         [Authorize]
         public  async Task<IActionResult> Dashboard(string swalMessage = null!)
         {
-            int companyId = User.Identity.GetCompanyId();
+            int companyId = User.Identity!.GetCompanyId();
             DashboardViewModel model = new();
             model.Company = await _companyInfoService.GetCompanyInfoByIdAsync(companyId);
             model.Projects = await _companyInfoService.GetAllProjectsAsync(companyId);
@@ -42,7 +42,7 @@ namespace AtlasTracker.Controllers
         }
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity!.IsAuthenticated)
             {
                 return RedirectToAction("Dashboard", "Home");
             }

@@ -24,7 +24,7 @@ namespace AtlasTracker.Extensions
             }
 
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
 
 

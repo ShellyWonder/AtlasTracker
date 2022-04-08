@@ -38,7 +38,10 @@ namespace AtlasTracker.Controllers
                                  IBTLookupService lookupService,
                                  IBTProjectService projectService,
                                  IBTFileService fileService,
-                                 IBTNotificationService notificationService, IBTHistoryService historyService)
+                                 IBTNotificationService notificationService, 
+                                 IBTHistoryService historyService,
+                                 IBTRolesService rolesService)
+                                 
         {
             _context = context;
             _userManager = userManager;
@@ -49,6 +52,7 @@ namespace AtlasTracker.Controllers
             _fileService = fileService;
             this.notificationService = notificationService;
             _historyService = historyService;
+            _rolesService = rolesService;   
         }
 
 
@@ -92,10 +96,7 @@ namespace AtlasTracker.Controllers
             return View(tickets);
         }
 
-        ////Get:Unassigned Tickets
-        //[Authorize(Roles ="Admin","ProjectManager")]
-        //public async Task<IActionResult> AssignTickets()
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketComment([Bind("Id, TicketId,Comment")] TicketComment ticketComment)
