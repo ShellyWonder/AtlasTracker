@@ -201,7 +201,7 @@
 
                         <div class="widget-profile-info">
                             <div class="profile-picture">
-                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px; height:80px" src="https://cdn.icon-icons.com/icons2/2331/PNG/512/task_software_platform_management_project_icon_142266.png"/>
+                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px; height:80px" src="https://cdn.icon-icons.com/icons2/2331/PNG/512/task_software_platform_management_project_icon_142266.png" />
                             </div>
                             <div class="profile-info">
                                 <h4 class="name font-weight-semibold">@btUser.FullName</h4>
@@ -410,7 +410,7 @@
             </div>
             </section>
             </div>
-                </section>*@
+            </section>*@
         <section class="card mb-3">
             <header class="card-header">
                 <div class="card-actions">
@@ -426,12 +426,12 @@
             <div class="card-body">
                 <div class="content">
                     <ul class="simple-user-list">
-                         @foreach  (BTUser member in Model.Members!)
+                        @foreach (BTUser member in Model.Members!)
                         {
-                                <li>
-                                        <span class="">@member.FullName</span>
-                                        <span class="" style="font-size:x-small">[@((await UserManager.GetRolesAsync(member)).FirstOrDefault())]</span>
-                                </li>
+                            <li>
+                                <span class="">@member.FullName</span>
+                                <span class="" style="font-size:x-small">[@((await UserManager.GetRolesAsync(member)).FirstOrDefault())]</span>
+                            </li>
                         }
                     </ul>
                     <hr class="dotted short">
@@ -448,218 +448,122 @@
             </div>
         </section>
     </div>
-    @*<div class="col-lg-12 col-xl-6">
-        <section class="card">
-        <header class="card-header card-header-transparent">
-        <div class="card-actions">
-        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-        </div>
-
-        <h2 class="card-title">Company Activity</h2>
-        </header>
-        <div class="card-body">
-        <div class="timeline timeline-simple mt-3 mb-3">
-        <div class="tm-body">
-        <div class="tm-title">
-        <h5 class="m-0 pt-2 pb-2 text-dark font-weight-semibold text-uppercase">@DateTime.Now;</h5>
-        </div>
-        <ol class="tm-items">
-        <li>
-        <div class="tm-box">
-        <p class="text-muted mb-0">7 months ago.</p>
-        <p>
-
-        </p>
-        </div>
-        </li>
-        <li>
-        <div class="tm-box">
-        <p class="text-muted mb-0">7 months ago.</p>
-        <p>
-        Checkout! How cool is that! Etiam efficitur, sapien eget vehicula gravida, magna neque volutpat risus, vitae tempus odio arcu ac elit. Aenean porta orci eu mi fermentum varius. Curabitur ac sem at nibh egestas. Curabitur ac sem at nibh egestas.
-        </p>
-        <div class="thumbnail-gallery">
-        <a class="img-thumbnail lightbox" href="img/projects/project-4.jpg" data-plugin-options='{ "type":"image" }'>
-        <img class="img-fluid" width="215" src="img/projects/project-4.jpg">
-        <span class="zoom">
-        <i class="bx bx-search"></i>
-        </span>
-        </a>
-        </div>
-        </div>
-        </li>
-        </ol>
-        </div>
-        </div>
-        </div>
-        </section>
-            </div>*@
-
-        <div class="col-lg-12 ">
-                <section class="card">
-                        <header class="card-header card-header-transparent">
-                                <div class="card-actions">
-                                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                                </div> <h2 class="card-title">Ticket Activity</h2>
-                        </header>
-                        <div class="card-body">
-                                <div class="timeline timeline-simple mt-3 mb-3">
-                                        <div class="tm-body">
-                                                <div class="tm-title">
-                                                        <h5 class="m-0 pt-2 pb-2 text-dark font-weight-semibold text-uppercase">@DateTime.Now;</h5>
-                                                </div>
-                                                <ol class="tm-items">
-                                                        <li>
-                                                                <div class="tm-box">
-                                                                        <p class="text-muted mb-0"></p>
-                                                                        <p>
-                                                                                <div class="card-body">
-                                                                                        <table class="table table-hover">
-                                                                                                <thead>
-                                                                                                <th>Title</th>
-                                                                                                <th>Status</th>
-                                                                                                <th>Priority</th>
-                                                                                                <th>Date</th>
-                                                                                                </thead>
-                                                                                                @foreach (Ticket ticket in Model.Tickets!.OrderByDescending(d => d.CreatedDate).Take(10))
-                                                                                                {
-                                                                                                        @if (!(ticket.Archived || ticket.ArchivedByProject)
-                                                                                                      && ticket.DeveloperUserId == btUser.Id
-                                                                                                      || (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager))))
-                                                                                                        {
-                                                                                                                <tr>
-                                                                                                                        <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id">@ticket.Title</a></td>
-                                                                                                                        <td>@ticket.Status!.Name</td>
-                                                                                                                        <td>@ticket.TicketPriority!.Name</td>
-                                                                                                                        <td>@ticket.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
-                                                                                                                </tr>
-                                                                                                        }
-                                                                                                }
-                                                                                        </table>
-                              
-                                                 </div>
-                                                                        </p>
-                                                                </div>
-                                                        </li>
-                                                </ol>
-                                        </div>
-                                </div>
-                        </div>
-                </section>
-        </div>
-
-</div>
-<div class="row pt-4 mt-1">
-
-    <div class="col-lg-12">
+   
+    <div class="col-lg-12 ">
         <section class="card">
             <header class="card-header card-header-transparent">
                 <div class="card-actions">
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                </div>
-
-                <h2 class="card-title">Projects Stats</h2>
+                </div> <h2 class="card-title">Project Activity</h2>
             </header>
             <div class="card-body">
-                <table class="table table-responsive-md table-striped mb-0">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Project</th>
-                            <th>Status</th>
-                            <th>Progress</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Porto - Responsive HTML5 Template</td>
-                            <td><span class="badge badge-success">Success</span></td>
-                            <td>
-                                <div class="progress progress-sm progress-half-rounded m-0 mt-1 light">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                        100%
-                                    </div>
+                <div class="timeline timeline-simple mt-3 mb-3">
+                    <div class="tm-body">
+                        <div class="tm-title">
+                            <h5 class="m-0 pt-2 pb-2 text-dark font-weight-semibold text-uppercase">@DateTime.Now;</h5>
+                        </div>
+                        <ol class="tm-items">
+                            <li>
+                                <div class="tm-box">
+                                    <p class="text-muted mb-0"></p>
+                                    <p>
+                                        <div class="card-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Status</th>
+                                                        <th>Priority</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (Project project in Model.Projects!.OrderByDescending(d => d.CreatedDate).Take(10))
+                                                    {
+                                                        @if (!(project.Archived)
+                                                       || (User.IsInRole(nameof(BTRole.Admin)) 
+                                                       || User.IsInRole(nameof(BTRole.ProjectManager))))
+                                                        {
+                                                            <tr>
+                                                                <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
+                                                                <td>@project.EndDate</td>
+                                                                <td>@project.ProjectPriority!.Name</td>
+                                                                <td>@project.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </p>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Porto - Responsive Drupal 7 Theme</td>
-                            <td><span class="badge badge-success">Success</span></td>
-                            <td>
-                                <div class="progress progress-sm progress-half-rounded m-0 mt-1 light">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                        100%
-                                    </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+<div class="row pt-4 mt-1">
+
+    <div class="col-lg-12">
+         <section class="card">
+            <header class="card-header card-header-transparent">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> <h2 class="card-title">Ticket Activity</h2>
+            </header>
+            <div class="card-body">
+                <div class="timeline timeline-simple mt-3 mb-3">
+                    <div class="tm-body">
+                        <div class="tm-title">
+                            <h5 class="m-0 pt-2 pb-2 text-dark font-weight-semibold text-uppercase">@DateTime.Now;</h5>
+                        </div>
+                        <ol class="tm-items">
+                            <li>
+                                <div class="tm-box">
+                                    <p class="text-muted mb-0"></p>
+                                    <p>
+                                        <div class="card-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Status</th>
+                                                        <th>Priority</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (Ticket ticket in Model.Tickets!.OrderByDescending(d => d.CreatedDate).Take(10))
+                                                    {
+                                                        @if (!(ticket.Archived || ticket.ArchivedByProject)
+                                                       && ticket.DeveloperUserId == btUser.Id
+                                                       || (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager))))
+                                                        {
+                                                            <tr>
+                                                                <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id">@ticket.Title</a></td>
+                                                                <td>@ticket.Status!.Name</td>
+                                                                <td>@ticket.TicketPriority!.Name</td>
+                                                                <td>@ticket.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </p>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Tucson - Responsive HTML5 Template</td>
-                            <td><span class="badge badge-warning">Warning</span></td>
-                            <td>
-                                <div class="progress progress-sm progress-half-rounded m-0 mt-1 light">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                        60%
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Tucson - Responsive Business WordPress Theme</td>
-                            <td><span class="badge badge-success">Success</span></td>
-                            <td>
-                                <div class="progress progress-sm progress-half-rounded m-0 mt-1 light">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
-                                        90%
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Porto - Responsive Admin HTML5 Template</td>
-                            <td><span class="badge badge-warning">Warning</span></td>
-                            <td>
-                                <div class="progress progress-sm progress-half-rounded m-0 mt-1 light">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
-                                        45%
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Porto - Responsive HTML5 Template</td>
-                            <td><span class="badge badge-danger">Danger</span></td>
-                            <td>
-                                <div class="progress progress-sm progress-half-rounded m-0 mt-1 light">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                                        40%
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Porto - Responsive Drupal 7 Theme</td>
-                            <td><span class="badge badge-success">Success</span></td>
-                            <td>
-                                <div class="progress progress-sm progress-half-rounded mt-1 light">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 95%;">
-                                        95%
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
