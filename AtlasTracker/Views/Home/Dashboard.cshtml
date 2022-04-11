@@ -15,7 +15,7 @@
     <h2>Dashboard</h2>
 
     <div class="right-wrapper text-end">
-        <ol class="breadcrumbs">
+        <ol class="breadcrumbs pe-3">
             <li>
                 <a href="index.html">
                     <i class="bx bx-home-alt"></i>
@@ -28,7 +28,7 @@
 
         </ol>
 
-        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+        @*<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>*@
     </div>
 </header>
 
@@ -114,17 +114,7 @@
                                     <i class="fas fa-dollar-sign"></i>
                                 </div>
                             </div>
-                            <div class="widget-summary-col">
-                                <div class="summary">
-                                    <h4 class="title">Total Profit</h4>
-                                    <div class="info">
-                                        <strong class="amount">$ 14,890.30</strong>
-                                    </div>
-                                </div>
-                                <div class="summary-footer">
-                                    <a class="text-muted text-uppercase" href="#">(withdraw)</a>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </section>
@@ -156,28 +146,6 @@
                 </section>
             </div>
             <div class="col-xl-6">
-                <section class="card card-featured-left card-featured-quaternary">
-                    <div class="card-body">
-                        <div class="widget-summary">
-                            <div class="widget-summary-col widget-summary-col-icon">
-                                <div class="summary-icon bg-quaternary">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                            </div>
-                            <div class="widget-summary-col">
-                                <div class="summary">
-                                    <h4 class="title">Today's Visitors</h4>
-                                    <div class="info">
-                                        <strong class="amount">3765</strong>
-                                    </div>
-                                </div>
-                                <div class="summary-footer">
-                                    <a class="text-muted text-uppercase" href="#">(report)</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
         </div>
     </div>
@@ -201,13 +169,20 @@
 
                         <div class="widget-profile-info">
                             <div class="profile-picture">
-                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px; height:80px" src="https://cdn.icon-icons.com/icons2/2331/PNG/512/task_software_platform_management_project_icon_142266.png" />
-                            </div>
-                            <div class="profile-info">
-                                <h4 class="name font-weight-semibold">@btUser.FullName</h4>
-                                <h5 class="role">@((await UserManager.GetRolesAsync(btUser)).FirstOrDefault())</h5>
-                                <div class="profile-footer">
-                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Edit Profile</a>
+                                @if (btUser.AvatarData != null)
+                                {
+                                    <img id="avatarFileData" class="img-fluid img-thumbnail rounded" style="width:500px;height:500px;" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarData))" alt="" />
+                                }
+                                else
+                                {
+                                    <img id="avatarFileData" class="img-fluid img-thumbnail rounded" style="width:500px;height:500px;" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="" />
+                                }
+                                <div class="profile-info">
+                                    <h4 class="name font-weight-semibold">@btUser.FullName</h4>
+                                    <h5 class="role">@((await UserManager.GetRolesAsync(btUser)).FirstOrDefault())</h5>
+                                    <div class="profile-footer">
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Edit Profile</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -448,7 +423,7 @@
             </div>
         </section>
     </div>
-   
+
     <div class="col-lg-12 ">
         <section class="card">
             <header class="card-header card-header-transparent">
@@ -482,12 +457,13 @@
                                                     @foreach (Project project in Model.Projects!.OrderByDescending(d => d.CreatedDate).Take(10))
                                                     {
                                                         @if (!(project.Archived)
-                                                       || (User.IsInRole(nameof(BTRole.Admin)) 
-                                                       || User.IsInRole(nameof(BTRole.ProjectManager))))
+                                                       || (User.IsInRole(nameof(BTRole.Admin))
+                                                       || (User.IsInRole(nameof(BTRole.Developer))
+                                                       || (User.IsInRole(nameof(BTRole.ProjectManager))))))
                                                         {
                                                             <tr>
                                                                 <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
-                                                                <td>@project.EndDate</td>
+                                                                <td>@project.</td>
                                                                 <td>@project.ProjectPriority!.Name</td>
                                                                 <td>@project.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
                                                             </tr>
@@ -511,7 +487,7 @@
 <div class="row pt-4 mt-1">
 
     <div class="col-lg-12">
-         <section class="card">
+        <section class="card">
             <header class="card-header card-header-transparent">
                 <div class="card-actions">
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>

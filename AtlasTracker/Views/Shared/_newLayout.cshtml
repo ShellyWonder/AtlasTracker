@@ -20,7 +20,7 @@
     <meta charset="UTF-8">
 
     <title>Atlas Tracker | SJ Wonder</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
+    <meta name="keywords" content="Atlas Tracker" />
     <meta name="description" content="Atlas Tracker">
     <meta name="author" content="okler.net">
 
@@ -65,7 +65,7 @@
         <header class="header">
             <div class="logo-container">
                 <a href="../4.0.0" class="logo">
-                    <img src="/template/img/logo.png" width="75" height="35" alt="Porto Admin" />
+                    <img src="/img/atlas.png" width="75" height="35" alt="Atlas Tracker" />
                 </a>
 
                 <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
@@ -130,11 +130,11 @@
                         <figure class="profile-picture">
                             @if (btUser.AvatarData != null)
                             {
-                                <img src="~/template/img/!logged-user.jpg" alt="@btUser.FullName" class="rounded-circle" data-lock-picture="/template/img/!logged-user.jpg" />
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarData))" alt="@btUser.FullName" class="rounded-circle" />
                             }
                             else
                             {
-                                <img src="~/template/img/!logged-user.jpg" alt="@btUser.FullName" class="rounded-circle" data-lock-picture="/template/img/!logged-user.jpg" />
+                                <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="@btUser.FullName" class="rounded-circle" />
 
                             }
                         </figure>
@@ -152,12 +152,7 @@
                             <li>
                                 <a role="menuitem" tabindex="-1" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bx bx-user-circle"></i> My Profile</a>
                             </li>
-                            @*<li>
-                                <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="bx bx-lock"></i> Lock Screen</a>
-                                </li>*@
-                            @*<li>
-                                <a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="bx bx-power-off"></i> Logout</a>
-                                </li>*@
+                            
                             <li>
                                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();">Logout</a>
                             </li>
@@ -264,7 +259,7 @@
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <li class="dropdown">
-                                        <a asp-controller="Projects" asp-action="Index" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a asp-controller="Projects" asp-action="Index" data-bs-toggle="dropdown" aria-expanded="false">
                                             Admin
                                         </a>
                                         
@@ -362,8 +357,8 @@
                 <!-- end: page -->
             </section>
         </div>
-
-        <aside id="sidebar-right" class="sidebar-right">
+        @*To be used for future functionality*@
+       @* <aside id="sidebar-right" class="sidebar-right">
             <div class="nano">
                 <div class="nano-content">
                     <a href="#" class="mobile-close d-md-none">
@@ -429,7 +424,7 @@
                     </div>
                 </div>
             </div>
-        </aside>
+        </aside>*@
 
     </section>
 
