@@ -314,7 +314,7 @@ namespace AtlasTracker.Controllers
                         await _projectService.AddProjectManagerAsync(model.PMID, model.Project.Id);
 
                     }
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Details",  new {id = model.Project.Id });
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -338,15 +338,13 @@ namespace AtlasTracker.Controllers
         }
 
         // GET: Projects/Delete/5
-        [HttpPost, ActionName("Archive")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Archive(int id)
         {
             int companyId = User.Identity.GetCompanyId();
             Project project = await _projectService.GetProjectByIdAsync(id, companyId);
-            //await _projectService.ArchiveProjectAsync(project);
-
-            return RedirectToAction(nameof(Index));
+            
+            return View(project);
         }
 
 
@@ -359,21 +357,19 @@ namespace AtlasTracker.Controllers
             Project project = await _projectService.GetProjectByIdAsync(id, companyId);
             await _projectService.ArchiveProjectAsync(project);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllProjects));
         }
 
         // GET: Projects/Restore/5
-        [HttpPost, ActionName("Restore")]
-        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Restore(int id)
         {
             int companyId = User.Identity.GetCompanyId();
             Project project = await _projectService.GetProjectByIdAsync(id, companyId);
             //await _projectService.RestoreProjectAsync(project);
 
-            return RedirectToAction(nameof(Index));
+            return View(project);
         }
-
 
         // POST: Projects/Restore/5
         [HttpPost, ActionName("Restore")]
@@ -384,7 +380,7 @@ namespace AtlasTracker.Controllers
             Project project = await _projectService.GetProjectByIdAsync(id, companyId);
             await _projectService.RestoreProjectAsync(project);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllProjects));
         }
         private async Task<bool> ProjectExists(int id)
         {

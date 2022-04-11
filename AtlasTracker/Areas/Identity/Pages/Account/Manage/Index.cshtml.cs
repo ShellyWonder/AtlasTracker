@@ -69,6 +69,9 @@ namespace AtlasTracker.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
+            
+            [Display(Name = "Email")]
+            public string Email { get; set; }
 
             [Phone]
             [Display(Name = "Phone number")]
@@ -88,7 +91,7 @@ namespace AtlasTracker.Areas.Identity.Pages.Account.Manage
             var firstName = user.FirstName;
             var lastName = user.LastName;
             var avatarPicture = user.AvatarData;
-
+            var Email = user.Email;
             Username = userName;
 
             Input = new InputModel
@@ -96,7 +99,8 @@ namespace AtlasTracker.Areas.Identity.Pages.Account.Manage
                 FirstName = firstName,
                 LastName = lastName,
                 AvatarData = avatarPicture,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Email = Email
             };
         }
 
@@ -125,9 +129,9 @@ namespace AtlasTracker.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
-            //add first name
+            
             //add last name
-            //add avatar
+            
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -138,11 +142,17 @@ namespace AtlasTracker.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            //user.Email = Input.Email;
+            
+            //add avatar
+
             if (Input.AvatarFormFile != null)
             {
-                user.AvatarData = await _fileService.ConvertFileToByteArrayAsync(Input.AvatarFormFile);
+                 user.AvatarData = await _fileService.ConvertFileToByteArrayAsync(Input.AvatarFormFile);
             }
-
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
