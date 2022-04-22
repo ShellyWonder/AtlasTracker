@@ -1,6 +1,5 @@
-﻿
-@{
-   
+﻿@{
+
     Layout = null;
 }
 
@@ -59,21 +58,18 @@
 
     <div class="body">
         <header id="header" class="header header-nav-links header-nav-menu header-transparent" data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': false, 'stickyEnableOnMobile': true, 'stickyStartAt': 70, 'stickyChangeLogo': false, 'stickyHeaderContainerHeight': 70}">
-            <div class="header-body border-top-0 bg-dark box-shadow-none">
+            <div class="header-body border-top-0 bg-transparent box-shadow-none">
                 <div class="header-container container h-100">
                     <div class="header-row h-100">
                         <div class="header-column">
                             <div class="header-row">
-                                <div class="header-logo">
-                                    <a href="#" class="goto-top"><img alt="background office photo" width="102" height="45" data-sticky-width="82" data-sticky-height="36" data-sticky-top="0" src="/template/img/lazy.png" data-plugin-lazyload data-plugin-options="{'threshold': 500}" data-original="/template/img/landing/logoMarkWhite.png"></a>
-                                </div>
                             </div>
                         </div>
                         <div class="header-column justify-content-end">
                             <div class="header-row">
-                                @*<button class="btn d-lg-none order-3 mt-0 ms-3 me-0" data-bs-target=".header-nav">
-                                    <i class="fas fa-bars"></i>
-                                    </button>*@
+                                <div class="header-logo">
+                                    <a href="http://www.wonderwebdev.com/#about" class="goto-top"><img alt="SJ Wonder logo" width="102" height="45" data-sticky-width="82" data-sticky-height="36" data-sticky-top="0" src="/template/img/lazy.png" data-plugin-lazyload data-plugin-options="{'threshold': 500}" data-original="/template/img/landing/logoMarkWhite.png"></a>
+                                </div>
 
                             </div>
                         </div>
@@ -84,55 +80,31 @@
 
         <div role="main" class="main">
             <section class="section section-concept section-no-border section-dark section-angled section-angled-reverse border-top-0 pt-5 m-0" id="section-concept" style="background-size: cover; background-position: center; animation-duration: 750ms; animation-delay: 300ms; animation-fill-mode: forwards;" data-plugin-lazyload data-plugin-options="{'threshold': 500}" data-original="/img/headerPic.jpg">
-                <div class="container pt-5 mt-lg-5">
+                <div class="container-fluid pt-5 mt-lg-5">
                     <div class="row align-items-center pt-3">
-                        <div class="col-lg-5 mb-5">
+                        <div class="col-lg-12 mb-5">
                             @*atlas logo here*@
-                            <img class="  appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="900" data-appear-animation-duration="750" src="~/img/AtlasTrackerLogo.png" alt="Atlas large logo" />
+                            <img class=" img-fluid  mx-auto d-block  appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="900" data-appear-animation-duration="750" src="~/img/AtlasTrackerLogo.png" alt="Atlas large logo" />
                         </div>
+
+                        <div class="col-4 d-sm-none"></div>
+                        <div class="col-md-4 col-sm-12  mb-5 appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="1200" data-appear-animation-duration="750">
+                            
+                                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-warning btn-sm btn-rounded text-lg-6 text-md-3 ms-4 d-block">TRY ATLAS TRACKER NOW!</a>
+                        </div>
+                         <div class="col-4 d-sm-none"></div>
                         
-                        <div class="col-lg-6 offset-lg-1 mb-5 appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="1200" data-appear-animation-duration="750">
-								
-							</div>
-                        <div class="col-md-8 col-lg-6 col-xl-5 custom-header-bar py-4 pe-5 appear-animation p-relative z-index-2" data-appear-animation="maskRight" data-appear-animation-delay="1200" data-appear-animation-duration="750">
-                            <div class="appear-animation" data-appear-animation="fadeInRightShorter" data-appear-animation-delay="1500">
-                               
-                                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-gradient btn-modern btn-rounded text-3 ms-4 d-none d-sm-block">TRY ATLAS TRACKER NOW!</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
 
-            <section class="section section-no-border bg-warning border-top-0 pt-0 pb-0 m-0">
-                <div class="container pt-3">
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col-md-4 col-lg-auto icon-box text-center mb-md-4">
-                            <i class="icon-bg icon-1"></i>
-                            <h4 class="font-weight-bold text-color-dark custom-font-size-2 line-height-3 my-0">Super Efficient Issue Management</h4>
-                        </div>
-                        <div class="col-md-4 col-lg-auto icon-box text-center mx-xl-5 my-5 my-md-0 pb-md-4">
-                            <i class="icon-bg icon-4"></i>
-                            <h4 class="font-weight-bold text-color-dark custom-font-size-2 line-height-3 my-0">Easy Issue Creation and Tracking</h4>
-                        </div>
-                        <div class="col-md-4 col-lg-auto icon-box text-center mb-4">
-                            <i class="icon-bg icon-3"></i>
-                            <h4 class="font-weight-bold text-color-dark custom-font-size-2 line-height-3 my-0">Progress at a glance</h4>
-                        </div>
-                        <div class="row d-flex justify-content-around center">
-                            <h4 class="pe-lg-5">The new generation of problem/solution software is here!</h4>
-                            <h2 class="text-color-dark text-7 font-weight-semibold line-height-2 mb-2">Get Your Team on It Today!</h2>
-                        </div>
-                    </div>
-                </div>
-            </section>
+          
         </div>
         <footer id="footer" class="bg-color-dark-scale-5 border border-end-0 border-start-0 border-bottom-0 border-color-light-3 mt-0">
-            <div class="container text-center my-3 py-5">
-            </div>
+            
             <div class="copyright bg-color-dark-scale-4 py-4">
-                <div class="container text-center py-2">
-                    <p class="mb-0 text-2 ls-0">Copyright 2022 SJ Wonder - All Rights Reserved</p>
+                <div class="container text-center py-2 ">
+                    <p class="mb-5 text-2 ls-0 pb-sm-3">Copyright 2022 SJ Wonder - All Rights Reserved</p>
                 </div>
             </div>
         </footer>
@@ -163,8 +135,8 @@
     <!-- Theme Initialization Files -->
     <script src="/template/js/theme.init.js"></script>
 
+
     
-}
 
 </body>
 </html>
