@@ -3,9 +3,9 @@
 <head>
     <!-- Basic -->
     <meta charset="UTF-8">
-    <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
-    <meta name="author" content="okler.net">
+    <meta name="keywords" content="Atlas Tracker" />
+    <meta name="description" content="Atlas Tracker">
+    <meta name="author" content="SJ Wonder">
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- Web Fonts  -->
@@ -26,12 +26,12 @@
     <!-- Head Libs -->
     <script src="/vendor/modernizr/modernizr.js"></script>
 </head>
-<body>
+<body class= "bg-dark">
     <!-- start: page -->
     <section class="body-sign">
         <div class="center-sign">
-            <a href="/" class="logo float-left">
-                <img src="/template/img/landing/logoMarkWhite.png"" height="70" alt="Just add wonder logo" />
+            <a asp-controller="Home" asp-action="Landing"  title="Back to Landing Page"  class="logo float-left">
+                <img src="/img/atlas.png" height="70" alt="atlas logo" />
             </a>
             @RenderBody()
             <p class="text-center text-muted mt-3 mb-3">&copy; Copyright 2022 Atlas Tracker All Rights Reserved.</p>
