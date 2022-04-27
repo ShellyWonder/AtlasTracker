@@ -7,32 +7,40 @@ namespace AtlasTracker.Models
     {
         //primary key
         public int Id { get; set; }
+        
+        //Foreign Key
+        [Required]
+        [DisplayName("Ticket Name")]
+        public int TicketId { get; set; }
 
         [DisplayName("Updated Ticket Item")]
         public string? PropertyName { get; set; }
 
-        [DisplayName("Description of Change")]
+        [DisplayName("Attachment Description")]
         public string? Description { get; set; }
 
-        [DisplayName("Date CreatedDate")]
+        [DisplayName("Created Date")]
         [DataType(DataType.Date)]
         public DateTimeOffset? CreatedDate { get; set; }
+
+        [DisplayName("Date Modified")]
+        public DateTimeOffset Created { get; set; }
 
         [DisplayName("Previous")]
         public string? OldValue { get; set; }
 
         [DisplayName("Current")]
         public string? NewValue { get; set; }
+
+        //Foreign Key
         [Required]
-        public int TicketId { get; set; }
-        [Required]
+        [DisplayName("Team Member")]
         public string? UserId { get; set; }
 
         //Nav properties
         [DisplayName("Ticket")]
         public virtual Ticket? Ticket { get; set; }
         
-        [DisplayName("Team Member")]
 
         public virtual BTUser? User { get; set; }
     }

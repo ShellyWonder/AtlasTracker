@@ -7,7 +7,11 @@ namespace AtlasTracker.Models
 {
     public class TicketAttachment
     {
+        //primary Key
         public int Id { get; set; }
+        //Foreign Key
+        [DisplayName("Ticket Name")]
+        public int TicketId { get; set; }
         
 
         [DisplayName("File Description")]
@@ -19,9 +23,8 @@ namespace AtlasTracker.Models
 
         public DateTimeOffset CreatedDate { get; set; }
 
-        public int TicketId { get; set; }
-
         [Required]
+        [DisplayName("Team Member")]
         public string? UserId { get; set; }
 
         [NotMapped]
