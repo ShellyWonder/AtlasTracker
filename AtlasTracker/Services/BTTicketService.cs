@@ -432,7 +432,7 @@ namespace AtlasTracker.Services
 
                 if (ticket?.DeveloperUserId != null)
                 {
-                    developer = ticket.DeveloperUser;
+                    developer = ticket.DeveloperUser!;
                 }
 
                 return developer;
@@ -630,11 +630,7 @@ namespace AtlasTracker.Services
             }
         }
 
-        public Task<BTUser> GetTicketDeveloperAsync(int ticketId)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         #endregion
     }
 }
