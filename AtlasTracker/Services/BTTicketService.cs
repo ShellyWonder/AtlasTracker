@@ -137,7 +137,7 @@ namespace AtlasTracker.Services
             {
                 List<Ticket> tickets = await _context.Projects
                                                      .Where(p => p.CompanyId == companyId)
-                                                     .SelectMany(p => p.Tickets)
+                                                     .SelectMany(p => p.Tickets!)
                                                         .Include(t => t.Attachments)
                                                         .Include(t => t.Comments)
                                                         .Include(t => t.DeveloperUser)
@@ -201,7 +201,7 @@ namespace AtlasTracker.Services
             {
                 List<Ticket> tickets = await _context.Projects
                                                      .Where(p => p.CompanyId == companyId)
-                                                     .SelectMany(p => p.Tickets)
+                                                     .SelectMany(p => p.Tickets!)
                                                          .Include(t => t.Attachments)
                                                          .Include(t => t.Comments)
                                                          .Include(t => t.DeveloperUser)
@@ -273,19 +273,7 @@ namespace AtlasTracker.Services
 
         #endregion
 
-        //public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
-        //{
-        //    try
-        //    {
-        //        await _context.AddAsync(ticketAttachment);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+        
 
         #region Get Project Tickets By Priority
         public async Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
@@ -396,7 +384,7 @@ namespace AtlasTracker.Services
                 TicketAttachment ticketAttachment = await _context.TicketAttachments
                                                                   .Include(t => t.User)
                                                                   .FirstOrDefaultAsync(t => t.Id == ticketAttachmentId);
-                return ticketAttachment;
+                return ticketAttachment!;
             }
             catch (Exception)
             {
