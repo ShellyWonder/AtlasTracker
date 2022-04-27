@@ -5,9 +5,13 @@ namespace AtlasTracker.Models
 {
     public class Notification
     {
+        //primary Key
         public int Id { get; set; }
-        [DisplayName("Ticket")]
+
+        //Foreign Key
+        [DisplayName("Ticket Name")]
         public int? TicketId { get; set; }
+        
         [Required]
         [DisplayName("Title")]
         public string? Title { get; set; }
@@ -21,9 +25,11 @@ namespace AtlasTracker.Models
         public DateTimeOffset CreatedDate { get; set; }
 
         [Required]
+        [DisplayName("Recipient")]
         public string? RecipientId { get; set; }
 
         [Required]
+        [DisplayName("Sender")]
         public string? SenderId { get; set; }
 
         [DisplayName("Has Been Viewed")]
