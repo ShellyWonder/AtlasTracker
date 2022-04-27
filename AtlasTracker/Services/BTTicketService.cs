@@ -109,7 +109,7 @@ namespace AtlasTracker.Services
                     try
                     {
                         ticket.DeveloperUserId = userId;
-                        // Revisit this code when assigning Tickets
+                        
                         ticket.TicketStatusId = (await LookupTicketStatusIdAsync("Development")).Value;
                         await _context.SaveChangesAsync();
                     }
