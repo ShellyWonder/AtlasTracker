@@ -86,7 +86,7 @@ namespace AtlasTracker.Services
             {
                 BTUser btUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == notification.RecipientId);
 
-                string btUserEmail = btUser.Email;
+                string btUserEmail = btUser!.Email;
                 string message = notification.Message;
 
                 //Send Email
