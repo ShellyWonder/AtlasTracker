@@ -96,7 +96,14 @@ namespace AtlasTracker.Controllers
 
             return View(tickets);
         }
-
+        //GET: Unassigned Tickets
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public async Task<IActionResult> UnassignedTickets()
+        {
+            int companyId = User.Identity.GetCompanyId();
+            List<Ticket> tickets = await _ticketService.GetUnassignedTicketsAsync(companyId);
+            return View(tickets);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

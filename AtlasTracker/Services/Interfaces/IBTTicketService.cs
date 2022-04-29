@@ -26,6 +26,8 @@ namespace AtlasTracker.Services.Interfaces
         public Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId);
         public Task RestoreTicketAsync(Ticket Ticket);
 
+        public Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId);
+
         public Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId);
 
 
