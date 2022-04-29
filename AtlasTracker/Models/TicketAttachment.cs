@@ -32,7 +32,6 @@ namespace AtlasTracker.Models
         [DataType(DataType.Upload)]
         [MaxFileSize(1024 * 1024)]
         [AllowedExtensions(new string[] { ".jpg", ".png", ".doc", ".docx", ".xls", ".xlsx", ".pdf" })]
-        
         public IFormFile? ImageFormFile { get; set; }
 
         public string? ImageFileName { get; set; }

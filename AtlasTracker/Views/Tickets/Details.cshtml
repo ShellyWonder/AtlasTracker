@@ -6,6 +6,7 @@
 
 @inject IBTFileService FileService
 @inject UserManager<BTUser> UserManager
+@inject IBTHistoryService HistoryService
 @inject IBTProjectService ProjectService
 
 @{
@@ -147,7 +148,7 @@
                                                 <input asp-for="@Model.Attachments!.FirstOrDefault()!.Description" type="text" class="form-control" />
                                             </label><br />
                                             <label class="btn btn-outline-primary btn-sm">
-                                                <input asp-for="@Model.Attachments!.FirstOrDefault()!.ImageFormFile" type="file" class="form-control-file" />
+                                                <input asp-for="@Model.Attachments.FirstOrDefault().ImageFormFile" type="file" class="form-control-file" />
                                             </label>
                                             <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
                                         </div>

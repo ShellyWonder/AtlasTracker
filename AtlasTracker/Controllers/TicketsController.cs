@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,10 +39,10 @@ namespace AtlasTracker.Controllers
                                  IBTLookupService lookupService,
                                  IBTProjectService projectService,
                                  IBTFileService fileService,
-                                 IBTNotificationService notificationService, 
+                                 IBTNotificationService notificationService,
                                  IBTHistoryService historyService,
                                  IBTRolesService rolesService)
-                                 
+
         {
             _context = context;
             _userManager = userManager;
@@ -52,7 +53,7 @@ namespace AtlasTracker.Controllers
             _fileService = fileService;
             this.notificationService = notificationService;
             _historyService = historyService;
-            _rolesService = rolesService;   
+            _rolesService = rolesService;
         }
 
 
@@ -96,7 +97,7 @@ namespace AtlasTracker.Controllers
             return View(tickets);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketComment([Bind("Id, TicketId,Comment")] TicketComment ticketComment)
@@ -143,7 +144,7 @@ namespace AtlasTracker.Controllers
         }
 
         // POST: Tickets/Create
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
@@ -158,7 +159,7 @@ namespace AtlasTracker.Controllers
                 await _ticketService.UpdateTicketAsync(ticket);
 
 
-                await _historyService.AddHistoryAsync(null,ticket, ticket.OwnerUserId);
+                await _historyService.AddHistoryAsync(null, ticket, ticket.OwnerUserId);
 
                 return RedirectToAction(nameof(AllTickets));
             }
@@ -166,11 +167,11 @@ namespace AtlasTracker.Controllers
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name");
             ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
 
-             
+
             //: Ticket Create Notification
             BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
             int companyId = User.Identity!.GetCompanyId()!;
-            Notification notification = new();         
+            Notification notification = new();
 
 
             return View(ticket);
@@ -207,7 +208,7 @@ namespace AtlasTracker.Controllers
             ModelState.Remove("OwnerUserId");
             if (ModelState.IsValid)
             {
-                BTUser btUser  = await _userManager.GetUserAsync(User);
+                BTUser btUser = await _userManager.GetUserAsync(User);
                 try
                 {
                     ticket.CreatedDate = DateTime.SpecifyKind(ticket.CreatedDate.DateTime, DateTimeKind.Utc);
@@ -258,9 +259,9 @@ namespace AtlasTracker.Controllers
                         await notificationService.SendEmailNotificationAsync(devNotification, "Ticket Updated");
                     }
 
-                    
-                    
-                        
+
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -289,7 +290,7 @@ namespace AtlasTracker.Controllers
             {
                 return NotFound();
             }
-            var ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
             if (ticket == null)
             {
                 return NotFound();
@@ -305,7 +306,7 @@ namespace AtlasTracker.Controllers
             {
                 return NotFound();
             }
-            var ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
             if (ticket == null)
             {
                 return NotFound();
@@ -337,8 +338,8 @@ namespace AtlasTracker.Controllers
                 Ticket ticket = model.Ticket;
                 try
                 {
-                     await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DevId);
-                    await _historyService.AddHistoryAsync( ticket,model.Ticket,  model.DevId);
+                    await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DevId);
+                    await _historyService.AddHistoryAsync(ticket, model.Ticket, model.DevId);
 
                     // Assign Developer Notification
                     if (model.Ticket.DeveloperUserId != null)
@@ -428,5 +429,15 @@ namespace AtlasTracker.Controllers
             int companyId = User.Identity.GetCompanyId();
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(t => t.Id == id);
         }
+    public async Task<IActionResult> ShowFile(int id)
+    {
+        TicketAttachment ticketAttachment = await _ticketService.GetTicketAttachmentByIdAsync(id);
+            string fileName = ticketAttachment.ImageFileName;
+        byte[] fileData = ticketAttachment.ImageFileData;
+        string ext = Path.GetExtension(fileName).Replace(".", "");
+
+        Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
+        return File(fileData, $"application/{ext}");
+    }
     }
 }
