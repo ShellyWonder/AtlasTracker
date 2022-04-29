@@ -41,8 +41,10 @@ namespace AtlasTracker.Models
 
         public int TicketStatusId { get; set; }
         [Required]
+        [Display(Name = "Owner")]
         public string? OwnerUserId { get; set; }
-        
+
+        [Display(Name ="Developer")]
         public string? DeveloperUserId { get; set; }
        
         

@@ -36,7 +36,7 @@ namespace AtlasTracker.Controllers
             List<UserRolesViewModel> model = new();
 
             //get Company Id
-            int companyId = User.Identity.GetCompanyId();
+            int companyId = User.Identity!.GetCompanyId();
             List<BTUser> users = await _companyInfoService.GetAllMembersAsync(companyId);
             foreach(BTUser user in users)
             {
@@ -60,13 +60,13 @@ namespace AtlasTracker.Controllers
         //instantiate the btUser
         BTUser? btUser = (await _companyInfoService.GetAllMembersAsync(companyId))
                                                    .FirstOrDefault(u => u.Id == member.BTUser?.Id);
-        IEnumerable<string> roles = await _rolesService.GetUserRolesAsync(btUser);
+        IEnumerable<string> roles = await _rolesService.GetUserRolesAsync(btUser!);
         //Get selected Roles for the user:
 
         string userRole = member.SelectedRoles?.FirstOrDefault()!;
         if (!string.IsNullOrEmpty(userRole))
         {
-            if(await _rolesService.RemoveUserFromRolesAsync(btUser, roles))
+            if(await _rolesService.RemoveUserFromRolesAsync(btUser!, roles))
             {
                 await _rolesService.AddUserToRoleAsync(btUser, userRole);
             }

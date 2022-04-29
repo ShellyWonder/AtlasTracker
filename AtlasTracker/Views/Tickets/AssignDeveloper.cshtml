@@ -1,12 +1,13 @@
 ﻿@model AtlasTracker.Models.ViewModels.AssignDeveloperViewModel
-  
+ @{
+    ViewData["Title"] = "Assign Developer";
+} 
 
-<h1>Project : @Model.Ticket.Title</h1>
-<h4>Assign Developer</h4>
+<h1>Assign Ticket Developer</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" asp-action="AssignDeveloper" asp-controller="Tickets">
+        <form method="post" asp-action="AssignDeveloper" asp-controller="Tickets" enctype="multipart/form-data">
             <input hidden asp-for="Ticket!.Id" />
             <h2>@Model.Ticket.Title </h2>
             <p>@Model.Ticket.Description </p>
