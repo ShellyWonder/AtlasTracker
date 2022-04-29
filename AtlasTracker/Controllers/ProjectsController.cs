@@ -177,8 +177,7 @@ namespace AtlasTracker.Controllers
                 return NotFound();
             }
 
-            //string userId = _userManager.GetUserId(User);
-            //BTUser btuser = _context.Users.Find(userId);
+           
 
             int companyId = User.Identity.GetCompanyId();
             Project project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
