@@ -249,11 +249,14 @@
                                                 Archived Tickets
                                             </a>
                                         </li>
-                                        <li>
-                                            <a asp-controller="Tickets" asp-action="UnassignedTickets" class="nav-link">
-                                                Unassigned Tickets
-                                            </a>
-                                        </li>
+                                         @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)) )
+                                        {
+                                            <li>
+                                                <a asp-controller="Tickets" asp-action="UnassignedTickets" class="nav-link">
+                                                    Unassigned Tickets
+                                                </a>
+                                            </li>
+                                        }
                                     </ul>
                                 </li>
                                 @if (User.IsInRole("Admin"))
