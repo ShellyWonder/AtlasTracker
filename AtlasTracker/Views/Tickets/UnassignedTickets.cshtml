@@ -83,19 +83,19 @@
                                     @Html.DisplayFor(modelItem => item.ArchivedByProject)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Status.Name)
+                                    @Html.DisplayFor(modelItem => item.Status!.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Project.Name)
+                                    @Html.DisplayFor(modelItem => item.Project!.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                    @Html.DisplayFor(modelItem => item.TicketPriority!.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                    @Html.DisplayFor(modelItem => item.TicketType!.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.OwnerUser.Id)
+                                    @Html.DisplayFor(modelItem => item.OwnerUser!.FullName)
                                 </td>
 
                                 <td>
