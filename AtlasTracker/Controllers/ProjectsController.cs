@@ -167,8 +167,6 @@ namespace AtlasTracker.Controllers
 
         }
 
-
-
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -176,8 +174,6 @@ namespace AtlasTracker.Controllers
             {
                 return NotFound();
             }
-
-           
 
             int companyId = User.Identity.GetCompanyId();
             Project project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
