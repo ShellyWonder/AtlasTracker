@@ -101,8 +101,25 @@ namespace AtlasTracker.Controllers
         public async Task<IActionResult> UnassignedTickets()
         {
             int companyId = User.Identity.GetCompanyId();
+            string btUserId = _userManager.GetUserId(User);
             List<Ticket> tickets = await _ticketService.GetUnassignedTicketsAsync(companyId);
-            return View(tickets);
+
+            if (User.IsInRole(nameof(BTRole.Admin)))
+            {
+                return View(tickets);
+            }
+            else
+            {
+                List<Ticket> pmTickets = new();
+                foreach (Ticket ticket in tickets)
+                {
+                    if (await _projectService.IsAssignedProjectManagerAsync(btUserId, ticket.ProjectId))
+                    {
+                        pmTickets.Add(ticket);
+                    }
+                }
+                return View(pmTickets);
+            }
         }
 
         [HttpPost]
@@ -454,15 +471,15 @@ namespace AtlasTracker.Controllers
             int companyId = User.Identity.GetCompanyId();
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(t => t.Id == id);
         }
-    public async Task<IActionResult> ShowFile(int id)
-    {
-        TicketAttachment ticketAttachment = await _ticketService.GetTicketAttachmentByIdAsync(id);
+        public async Task<IActionResult> ShowFile(int id)
+        {
+            TicketAttachment ticketAttachment = await _ticketService.GetTicketAttachmentByIdAsync(id);
             string fileName = ticketAttachment.ImageFileName;
-        byte[] fileData = ticketAttachment.ImageFileData;
-        string ext = Path.GetExtension(fileName).Replace(".", "");
+            byte[] fileData = ticketAttachment.ImageFileData;
+            string ext = Path.GetExtension(fileName).Replace(".", "");
 
-        Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
-        return File(fileData, $"application/{ext}");
-    }
+            Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
+            return File(fileData, $"application/{ext}");
+        }
     }
 }

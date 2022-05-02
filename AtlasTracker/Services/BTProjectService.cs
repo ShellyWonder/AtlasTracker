@@ -477,7 +477,7 @@ namespace AtlasTracker.Services
         {
             try
             {
-                string projectManagerId = (await GetProjectManagerAsync(projectId))?.Id;
+                string projectManagerId = (await GetProjectManagerAsync(projectId) )?.Id;
 
                 if (projectManagerId == userId)
                 {
@@ -496,15 +496,15 @@ namespace AtlasTracker.Services
             }
         }
 
-        public Task<bool> IsAssignedProjectManagerAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<bool> IsAssignedProjectManagerAsync(int userId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public Task<bool> IsUserOnProject(string userId, int projectId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<bool> IsUserOnProject(string userId, int projectId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         #endregion
 

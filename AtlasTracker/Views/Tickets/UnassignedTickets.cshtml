@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Ticket>
 
+@using AtlasTracker.Models.Enums 
 @{
     ViewData["Title"] = "Unassigned Tickets";
 }
@@ -16,7 +17,7 @@
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                 </div> <h2 class="card-title">Unassigned Tickets</h2>
                 <p>
-                    <a asp-action="Create">Create New</a>
+                    <a asp-action="Create">Create New Ticket</a>
                 </p>
             </header>
             <div class="card-body">
@@ -61,51 +62,40 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Title)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Updated)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Archived)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ArchivedByProject)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status!.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Project!.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketPriority!.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketType!.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OwnerUser!.FullName)
-                                </td>
-
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Archive" asp-route-id="@item.Id">Archive</a> |
-                                    <a asp-action="AssignDeveloper" asp-route-id="@item.Id">Assign Developer</a>
-                                </td>
-                            </tr>
-                        }
+                        dy>
+                            @foreach (var ticket in Model.OrderByDescending(d => d.CreatedDate))
+                            {
+                                <tr>
+                                    <td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="color:black"><strong>@ticket.Title</strong></a> </td>
+                                    <td>
+                                        @if (ticket.DeveloperUserId != null)
+                                        {
+                                        @ticket.DeveloperUser?.FullName
+                                    }
+                                    else
+                                    {
+                                        if (User.IsInRole(nameof(AtlasTracker.Models.Enums.BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                        {
+                                                <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-ticketId="@ticket.Id">Assign Dev</a>
+                                            }
+                                        }
+                                    </td>
+                                    @if (ticket.Status.Name == "New")
+                                    {
+                                        <td><span class="badge-success">@ticket.Status.Name </span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="badge-primary">@ticket.Status.Name </span></td>
+                                    }
+                                    <td><span class="badge">@ticket.TicketPriority!.Name </span></td>
+                                    <td>@ticket.CreatedDate.ToString("MM-dd-yyyy")</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-outline-info" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fs-5 bi-justify"></i></a>
+                                        
+                                    </td>
+                                </tr>
+                            }
                     </tbody>
                 </table>
             </div>
