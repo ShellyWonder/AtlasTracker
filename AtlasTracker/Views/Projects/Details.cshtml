@@ -233,11 +233,11 @@
                                         {
                                             if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                                             {
-                                                <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-ticketId="@ticket.Id">Assign Dev</a>
+                                                <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@ticket.Id">Assign Dev</a>
                                             }
                                         }
                                     </td>
-                                    @if (ticket.Status.Name == "New")
+                                    @if (ticket.Status!.Name == "New")
                                     {
                                         <td><span class="badge-success">@ticket.Status.Name </span></td>
                                     }
@@ -245,10 +245,11 @@
                                     {
                                         <td><span class="badge-primary">@ticket.Status.Name </span></td>
                                     }
-                                    <td><span class="badge">@ticket.TicketPriority.Name </span></td>
+                                    <td><span class="badge">@ticket.TicketPriority!.Name </span></td>
                                     <td>@ticket.CreatedDate.ToString("MM-dd-yyyy")</td>
                                     <td>
                                         <a class="btn btn-sm btn-outline-info" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fs-5 bi-justify"></i></a>
+                                       
                                         @if (ticket.DeveloperUserId == btUser.Id || ticket.OwnerUserId == btUser.Id || (projectManager?.Id == btUser.Id) || User.IsInRole(nameof(BTRole.Admin)))
                                         {
                                             <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fs-5 bi-pencil"></i></a>
