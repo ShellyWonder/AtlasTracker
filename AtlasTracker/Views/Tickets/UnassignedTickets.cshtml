@@ -43,7 +43,7 @@
                                 @Html.DisplayNameFor(model => model.ArchivedByProject)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Status.Name)
+                                @Html.DisplayNameFor(model => model.Status!.Name)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Project)
@@ -74,14 +74,14 @@
                                     }
                                     else
                                     {
-                                        if (User.IsInRole(nameof(AtlasTracker.Models.Enums.BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                        if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                                         {
-                                                <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-ticketId="@ticket.Id">Assign Dev</a>
+                                                <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@ticket.Id">Assign Dev</a>
                                                 
                                             }
                                         }
                                     </td>
-                                    @if (ticket.Status.Name == "New")
+                                    @if (ticket.Status!.Name == "New")
                                     {
                                         <td><span class="badge-success">@ticket.Status.Name </span></td>
                                     }
