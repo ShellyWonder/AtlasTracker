@@ -3,13 +3,14 @@
     ViewData["Title"] = "AssignDeveloper";
 }
 
-<<div class="container">
+<div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-12">
             <h3> @Model!.Ticket!.Title</h3>
+            <a style="font-size:small" asp-action="Details" asp-controller="Projects" asp-route-id="@Model.Ticket.ProjectId">@Model.Ticket.Project!.Name</a>
             <div class="card">
                 <div class="card-header">
-                    <label  class="control-label">Assign Developer</label>
+                    <label class="control-label">Assign Developer</label>
                 </div>
                 <div class="card-body">
                     <form method="post" asp-action="AssignDeveloper" asp-controller="Tickets" enctype="multipart/form-data">
@@ -17,11 +18,13 @@
                         <h2>@Model.Ticket!.Title </h2>
                         <p>@Model.Ticket.Description </p>
                         <div class="form-group">
-                            <label class="control-label">Select Ticket</label>
+                            <label class="control-label">Select Developer</label>
                             <select required asp-for="DevId" class="form-control" asp-items="@Model.DevelopersList">
                                 <option></option>
                             </select>
-                            <input type="submit" value="Assign" class="btn btn-primary" />
+                            <div class="form-group mt-3">
+                                <input type="submit" value="Assign" class="btn btn-primary" />
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -29,6 +32,6 @@
         </div>
     </div>
     <div>
-        <a  asp-action="UnassignedTickets" asp-controller="Tickets">Back to Unassigned Tickets</a>
+        <a asp-action="UnassignedTickets" asp-controller="Tickets">Back to Unassigned Tickets</a>
     </div>
 </div>
