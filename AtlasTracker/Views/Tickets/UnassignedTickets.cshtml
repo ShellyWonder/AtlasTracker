@@ -77,6 +77,7 @@
                                         if (User.IsInRole(nameof(AtlasTracker.Models.Enums.BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                                         {
                                                 <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-ticketId="@ticket.Id">Assign Dev</a>
+                                                
                                             }
                                         }
                                     </td>

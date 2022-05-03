@@ -363,7 +363,7 @@ namespace AtlasTracker.Controllers
             AssignDeveloperViewModel model = new();
 
             model.Ticket = await _ticketService.GetTicketByIdAsync(ticketId.Value);
-            model.DevelopersList = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, nameof(BTRole.Developer)), "Id", "FullName");
+            model.DevelopersList = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.Id, nameof(BTRole.Developer)), "Id", "FullName");
 
             return View(model);
         }

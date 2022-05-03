@@ -216,11 +216,15 @@
                                                 Archived Projects
                                             </a>
                                         </li>
+                                        @if (User.IsInRole(nameof(BTRole.Admin)))
+                                        {
                                         <li>
                                             <a asp-controller="Projects" asp-action="UnassignedProjects" class="nav-link">
                                                 Unassigned Projects
                                             </a>
                                         </li>
+                                            
+                                        }
                                     </ul>
                                 </li>
 
@@ -230,12 +234,17 @@
                                         <span>Tickets</span>
                                     </a>
                                     <ul class="nav nav-children">
+                                      
+                                           @if (User.IsInRole(nameof(BTRole.Admin)))
+                                        {
                                         <li>
                                             <a asp-controller="Tickets" asp-action="AllTickets" class="nav-link">
                                                 All Tickets
                                             </a>
                                         </li>
-
+                                            
+                                        }
+                                        
                                         @if (!User.IsInRole(nameof(BTRole.Admin)))
                                         {
                                             <li>
