@@ -86,7 +86,7 @@ namespace AtlasTracker.Services
                 {
                     try
                     {
-                        project.Members.Add(user);
+                        project!.Members!.Add(user);
                         await _context.SaveChangesAsync();
                         return true;
                     }

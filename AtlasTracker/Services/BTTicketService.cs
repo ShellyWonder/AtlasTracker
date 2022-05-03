@@ -396,7 +396,7 @@ namespace AtlasTracker.Services
         #endregion
 
         #region Get Ticket By Id
-        public async Task<Ticket> GetTicketByIdAsync(int ticketId)
+        public async Task<Ticket> GetTicketByIdAsync(int Id)
         {
             try
             {
@@ -410,7 +410,7 @@ namespace AtlasTracker.Services
                                      .Include(t => t.Comments)
                                      .Include(t => t.Attachments)
                                      .Include(t => t.History)
-                                     .FirstOrDefaultAsync(t => t.Id == ticketId);
+                                     .FirstOrDefaultAsync(t => t.Id == Id);
             }
             catch (Exception)
             {

@@ -353,17 +353,17 @@ namespace AtlasTracker.Controllers
         //GET: Tickets/AssignDeveloper
         [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
-        public async Task<IActionResult> AssignDeveloper(int? ticketId)
+        public async Task<IActionResult> AssignDeveloper(int? id)
         {
-            if (ticketId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             AssignDeveloperViewModel model = new();
 
-            model.Ticket = await _ticketService.GetTicketByIdAsync(ticketId.Value);
-            model.DevelopersList = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.Id, nameof(BTRole.Developer)), "Id", "FullName");
+            model.Ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+            model.DevelopersList = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, nameof(BTRole.Developer)), "Id", "FullName");
 
             return View(model);
         }
