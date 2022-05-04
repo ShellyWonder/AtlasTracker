@@ -79,8 +79,8 @@ namespace AtlasTracker.Services
                         {
                             TicketId = newTicket.Id,
                             PropertyName = "Ticket Priority",
-                            OldValue = oldTicket.TicketPriority.Name,
-                            NewValue = newTicket.TicketPriority.Name,
+                            OldValue = oldTicket.TicketPriority!.Name,
+                            NewValue = newTicket.TicketPriority!.Name,
                             CreatedDate = DateTimeOffset.Now,
                             UserId = userId,
                             Description = $"New ticket priority: {newTicket.TicketPriority.Name}"
@@ -148,13 +148,17 @@ namespace AtlasTracker.Services
                 throw;
             }
         }
+
+        //Overloaded Method
         public async Task AddHistoryAsync(int ticketId, string model, string userId)
         {
             try
             {
                 Ticket? ticket = await _context.Tickets.FindAsync(ticketId);
                 string description = model.ToLower().Replace("ticket", "");
-                description = $"New {description} added to ticket: {ticket!.Title}"; TicketHistory history = new()
+                description = $"New {description} added to ticket: {ticket!.Title}"; 
+                
+                TicketHistory history = new()
                 {
                     TicketId = ticket.Id,
                     PropertyName = model,

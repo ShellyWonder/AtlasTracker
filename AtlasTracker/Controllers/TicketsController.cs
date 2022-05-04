@@ -202,6 +202,7 @@ namespace AtlasTracker.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
@@ -219,8 +220,6 @@ namespace AtlasTracker.Controllers
         }
 
         // POST: Tickets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedDate,Archived,ArchivedByProject,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
@@ -233,6 +232,8 @@ namespace AtlasTracker.Controllers
             if (ModelState.IsValid)
             {
                 BTUser btUser = await _userManager.GetUserAsync(User);
+                //TICKET HISTORY
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
                 try
                 {
                     ticket.CreatedDate = DateTime.SpecifyKind(ticket.CreatedDate.DateTime, DateTimeKind.Utc);
@@ -298,6 +299,10 @@ namespace AtlasTracker.Controllers
                         throw;
                     }
                 }
+                //TICKET HISTORY
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, btUser.Id);
+
                 return RedirectToAction(nameof(AllTickets));
             }
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);
@@ -308,6 +313,7 @@ namespace AtlasTracker.Controllers
         }
 
         //Get Tickets/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -324,6 +330,7 @@ namespace AtlasTracker.Controllers
         }
 
         // Get: Tickets/Archive/5
+        [HttpGet]
         public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
