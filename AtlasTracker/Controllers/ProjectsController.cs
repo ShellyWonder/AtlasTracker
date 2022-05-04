@@ -99,7 +99,9 @@ namespace AtlasTracker.Controllers
                 return NotFound();
             }
             int companyId = User.Identity.GetCompanyId();
+           
             AssignPMViewModel model = new();
+            
             model.Project = await _projectService.GetProjectByIdAsync(projectId.Value, companyId);
             model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRole.ProjectManager), companyId), "Id", "FullName");
             return View(model);
@@ -114,7 +116,7 @@ namespace AtlasTracker.Controllers
             if (!string.IsNullOrEmpty(model.PMID))
             {
                 await _projectService.AddProjectManagerAsync(model.PMID, model.Project.Id);
-                return RedirectToAction(nameof(AllProjects));
+                return RedirectToAction(nameof(Details), new {id= model.Project.Id});
             }
             return RedirectToAction(nameof(AssignPM), new { projectId = model.Project!.Id });
         }
