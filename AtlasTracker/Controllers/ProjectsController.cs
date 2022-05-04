@@ -90,6 +90,7 @@ namespace AtlasTracker.Controllers
             return View(projects);
 
         }
+        
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignPM(int? projectId)
@@ -123,20 +124,20 @@ namespace AtlasTracker.Controllers
 
         [HttpGet]
         [Authorize(Roles ="Admin, ProjectManager")]
-        public async Task<IActionResult> AssignMembers(int? projectId)
+        public async Task<IActionResult> AssignMembers(int? id)
         {
-            if (projectId == null)
+            if (id == null)
             {
                 return NotFound();
             }
             ProjectMembersViewModel model = new();
             int companyId = User.Identity.GetCompanyId();
-            model.Project = await _projectService.GetProjectByIdAsync(projectId.Value, companyId);
+            model.Project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
 
             List<BTUser> developers = await _rolesService.GetUsersInRoleAsync(nameof(BTRole.Developer), companyId);
-            List<BTUser> submiters = await _rolesService.GetUsersInRoleAsync(nameof(BTRole.Submitter), companyId);
+            List<BTUser> submitters = await _rolesService.GetUsersInRoleAsync(nameof(BTRole.Submitter), companyId);
 
-            List<BTUser> teamMembers = developers.Concat(submiters).ToList();
+            List<BTUser> teamMembers = developers.Concat(submitters).ToList();
 
             List<string> projectMembers = model.Project.Members.Select(p => p.Id).ToList();
 
@@ -144,6 +145,7 @@ namespace AtlasTracker.Controllers
 
             return View(model);
         }
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
