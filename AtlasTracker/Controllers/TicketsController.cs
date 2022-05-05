@@ -133,9 +133,12 @@ namespace AtlasTracker.Controllers
                 try
                 {
                     ticketComment.UserId = _userManager.GetUserId(User);
-                    ticketComment.CreatedDate = DateTime.Now;
+                    ticketComment.CreatedDate = DateTimeOffset.Now;
 
                     await _ticketService.AddTicketCommentAsync(ticketComment);
+                    //  add ticket history
+                    await _historyService.AddHistoryAsync(ticketComment.TicketId, nameof(ticketComment), ticketComment.UserId); 
+
 
                 }
                 catch (Exception)
@@ -148,6 +151,7 @@ namespace AtlasTracker.Controllers
         }
 
         // GET: Tickets/Create
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             BTUser btuser = await _userManager.GetUserAsync(User);
@@ -480,15 +484,26 @@ namespace AtlasTracker.Controllers
 
             if (ModelState.IsValid && ticketAttachment.ImageFormFile != null)
             {
-                ticketAttachment.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.ImageFormFile);
-                ticketAttachment.ImageFileName = ticketAttachment.ImageFormFile.FileName;
-                ticketAttachment.ImageContentType = ticketAttachment.ImageFormFile.ContentType;
+                try
+                {
+                    ticketAttachment.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.ImageFormFile);
+                    ticketAttachment.ImageFileName = ticketAttachment.ImageFormFile.FileName;
+                    ticketAttachment.ImageContentType = ticketAttachment.ImageFormFile.ContentType;
 
-                ticketAttachment.CreatedDate = DateTimeOffset.Now;
-                ticketAttachment.UserId = _userManager.GetUserId(User);
+                    ticketAttachment.CreatedDate = DateTimeOffset.Now;
+                    ticketAttachment.UserId = _userManager.GetUserId(User);
 
-                await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
-                statusMessage = "Success: New attachment added to Ticket.";
+                    await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+
+                    //ADD HISTORY
+                    await _historyService.AddHistoryAsync(ticketAttachment.TicketId, nameof(TicketAttachment), ticketAttachment.UserId);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                    statusMessage = "Success: New attachment added to Ticket.";
             }
             else
             {
