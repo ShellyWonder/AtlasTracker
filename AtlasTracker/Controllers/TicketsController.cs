@@ -133,7 +133,7 @@ namespace AtlasTracker.Controllers
                 try
                 {
                     ticketComment.UserId = _userManager.GetUserId(User);
-                    ticketComment.CreatedDate = DateTime.UtcNow;
+                    ticketComment.CreatedDate = DateTime.Now;
 
                     await _ticketService.AddTicketCommentAsync(ticketComment);
 
@@ -168,34 +168,55 @@ namespace AtlasTracker.Controllers
         }
 
         // POST: Tickets/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
         {
+            BTUser btUser = await _userManager.GetUserAsync(User);
+
             ModelState.Remove("OwnerUserId");
 
             if (ModelState.IsValid)
             {
-                ticket.OwnerUserId = _userManager.GetUserId(User);
-                ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync("New")).Value;
-                ticket.CreatedDate = DateTimeOffset.UtcNow;
-                await _ticketService.UpdateTicketAsync(ticket);
+                try
+                {
+                    ticket.OwnerUserId = btUser.Id;
+                    ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync("New")).Value;
+                    ticket.CreatedDate = DateTimeOffset.Now;
+                    await _ticketService.UpdateTicketAsync(ticket);
+
+                    //Ticket History
+                    Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                    await _historyService.AddHistoryAsync(null, newTicket, btUser.Id);
+
+                    //: Ticket Create Notification
+                    BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
+                    int companyId = User.Identity!.GetCompanyId()!;
+                    Notification notification = new();
+
+                }
 
 
-                await _historyService.AddHistoryAsync(null, ticket, ticket.OwnerUserId);
+                catch (Exception)
+            {
 
-                return RedirectToAction(nameof(AllTickets));
+                throw;
             }
+                    return RedirectToAction(nameof(AllTickets));
+    }
 
+            if (User.IsInRole(nameof(BTRole.Admin)))
+            {
+                ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompanyAsync(btUser.CompanyId), "Id", "Name");
+
+            }
+            else
+            {
+                ViewData["ProjectId"] = new SelectList(await _projectService.GetUserProjectsAsync(btUser.Id), "Id", "Name");
+
+            }
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name");
             ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
-
-
-            //: Ticket Create Notification
-            BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
-            int companyId = User.Identity!.GetCompanyId()!;
-            Notification notification = new();
 
 
             return View(ticket);
@@ -237,7 +258,7 @@ namespace AtlasTracker.Controllers
                 try
                 {
                     ticket.CreatedDate = DateTime.SpecifyKind(ticket.CreatedDate.DateTime, DateTimeKind.Utc);
-                    ticket.Updated = DateTimeOffset.UtcNow;
+                    ticket.Updated = DateTimeOffset.Now;
                     await _ticketService.UpdateTicketAsync(ticket);
 
                     // Ticket Edit notification
@@ -249,7 +270,7 @@ namespace AtlasTracker.Controllers
                         NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
                         Title = "Ticket updated",
                         Message = $"Ticket: {ticket.Title}, was updated by {btUser.FullName}",
-                        CreatedDate = DateTime.UtcNow,
+                        CreatedDate = DateTime.Now,
                         SenderId = btUser.Id,
                         RecipientId = projectManager?.Id
                     };
@@ -384,11 +405,12 @@ namespace AtlasTracker.Controllers
             if (model.DevId != null)
             {
                 BTUser btUser = await _userManager.GetUserAsync(User);
-                Ticket ticket = model.Ticket;
+                //Old Ticket History
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(model.Ticket.Id);    
+                
                 try
                 {
                     await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DevId);
-                    await _historyService.AddHistoryAsync(ticket, model.Ticket, model.DevId);
 
                     // Assign Developer Notification
                     if (model.Ticket.DeveloperUserId != null)
@@ -399,7 +421,7 @@ namespace AtlasTracker.Controllers
                             NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
                             Title = "Ticket Updated",
                             Message = $"Ticket: {model.Ticket.Title}, was updated by {btUser.FullName}",
-                            CreatedDate = DateTime.UtcNow,
+                            CreatedDate = DateTime.Now,
                             SenderId = btUser.Id,
                             RecipientId = model.Ticket.DeveloperUserId
                         };
@@ -410,10 +432,13 @@ namespace AtlasTracker.Controllers
                 catch (Exception)
                 {
 
-
-
                     throw;
                 }
+                //New Ticket
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(model.Ticket.Id);
+                    await _historyService.AddHistoryAsync(oldTicket, newTicket, model.DevId);
+
+
                 return RedirectToAction(nameof(Details), new { id = model.Ticket?.Id });
             }
             return RedirectToAction(nameof(AssignDeveloper), new { id = model.Ticket?.Id });

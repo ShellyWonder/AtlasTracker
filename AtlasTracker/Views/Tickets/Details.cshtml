@@ -230,7 +230,7 @@ else
                             <div class="">
                                 @if (history.Description!.Contains("New Ticket Created"))
                                 {
-                                    <p>A ticket was added.</p>
+                                    <p>The ticket was added.</p>
                                 }
                                 else if (history.PropertyName!.Equals("TicketComment") || history.PropertyName.Equals("TicketAttachment"))
                                 {
@@ -238,7 +238,7 @@ else
                                 }
                                 else
                                 {
-                                    <p>The ticket <b>@history.PropertyName</b> was edited</p>
+                                    <p>The ticket <b>@history.PropertyName</b> was added</p>
                                     <p>@($"Previous {history.PropertyName}:  ") <span style="color:red">@history.OldValue</span></p>
                                     <p>@($"Current {history.PropertyName}:  ") <span style="color:green">@history.NewValue</span></p>
                                 }
