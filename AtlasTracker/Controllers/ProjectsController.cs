@@ -20,16 +20,19 @@ namespace AtlasTracker.Controllers
 {
     public class ProjectsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IBTProjectService _projectService;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTRolesService _rolesService;
         private readonly IBTLookupService _lookupService;
         private readonly IBTCompanyInfoService _companyInfoService;
         private readonly IBTFileService _fileService;
-        public ProjectsController(ApplicationDbContext context, IBTProjectService projectService, UserManager<BTUser> userManager, IBTRolesService rolesService, IBTLookupService lookupService, IBTCompanyInfoService companyInfoService, IBTFileService fileService)
+        public ProjectsController(IBTProjectService projectService, 
+            UserManager<BTUser> userManager, 
+            IBTRolesService rolesService, 
+            IBTLookupService lookupService, 
+            IBTCompanyInfoService companyInfoService, 
+            IBTFileService fileService)
         {
-            _context = context;
             _projectService = projectService;
             _userManager = userManager;
             _rolesService = rolesService;
@@ -37,17 +40,9 @@ namespace AtlasTracker.Controllers
             _companyInfoService = companyInfoService;
             _fileService = fileService;
         }
-
-       
-
-        // GET: Projects
-        public async Task<IActionResult> Index()
-        {
-            int companyId = User.Identity.GetCompanyId();
-            List<Project> projects = await _projectService.GetAllProjectsByCompanyAsync(companyId);
-            return View(projects);
-        }
+ 
         
+        [HttpGet]
         public async Task<IActionResult> MyProjects()
         {
             string userId = _userManager.GetUserId(User);
@@ -56,7 +51,7 @@ namespace AtlasTracker.Controllers
             return View(projects);
         }
 
-        //Get:Projects/AllProjects
+        [HttpGet]
         public async Task<IActionResult> AllProjects()
         {
             List<Project> projects = new();
@@ -73,7 +68,7 @@ namespace AtlasTracker.Controllers
             return View(projects);
         }
 
-        /// ArchivedProjects
+        [HttpGet]
         public async Task<IActionResult> ArchivedProjects()
         {
             int companyId = User.Identity.GetCompanyId();
@@ -81,7 +76,8 @@ namespace AtlasTracker.Controllers
 
             return View(projects);
         }
-        /// Unassigned Projects
+        
+        [HttpGet]
         public async Task<IActionResult> UnassignedProjects()
         {
             int companyId = User.Identity.GetCompanyId();
@@ -107,7 +103,6 @@ namespace AtlasTracker.Controllers
             model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRole.ProjectManager), companyId), "Id", "FullName");
             return View(model);
         }
-
 
 
         [HttpPost]

@@ -22,7 +22,6 @@ namespace AtlasTracker.Controllers
 
     public class TicketsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTTicketService _ticketService;
         private readonly IBTCompanyInfoService _companyInfoService;
@@ -32,8 +31,7 @@ namespace AtlasTracker.Controllers
         private readonly IBTNotificationService notificationService;
         private readonly IBTHistoryService _historyService;
         private readonly IBTRolesService _rolesService;
-        public TicketsController(ApplicationDbContext context,
-                                 UserManager<BTUser> userManager,
+        public TicketsController(UserManager<BTUser> userManager,
                                  IBTTicketService ticketService,
                                  IBTCompanyInfoService companyInfoService,
                                  IBTLookupService lookupService,
@@ -44,7 +42,6 @@ namespace AtlasTracker.Controllers
                                  IBTRolesService rolesService)
 
         {
-            _context = context;
             _userManager = userManager;
             _ticketService = ticketService;
             _companyInfoService = companyInfoService;
@@ -88,7 +85,7 @@ namespace AtlasTracker.Controllers
             return View(tickets);
         }
 
-        /// ArchivedTickets
+        [HttpGet]
         public async Task<IActionResult> ArchivedTickets()
         {
             int companyId = User.Identity.GetCompanyId();
@@ -96,7 +93,7 @@ namespace AtlasTracker.Controllers
 
             return View(tickets);
         }
-        //GET: Unassigned Tickets
+        [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> UnassignedTickets()
         {
@@ -238,7 +235,7 @@ namespace AtlasTracker.Controllers
 
 
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name", ticket.TicketTypeId);
             ViewData["TicketStatusId"] = new SelectList(await _lookupService.GetTicketStatusesAsync(), "Id", "Name", ticket.TicketStatusId);
 
             return View(ticket);
@@ -331,7 +328,7 @@ namespace AtlasTracker.Controllers
                 return RedirectToAction(nameof(AllTickets));
             }
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name", ticket.TicketTypeId);
             ViewData["TicketStatusId"] = new SelectList(await _lookupService.GetTicketStatusesAsync(), "Id", "Name", ticket.TicketStatusId);
 
             return View(ticket);
