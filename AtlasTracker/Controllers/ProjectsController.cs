@@ -18,6 +18,7 @@ using AtlasTracker.Services;
 
 namespace AtlasTracker.Controllers
 {
+    [Authorize] 
     public class ProjectsController : Controller
     {
         private readonly IBTProjectService _projectService;
@@ -78,6 +79,7 @@ namespace AtlasTracker.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnassignedProjects()
         {
             int companyId = User.Identity.GetCompanyId();
@@ -105,6 +107,7 @@ namespace AtlasTracker.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignPM(AssignPMViewModel model)
@@ -141,6 +144,7 @@ namespace AtlasTracker.Controllers
             return View(model);
         }
        
+        [Authorize(Roles ="Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
@@ -166,7 +170,7 @@ namespace AtlasTracker.Controllers
 
         }
 
-        // GET: Projects/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -183,7 +187,9 @@ namespace AtlasTracker.Controllers
 
             return View(project);
         }
+        
         [Authorize(Roles = "Admin, ProjectManager")]
+        [HttpGet]
         // GET: Projects/Create
         public async Task<IActionResult> Create()
         {
@@ -196,6 +202,7 @@ namespace AtlasTracker.Controllers
         }
 
         // POST: Projects/Create
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AddProjectWithPMViewModel model)
@@ -245,6 +252,8 @@ namespace AtlasTracker.Controllers
             return View(model.Project);
         }
 
+        [Authorize(Roles = "Admin, ProjectManager")]
+        [HttpGet]
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -279,9 +288,9 @@ namespace AtlasTracker.Controllers
 
         // POST: Projects/Edit/5
 
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Edit(AddProjectWithPMViewModel model)
         {
             int companyId = User.Identity.GetCompanyId();
@@ -331,8 +340,9 @@ namespace AtlasTracker.Controllers
             return View(model);
         }
 
-        // GET: Projects/Delete/5
-        
+        // GET: Projects/Archive
+        [HttpGet]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Archive(int id)
         {
             int companyId = User.Identity.GetCompanyId();
@@ -344,6 +354,7 @@ namespace AtlasTracker.Controllers
 
         // POST: Projects/Archive/5
         [HttpPost, ActionName("Archive")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ArchiveConfirmed(int id)
         {
@@ -355,7 +366,8 @@ namespace AtlasTracker.Controllers
         }
 
         // GET: Projects/Restore/5
-
+        [Authorize(Roles = "Admin, ProjectManager")]
+        [HttpGet]
         public async Task<IActionResult> Restore(int id)
         {
             int companyId = User.Identity.GetCompanyId();
@@ -366,6 +378,7 @@ namespace AtlasTracker.Controllers
         }
 
         // POST: Projects/Restore/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost, ActionName("Restore")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RestoreConfirmed(int id)
