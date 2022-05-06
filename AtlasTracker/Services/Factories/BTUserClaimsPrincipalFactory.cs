@@ -12,6 +12,8 @@ namespace AtlasTracker.Services.Factories
         public BTUserClaimsPrincipalFactory(UserManager<BTUser> userManager,
                                 RoleManager<IdentityRole> roleManager, 
                                 IOptions<IdentityOptions> optionsAccessor)
+            
+            
             : base(userManager, roleManager, optionsAccessor)
         {
 

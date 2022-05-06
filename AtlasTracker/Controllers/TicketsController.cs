@@ -82,7 +82,7 @@ namespace AtlasTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> ArchivedTickets()
         {
-            int companyId = User.Identity.GetCompanyId();
+            int companyId = User.Identity!.GetCompanyId();
             List<Ticket> tickets = await _ticketService.GetArchivedTicketsAsync(companyId);
 
             return View(tickets);
@@ -124,7 +124,7 @@ namespace AtlasTracker.Controllers
                 try
                 {
                     ticketComment.UserId = _userManager.GetUserId(User);
-                    ticketComment.CreatedDate = DateTimeOffset.Now;
+                    ticketComment.CreatedDate = DateTimeOffset.UtcNow;
 
                     await _ticketService.AddTicketCommentAsync(ticketComment);
                     //  add ticket history
@@ -182,7 +182,7 @@ namespace AtlasTracker.Controllers
 
                     //Ticket History
                     Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
-                    await _historyService.AddHistoryAsync(null, newTicket, btUser.Id);
+                    await _historyService.AddHistoryAsync(null!, newTicket, btUser.Id);
 
                     //: Ticket Create Notification
                     BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
@@ -253,7 +253,7 @@ namespace AtlasTracker.Controllers
                 try
                 {
                     ticket.CreatedDate = DateTime.SpecifyKind(ticket.CreatedDate.DateTime, DateTimeKind.Utc);
-                    ticket.Updated = DateTimeOffset.Now;
+                    ticket.Updated = DateTimeOffset.UtcNow;
                     await _ticketService.UpdateTicketAsync(ticket);
 
                     // Ticket Edit notification
@@ -265,7 +265,7 @@ namespace AtlasTracker.Controllers
                         NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
                         Title = "Ticket updated",
                         Message = $"Ticket: {ticket.Title}, was updated by {btUser.FullName}",
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = DateTimeOffset.UtcNow,
                         SenderId = btUser.Id,
                         RecipientId = projectManager?.Id
                     };
@@ -292,16 +292,13 @@ namespace AtlasTracker.Controllers
                             NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
                             Title = "Ticket Updated",
                             Message = $"Ticket: {ticket.Title}, was updated by {btUser.FullName}",
-                            CreatedDate = DateTimeOffset.Now,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             SenderId = btUser.Id,
                             RecipientId = ticket.DeveloperUserId
                         };
                         await notificationService.AddNotificationAsync(devNotification);
                         await notificationService.SendEmailNotificationAsync(devNotification, "Ticket Updated");
                     }
-
-
-
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -403,7 +400,7 @@ namespace AtlasTracker.Controllers
             {
                 BTUser btUser = await _userManager.GetUserAsync(User);
                 //Old Ticket History
-                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(model.Ticket.Id);
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(model.Ticket!.Id);
 
                 try
                 {
@@ -418,7 +415,7 @@ namespace AtlasTracker.Controllers
                             NotificationTypeId = (await _lookupService.LookupNotificationTypeIdAsync(nameof(BTNotificationType.Ticket))).Value,
                             Title = "Ticket Updated",
                             Message = $"Ticket: {model.Ticket.Title}, was updated by {btUser.FullName}",
-                            CreatedDate = DateTime.Now,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             SenderId = btUser.Id,
                             RecipientId = model.Ticket.DeveloperUserId
                         };

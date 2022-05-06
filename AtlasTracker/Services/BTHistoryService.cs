@@ -27,7 +27,7 @@ namespace AtlasTracker.Services
                         PropertyName = "",
                         OldValue = "",
                         NewValue = "",
-                        CreatedDate = DateTimeOffset.Now,
+                        CreatedDate = DateTimeOffset.UtcNow,
                         UserId = userId,
                         Description = "New Ticket Created"
                     }; try
@@ -51,7 +51,7 @@ namespace AtlasTracker.Services
                             PropertyName = "Title",
                             OldValue = oldTicket.Title,
                             NewValue = newTicket.Title,
-                            CreatedDate = DateTimeOffset.Now,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             UserId = userId,
                             Description = $"New ticket title: {newTicket.Title}"
                         };
@@ -66,7 +66,7 @@ namespace AtlasTracker.Services
                             PropertyName = "Description",
                             OldValue = oldTicket.Description,
                             NewValue = newTicket.Description,
-                            CreatedDate = DateTimeOffset.Now,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             UserId = userId,
                             Description = $"New ticket description: {newTicket.Description}"
                         };
@@ -81,7 +81,7 @@ namespace AtlasTracker.Services
                             PropertyName = "Ticket Priority",
                             OldValue = oldTicket.TicketPriority!.Name,
                             NewValue = newTicket.TicketPriority!.Name,
-                            CreatedDate = DateTimeOffset.Now,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             UserId = userId,
                             Description = $"New ticket priority: {newTicket.TicketPriority.Name}"
                         };
@@ -94,9 +94,9 @@ namespace AtlasTracker.Services
                         {
                             TicketId = newTicket.Id,
                             PropertyName = "Ticket Status",
-                            OldValue = oldTicket.Status.Name,
-                            NewValue = newTicket.Status.Name,
-                            CreatedDate = DateTimeOffset.Now,
+                            OldValue = oldTicket.Status!.Name,
+                            NewValue = newTicket.Status!.Name,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             UserId = userId,
                             Description = $"New ticket status: {newTicket.Status.Name}"
                         };
@@ -111,7 +111,7 @@ namespace AtlasTracker.Services
                             PropertyName = "Ticket Type",
                             OldValue = oldTicket.TicketType.Name,
                             NewValue = newTicket.TicketType.Name,
-                            CreatedDate = DateTimeOffset.Now,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             UserId = userId,
                             Description = $"New ticket type: {newTicket.TicketType.Name}"
                         };
@@ -126,7 +126,7 @@ namespace AtlasTracker.Services
                             PropertyName = "Developer",
                             OldValue = oldTicket.DeveloperUser?.FullName ?? "Not Assigned",
                             NewValue = newTicket.DeveloperUser?.FullName,
-                            CreatedDate = DateTimeOffset.Now,
+                            CreatedDate = DateTimeOffset.UtcNow,
                             UserId = userId,
                             Description = $"New ticket developer: {newTicket.DeveloperUser!.FullName}"
                         };
@@ -164,7 +164,7 @@ namespace AtlasTracker.Services
                     PropertyName = model,
                     OldValue = "",
                     NewValue = "",
-                    CreatedDate = DateTimeOffset.Now,
+                    CreatedDate = DateTimeOffset.UtcNow,
                     UserId = userId,
                     Description = description
                 }; 
