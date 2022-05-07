@@ -20,43 +20,18 @@
 
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Archived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArchivedByProject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketPriority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketType)
-            </th>
-            <th>
-                Submitted By
-            </th>
-            <th>
-                Assigned Developer
-            </th>
-            <th></th>
+            <th>Title</th>     
+            <th>Description</th>
+            <th>Date Created</th>   
+            <th>Date Updated</th>     
+            <th>Archived?</th>               
+            <th>Archived By Project?</th>
+            <th>Status</th>
+            <th>Project</th>
+            <th>Priority</th>
+            <th>Type</th>
+            <th>Owner</th>
+            <th>Developer</th>
         </tr>
     </thead>
     <tbody>
@@ -74,6 +49,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Updated)
             </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Archived)
             </td>
@@ -84,10 +60,10 @@
                 @Html.DisplayFor(modelItem => item.Status!.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Project.Name)
+                @Html.DisplayFor(modelItem => item.Project!.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                @Html.DisplayFor(modelItem => item.TicketPriority!.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketType.Name)
