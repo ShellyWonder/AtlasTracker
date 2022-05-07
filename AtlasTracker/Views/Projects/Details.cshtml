@@ -105,11 +105,11 @@
                     <div>
                         @if (projectManager.AvatarData != null)
                         {
-                            <img class="rounded-circle" style="width:60px;height:60px;" src="data:image/*;base64,@(Convert.ToBase64String(projectManager.AvatarData))" alt="">
+                            <img class="rounded-circle" style="width:60px;height:60px;" src="data:image/*;base64,@(Convert.ToBase64String(projectManager.AvatarData))" alt="User Avatar Image">
                         }
                         else
                         {
-                            <img class="rounded-circle" style="width:60px;height:60px;" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
+                            <img class="rounded-circle" style="width:60px;height:60px;" src="/img/avatar_icon.png" alt="User Avatar Default Image">
                         }
                         <div>
                             <h5>@projectManager.FullName</h5>
@@ -117,7 +117,7 @@
                             <p class="text-muted m-b-0">Project Manager</p>
                             @if (User.IsInRole(nameof(BTRole.Admin)) || (btUser.Id == projectManager.Id))
                             {
-                                <a class="btn btn-xs alert-primary" style="font:small" asp-action="AssignMembers" asp-controller="Projects" asp-route-projectId="@Model.Id">Manage Team</a>
+                                <a class="btn btn-xs alert-primary" style="font:small" asp-controller="Projects" asp-action="AssignMembers"  asp-route-Id="@Model.Id">Manage Team</a>
                             }
                         </div>
                     </div>
@@ -125,12 +125,12 @@
                 else
                 {
                     <div>
-                        <img class="rounded-circle" style="width:60px;height:60px;" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
+                        <img class="rounded-circle" style="width:60px;height:60px;" src="/img/avatar_icon.png" alt="User Avatar Default Image">
                         <div class="wid-u-info">
                             <h5 class="text-muted m-b-0">Not Assigned</h5>
                             @if (User.IsInRole(nameof(BTRole.Admin)))
                             {
-                                <span><a asp-action="AssignProjectManager" asp-controller="Home" asp-route-id="@Model.Id" class="btn btn-xs btn-outline-info">Assign PM</a></span>
+                                <span><a asp-action="AssignPM" asp-controller="Projects" asp-route-projectId ="@Model.Id" class="btn btn-xs btn-outline-info">Assign PM</a></span>
                             }
                         </div>
                     </div>

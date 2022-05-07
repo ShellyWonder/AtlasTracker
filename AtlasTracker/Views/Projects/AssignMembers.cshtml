@@ -5,11 +5,11 @@
 <div class="container">
     <h2>Assign Project Members </h2>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-12">
             <h3> @Model!.Project!.Name</h3>
             <div class="card">
                 <div class="card-header">
-                    <label asp-for="@Model.UsersList" class="control-label">Assign Project Team Members</label>
+                    <label asp-for="@Model.UsersList" class="control-label">WARNING: Existing members (shown with grayed backgrounds) will be overwritten when new members are selected. Therefore, use CTL+Click to select ALL project members. </label>
                 </div>
                 <div class="card-body">
                     <form method="post" asp-action="AssignMembers" asp-controller="Projects">

@@ -129,7 +129,9 @@ namespace AtlasTracker.Controllers
                 return NotFound();
             }
             ProjectMembersViewModel model = new();
+            
             int companyId = User.Identity.GetCompanyId();
+            
             model.Project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
 
             List<BTUser> developers = await _rolesService.GetUsersInRoleAsync(nameof(BTRole.Developer), companyId);
@@ -137,7 +139,7 @@ namespace AtlasTracker.Controllers
 
             List<BTUser> teamMembers = developers.Concat(submitters).ToList();
 
-            List<string> projectMembers = model.Project.Members.Select(p => p.Id).ToList();
+            List<string> projectMembers = model.Project.Members.Select(m => m.Id).ToList();
 
             model.UsersList = new MultiSelectList(teamMembers, "Id", "FullName",projectMembers);
 
