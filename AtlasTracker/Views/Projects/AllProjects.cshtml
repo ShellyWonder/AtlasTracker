@@ -1,21 +1,30 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Project>
+@using Microsoft.AspNetCore.Identity
+@using AtlasTracker.Models.Enums
 
+@inject UserManager<BTUser> UserManager;
 @{
     ViewData["Title"] = "All Projects";
+    BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
 <div class="right-wrapper text-end">
-    </div>
-    <div class="row">
-        <div class="col">
-            <section class="card">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                    </div> <h2 class="card-title">All Projects</h2>
-                </header>
-                <div class="card-body">
+</div>
+<div class="row">
+    <div class="col-12">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> <h1 class="card-title">All Projects</h1>
+                @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                {
+                    <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-action="Create">Create New Project</a>
+                }
+            </header>
+            <div class="card-body">
+                <div class="table-responsive">
                     <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
                         <thead>
                             <tr>
@@ -27,7 +36,7 @@
                                 <th>Image</th>
                                 <th>Archived?</th>
                                 <th>Priority</th>
-                             </tr>
+                            </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
@@ -49,7 +58,7 @@
                                         @Html.DisplayFor(modelItem => item.EndDate)
                                     </td>
                                     <td>
-                                       @if (item.ImageFileData != null)
+                                        @if (item.ImageFileData != null)
                                         {
                                             <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))">
                                         }
@@ -63,25 +72,29 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Archived)
                                     </td>
-                                    
+
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ProjectPriority!.Name)
                                     </td>
                                     <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a> |
-                                        <a asp-action="AssignMembers"  asp-route-Id="@item.Id">Manage Team</a>
+                                        <a class="btn btn-xs alert-primary" style="font:small" asp-action="Details" asp-route-id="@item.Id">Details</a>
 
+                                        @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                        {
+                                            <a class="btn btn-xs alert-primary" style="font:small" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a class="btn btn-xs alert-primary mt-2" style="font:small" asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                                            <a class="btn btn-xs alert-primary mt-2" style="font:small" asp-action="AssignMembers" asp-route-Id="@item.Id">Manage Team</a>
+                                        }
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </div>
+</div>
 
 
 
