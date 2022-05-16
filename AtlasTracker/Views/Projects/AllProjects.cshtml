@@ -77,13 +77,13 @@
                                         @Html.DisplayFor(modelItem => item.ProjectPriority!.Name)
                                     </td>
                                     <td>
-                                        <a class="btn btn-xs alert-primary" style="font:small" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
 
                                         @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                                         {
-                                            <a class="btn btn-xs alert-primary" style="font:small" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                            <a class="btn btn-xs alert-primary mt-2" style="font:small" asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                                            <a class="btn btn-xs alert-primary mt-2" style="font:small" asp-action="AssignMembers" asp-route-Id="@item.Id">Manage Team</a>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a asp-action="Archive" asp-route-id="@item.Id">Archive</a> 
+                                            <a asp-action="AssignMembers" asp-route-Id="@item.Id">Manage Team</a>
                                         }
                                     </td>
                                 </tr>

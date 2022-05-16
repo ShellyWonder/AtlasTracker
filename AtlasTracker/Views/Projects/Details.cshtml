@@ -175,7 +175,7 @@
         </section>
     </div>
 </div>
-<div class="row">
+<div class="row mb-3">
     <div class="col-12">
         <section class="card">
             <header class="card-header">
@@ -216,21 +216,21 @@
     </div>
 </div>
 
+<div class="right-wrapper text-end">
+</div>
 <div class="row">
-    <div class="col-md-12 col">
-        <section class="card">
-            <header class="card-header">
-                <div class="card-actions">
-                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                </div> <h2 class="card-title">Project Tickets</h2>
-            </header>
-            <div class="card-body">
-                <div class="table-responsive" style="overflow-y:auto;height:600px;">
-                    <table class="table table-hover">
-
-
-                        <thead>
+<div class="col">
+<section class="card">
+<header class="card-header">
+<div class="card-actions">
+<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+</div> <h2 class="card-title">Project Tickets</h2>
+</header>
+<div class="card-body">
+    <div class="table-responsive">
+    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+       <thead>
                             <tr>
                                 <th>Title</th>
                                 <th>Developer</th>
@@ -243,7 +243,7 @@
                             @foreach (var ticket in Model.Tickets!.OrderByDescending(d => d.CreatedDate))
                             {
                                 <tr>
-                                    <td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" class="text-light"><strong>@ticket.Title</strong></a> </td>
+                                    <td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><strong>@ticket.Title</strong></a> </td>
                                     <td>
                                         @if (ticket.DeveloperUserId != null)
                                         {
@@ -253,7 +253,7 @@
                                         {
                                             if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                                             {
-                                                <a class="btn btn-xs alert-primary" style="font:small" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@ticket.Id">Assign Dev</a>
+                                                <a asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@ticket.Id">Assign Dev</a>
                                             }
                                         }
                                     </td>
@@ -268,15 +268,15 @@
                                     <td>@ticket.TicketPriority!.Name </td>
                                     <td>@ticket.CreatedDate.ToString("MM-dd-yyyy")</td>
                                     <td>
-                                        <a class="btn btn-xs alert-primary me-2" style="font:small" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id">Details</a>
+                                        <a class="me-1"  asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id">Details</a>
 
                                         @if (ticket.DeveloperUserId == btUser.Id || ticket.OwnerUserId == btUser.Id || (projectManager?.Id == btUser.Id) || User.IsInRole(nameof(BTRole.Admin)))
                                         {
-                                            <a class="btn btn-xs alert-primary me-2" style="font:small" asp-action="Edit" asp-controller="Tickets" asp-route-id="@ticket.Id">Edit</a>
+                                            <a class="me-1" asp-action="Edit" asp-controller="Tickets" asp-route-id="@ticket.Id">Edit</a>
                                         }
                                         @if (User.IsInRole("Admin") || (projectManager?.Id == btUser.Id))
                                         {
-                                            <a class="btn btn-xs alert-primary" style="font:small" asp-action="Archive" asp-route-id="@ticket.Id">Archive</a>
+                                            <a class="me-1" asp-action="Archive" asp-route-id="@ticket.Id">Archive</a>
                                         }
                                     </td>
                                 </tr>
