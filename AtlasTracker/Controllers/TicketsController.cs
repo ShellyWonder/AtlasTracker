@@ -59,7 +59,7 @@ namespace AtlasTracker.Controllers
             int companyId = User.Identity!.GetCompanyId();
 
             List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(userId, companyId);
-            
+
             return View(tickets);
         }
         [HttpGet]
@@ -177,7 +177,7 @@ namespace AtlasTracker.Controllers
                 {
                     ticket.OwnerUserId = btUser.Id;
                     ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync("New")).Value;
-                    ticket.CreatedDate = DateTimeOffset.Now;
+                    ticket.CreatedDate = DateTimeOffset.UtcNow;
                     await _ticketService.UpdateTicketAsync(ticket);
 
                     //Ticket History
@@ -468,12 +468,14 @@ namespace AtlasTracker.Controllers
 
             return RedirectToAction(nameof(AllTickets));
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTicketAttachment([Bind("Id,FormFile,Description,TicketId")] TicketAttachment ticketAttachment)
+        public async Task<IActionResult> AddTicketAttachment([Bind("Id,ImageFormFile,Description,TicketId")] TicketAttachment ticketAttachment)
         {
             string statusMessage;
+
+            ModelState.Remove("UserId");
 
             if (ModelState.IsValid && ticketAttachment.ImageFormFile != null)
             {
@@ -483,10 +485,11 @@ namespace AtlasTracker.Controllers
                     ticketAttachment.ImageFileName = ticketAttachment.ImageFormFile.FileName;
                     ticketAttachment.ImageContentType = ticketAttachment.ImageFormFile.ContentType;
 
-                    ticketAttachment.CreatedDate = DateTimeOffset.Now;
+                    ticketAttachment.CreatedDate = DateTimeOffset.UtcNow;
                     ticketAttachment.UserId = _userManager.GetUserId(User);
 
                     await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+                    statusMessage = "Success: New attachment added to Ticket.";
 
                     //ADD HISTORY
                     await _historyService.AddHistoryAsync(ticketAttachment.TicketId, nameof(TicketAttachment), ticketAttachment.UserId);
@@ -496,7 +499,6 @@ namespace AtlasTracker.Controllers
 
                     throw;
                 }
-                statusMessage = "Success: New attachment added to Ticket.";
             }
             else
             {
