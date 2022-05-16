@@ -184,21 +184,32 @@
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                 </div> <h2 class="card-title">Project Activity</h2>
             </header>
-            <div class="card-body">
+            <div class="card-body bg-dark text-light">
                 @foreach (TicketHistory history in await HistoryService.GetProjectTicketsHistoriesAsync(Model.Id, btUser.CompanyId))
                 {
-                    <div>
-                        <span class="date">@history.Created.ToString("dd MMM yyyy")</span>
-                        <h6>@history.Description</h6>
+                    <div class="">
+                        <span class="date" style="font-weight:bold">@history.CreatedDate?.ToString("dd MMM yyyy")</span>
+                        <h4>@history.Description</h4>
                         <span>By: <a href="" title="@history.User!.FullName">@history.User.FullName</a></span>
+                        <div class="">
+                            @if (history.Description!.Contains("New Ticket Created"))
+                            {
+                                <p>The ticket was added.</p>
+                            }
+                            else if (history.PropertyName!.Equals("TicketComment") || history.PropertyName.Equals("TicketAttachment"))
+                            {
+                                <p>A <b>@history.PropertyName</b>  was added.</p>
+                            }
+                            else
+                            {
+                                <p>The ticket <b>@history.PropertyName</b> was added</p>
+                                <p>@($"Previous {history.PropertyName}:  ") <span style="color:red">@history.OldValue</span></p>
+                                <p>@($"Current {history.PropertyName}:  ") <span style="color:green">@history.NewValue</span></p>
+                            }
+                        </div>
                     </div>
-                    <div>
-                        <p>The ticket <b>@history.PropertyName</b> was edited.</p>
-                        <p>@($"Previous{history.PropertyName}: {history.OldValue}")</p>
-                        <p>@($"Current{history.PropertyName}: {history.NewValue}")</p>
-                    </div>
+                    <hr />
                 }
-
             </div>
         </section>
 
