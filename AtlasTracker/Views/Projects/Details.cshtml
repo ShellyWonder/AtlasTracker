@@ -71,13 +71,13 @@
             <div class="card-body">
 
                 <ul class=" list-unstyled basic-list">
-                    <li>Start Date: <span class="text-light">@Model.StartDate.ToString("dd MM, yyyy")</span></li>
-                    <li>Deadline: <span class="text-light">@Model.EndDate.ToString("dd MM, yyyy")</span></li>
-                    <li>Priority: <span class="text-light">@Model.ProjectPriority?.Name</span></li>
+                    <li>Start Date: <span class="text-light"> @Model.StartDate.ToString("dd MMM yyyy")</span></li>
+                    <li>Deadline: <span class="text-light"> @Model.EndDate.ToString("dd MMM yyyy")</span></li>
+                    <li>Priority: <span class="text-light"> @Model.ProjectPriority?.Name</span></li>
 
                     @if (percent == 100)
                     {
-                        <li>Status:<span class="text-light">Completed</span></li>
+                        <li>Status:<span class="text-light"> Completed</span></li>
                     }
                     else
                     {
@@ -266,7 +266,7 @@
                                         <td>@ticket.Status.Name </td>
                                     }
                                     <td>@ticket.TicketPriority!.Name </td>
-                                    <td>@ticket.CreatedDate.ToString("MM-dd-yyyy")</td>
+                                    <td>@ticket.CreatedDate.ToString("dd MMM yyyy")</td>
                                     <td>
                                         <a class="me-1"  asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id">Details</a>
 
