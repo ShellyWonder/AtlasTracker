@@ -19,7 +19,7 @@ namespace AtlasTracker.Models
         public string? Description { get; set; }
 
         [DataType(DataType.Date)]
-        [Display(Name ="CreatedDate")]
+        [Display(Name ="Created Date")]
         public DateTimeOffset CreatedDate { get; set; }
 
         [DataType(DataType.Date)]

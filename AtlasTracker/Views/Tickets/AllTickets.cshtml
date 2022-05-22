@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Ticket>
-
+@using AtlasTracker.Services.Interfaces
+@using AtlasTracker.Models.Enums
+@using Microsoft.AspNetCore.Identity
+ 
+@inject IBTRolesService BTRolesService;
+@inject UserManager<BTUser> UserManager;
 @{
     ViewData["Title"] = "AllTickets";
 }
@@ -8,85 +13,93 @@
 <div class="right-wrapper text-end">
 </div>
 <div class="row">
-<div class="col">
-<section class="card">
-<header class="card-header">
-<div class="card-actions">
-<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-</div> <h2 class="card-title">All Tickets</h2>
-</header>
-<div class="card-body">
-    <div class="table-responsive">
-    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+    <div class="col">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> <h2 class="card-title">All Tickets</h2>
+            </header>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
 
-    <thead>
-        <tr>
-            <th>Title</th>     
-            <th>Description</th>
-            <th>Date Created</th>   
-            <th>Date Updated</th>     
-            <th>Archived?</th>               
-            <th>Archived By Project?</th>
-            <th>Status</th>
-            <th>Project</th>
-            <th>Priority</th>
-            <th>Type</th>
-            <th>Owner</th>
-            <th>Developer</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Archived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArchivedByProject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status!.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project!.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketPriority!.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketType!.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-</div>
-</div>
-</section>
-</div>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Date Created</th>
+                                <th>Archived?</th>
+                                <th>Archived By Project?</th>
+                                <th>Status</th>
+                                <th>Project</th>
+                                <th>Priority</th>
+                                <th>Type</th>
+                                <th>Owner</th>
+                                <th>Developer</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id">@item.Title</a>
+                                    </td>
+                                    <td>
+                                        @item.Description
+                                    </td>
+                                    <td>
+                                        @item.CreatedDate.DateTime.ToString("MM/dd/yyyy")
+                                    </td>
+                                    <td>
+                                        @item.Archived
+                                    </td>
+
+                                    <td>
+                                        @item.ArchivedByProject
+                                    </td>
+                                    <td>
+                                        @item.Status!.Name
+                                    </td>
+                                    <td>
+                                        @item.Project!.Name
+                                    </td>
+                                    <td>
+                                        @item.TicketPriority!.Name
+                                    </td>
+                                    <td>
+                                        @item.TicketType!.Name
+                                    </td>
+                                    <td>
+                                        @item.OwnerUser!.FullName
+                                    </td>
+                                    <td>
+                                        @if (item.DeveloperUserId != null)
+                                        {
+                                            @item.DeveloperUser?.FullName
+                                        }
+                                        else
+                                        {
+                                          if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                            {
+                                                <a asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@item.Id">Assign Dev</a>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
