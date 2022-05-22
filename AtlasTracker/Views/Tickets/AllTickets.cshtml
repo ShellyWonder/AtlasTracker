@@ -20,6 +20,10 @@
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                 </div> <h2 class="card-title">All Tickets</h2>
+                 @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                {
+                    <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-action="Create">Create New Ticket</a>
+                }
             </header>
             <div class="card-body">
                 <div class="table-responsive">
