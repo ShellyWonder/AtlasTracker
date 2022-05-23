@@ -70,6 +70,7 @@
 
                                         }
 
+                                        <td>@ticket.OwnerUser?.FullName</td>
                                         <td>
                                             @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                                             {
