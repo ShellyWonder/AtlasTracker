@@ -44,19 +44,19 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
+                                        @item.Description
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                                        @item.CreatedDate.ToString("MM/dd/yyyy")
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.StartDate)
+                                        @item.StartDate.ToString("MM/dd/yyyy")
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.EndDate)
+                                        @item.EndDate.ToString("MM/dd/yyyy")
                                     </td>
                                     <td>
                                         @if (item.ImageFileData != null)
@@ -71,7 +71,7 @@
 
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Archived)
+                                        @item.Archived
                                     </td>
 
                                     <td>
