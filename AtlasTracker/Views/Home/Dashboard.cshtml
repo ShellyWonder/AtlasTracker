@@ -17,9 +17,7 @@
     <div class="right-wrapper text-end">
         <ol class="breadcrumbs pe-3">
             <li>
-                
-                    <i class="bx bx-home-alt"></i>
-                </a>
+                <i class="bx bx-home-alt"></i>
             </li>
 
             <li> <a asp asp-controller="Home" asp-action="Landing"><span>Landing</span></a></li>
@@ -80,14 +78,14 @@
     </div>
     <div class="col-lg-6">
         <div class="row mb-3">
-            <div class="col-xl-6">
+            <div class="col-xl-6 h-100">
                 @*All projects widget*@
-                <section class="card card-featured-left card-featured-primary mb-3">
-                    <div class="card-body">
+                <section class="card card-featured-left card-featured-primary">
+                    <div class="card-body ">
                         <div class="widget-summary">
                             <div class="widget-summary-col widget-summary-col-icon">
                                 <div class="summary-icon bg-primary">
-                                    <i class="fbx bx-coin-stack"></i>
+                                    <i class="bx bx-coin-stack"></i>
                                 </div>
                             </div>
                             <div class="widget-summary-col">
@@ -95,7 +93,6 @@
                                     <h4 class="title">All Projects</h4>
                                     <div class="info">
                                         <strong class="amount">@Model.Projects.Count</strong>
-                                        @*<span class="text-primary">See All Project</span>*@
                                     </div>
                                 </div>
                                 <div class="summary-footer">
@@ -106,7 +103,6 @@
                     </div>
                 </section>
             </div>
-            @*All Tickets widget*@
             <div class="col-xl-6">
                 <section class="card card-featured-left card-featured-tertiary mb-3">
                     <div class="card-body">
@@ -133,9 +129,9 @@
             </div>
         </div>
         @*Team Members Drop Down*@
-        <div class="row row-flex">
-            <div class="col-xl-6">
-                <section class="card mb-3">
+        <div class="row row-flex mb-3">
+            <div class="col col-xl-6">
+                <section class="card h-100">
                     <header class="card-header">
                         <div class="card-actions">
                             <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
@@ -159,9 +155,6 @@
                                 }
                             </ul>
                             <hr class="dotted short">
-                            <div class="card-footer">
-                                <small class="text-muted">Last updated 3 mins ago</small>
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -214,126 +207,120 @@
         </div>
     </div>
 </div>
-
-
-
-<div class="row pt-4 mt-2">
-
-    <div class="col-lg-12 ">
+@*Project Activity*@
+<div class="right-wrapper text-end mt-4">
+</div>
+<div class="row">
+    <div class="col-12">
         <section class="card">
-            <header class="card-header card-header-transparent">
+            <header class="card-header">
                 <div class="card-actions">
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                </div> 
+                </div> <h1 class="card-title">Project Activity</h1>
+                @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                {
+                    <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-controller="Project" asp-action="Create">Create New Project</a>
+                }
             </header>
             <div class="card-body">
-                <div class="timeline timeline-simple mt-3 mb-3">
-                    <div class="tm-body">
-                        <div class="tm-title">
-                            <h5 class="m-0 pt-2 pb-2 text-dark font-weight-semibold text-uppercase">Project Activity</h5>
-                        </div>
-                        <ol class="tm-items">
-                            <li>
-                                <div class="tm-box">
-                                    <p class="text-muted mb-0"></p>
-                                    <p>
-                                        <div class="card-body">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Title</th>
-                                                        <th>Start Date</th>
-                                                        <th>Deadline</th>
-                                                        <th>Priority</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (Project project in Model.Projects!.OrderByDescending(d => d.CreatedDate).Take(10))
-                                                    {
-                                                        @if (!(project.Archived)
-                                                       || (User.IsInRole(nameof(BTRole.Admin))
-                                                       || (User.IsInRole(nameof(BTRole.Developer))
-                                                       || (User.IsInRole(nameof(BTRole.ProjectManager))))))
-                                                        {
-                                                            <tr>
-                                                                <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
-                                                                <td>@project.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
-                                                                <td>@project.EndDate.DateTime.ToString("MM/dd/yyyy")</td>
-                                                                <td>@project.ProjectPriority!.Name</td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </p>
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>Deadline</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Project project in Model.Projects!.OrderByDescending(d => d.CreatedDate).Take(10))
+                            {
+                                @if (!(project.Archived)
+                               || (User.IsInRole(nameof(BTRole.Admin))
+                               || (User.IsInRole(nameof(BTRole.Developer))
+                               || (User.IsInRole(nameof(BTRole.ProjectManager))))))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
+                                        <td>@project.Description</td>
+                                        <td>@project.StartDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                        <td>@project.EndDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                        <td>@project.ProjectPriority!.Name</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
     </div>
-
 </div>
-<div class="row pt-4 mt-1">
 
-    <div class="col-lg-12">
+<div class="right-wrapper text-end mt-4">
+</div>
+<div class="row">
+    <div class="col">
         <section class="card">
-            <header class="card-header card-header-transparent">
+            <header class="card-header">
                 <div class="card-actions">
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                </div> 
+                </div> <h2 class="card-title">All Tickets</h2>
+                 @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                {
+                    <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-action="Create">Create New Ticket</a>
+                }
             </header>
             <div class="card-body">
-                <div class="timeline timeline-simple mt-3 mb-3">
-                    <div class="tm-body">
-                        <div class="tm-title">
-                            <h5 class="m-0 pt-2 pb-2 text-dark font-weight-semibold text-uppercase">Ticket Activity</h5>
-                        </div>
-                        <ol class="tm-items">
-                            <li>
-                                <div class="tm-box">
-                                    <p class="text-muted mb-0"></p>
-                                    <p>
-                                        <div class="card-body">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Title</th>
-                                                        <th>Status</th>
-                                                        <th>Priority</th>
-                                                        <th> Created Date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (Ticket ticket in Model.Tickets!.OrderByDescending(d => d.CreatedDate).Take(10))
-                                                    {
-                                                        @if (!(ticket.Archived || ticket.ArchivedByProject)
-                                                       && ticket.DeveloperUserId == btUser.Id
-                                                       || (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager))))
-                                                        {
-                                                            <tr>
-                                                                <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id">@ticket.Title</a></td>
-                                                                <td>@ticket.Status!.Name</td>
-                                                                <td>@ticket.TicketPriority!.Name</td>
-                                                                <td>@ticket.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                </tbody>
-                                            </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
 
-                                        </div>
-                                    </p>
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
+                        <thead>
+                                <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Project</th>
+                                <th>Created Date</th>
+                                <th>Developer</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Ticket ticket in Model.Tickets!.OrderByDescending(d => d.CreatedDate).Take(10))
+                            {
+                                @if (!(ticket.Archived)
+                               || (User.IsInRole(nameof(BTRole.Admin))
+                               || (User.IsInRole(nameof(BTRole.Developer))
+                               || (User.IsInRole(nameof(BTRole.ProjectManager))))))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="tickets" asp-action="Details" asp-route-id="@ticket.Id">@ticket.Title</a></td>
+                                        <td>@ticket.Description</td>
+                                        <td>@ticket.Project!.Name</td>
+                                        <td>@ticket.CreatedDate.ToString("MM/dd/yyyy")</td>
+                                        <td>
+                                        @if (ticket.DeveloperUserId != null)
+                                        {
+                                            @ticket.DeveloperUser?.FullName
+                                        }
+                                        else
+                                        {
+                                          if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                            {
+                                                <a asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@ticket.Id">Assign Dev</a>
+                                            }
+                                        }
+                                    </td>
+                                        <td>@ticket.TicketPriority!.Name</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
