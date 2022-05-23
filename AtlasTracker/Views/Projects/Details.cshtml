@@ -53,7 +53,7 @@
                         }
 
                         <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @percent%;">
-                            @* Use Progress Bar code variable here *@
+                            @* Progress Bar code *@
                             <span class="progress-value">@percent%</span>
                         </div>
                     </div>
@@ -72,8 +72,8 @@
             <div class="card-body">
 
                 <ul class=" list-unstyled basic-list">
-                    <li>Start Date: <span class="text-light"> @Model.StartDate.ToString("dd MMM yyyy")</span></li>
-                    <li>Deadline: <span class="text-light"> @Model.EndDate.ToString("dd MMM yyyy")</span></li>
+                    <li>Start Date: <span class="text-light"> @Model.StartDate.ToString("MM dd yyyy")</span></li>
+                    <li>Deadline: <span class="text-light"> @Model.EndDate.ToString("MM dd yyyy")</span></li>
                     <li>Priority: <span class="text-light"> @Model.ProjectPriority?.Name</span></li>
 
                     @if (percent == 100)
