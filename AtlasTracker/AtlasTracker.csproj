@@ -55,6 +55,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\Dashboard_old.cshtml" />
+    <Content Remove="Views\UserRoles\UserRoles.cshtml" />
     <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
 

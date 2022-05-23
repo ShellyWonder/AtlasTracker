@@ -65,9 +65,8 @@ else
                                     var today = DateTime.Now;
                                     var percent = today >= end ? 100 : today < start ? 0 : Math.Round((today.Subtract(start)) / (end.Subtract(start)) * 100);
                                 }
-
                                 <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: @percent%">
-                                    @*Variable from razor logic*@
+                                 
                                     <span class="progress-value">@percent%</span>
                                 </div>
                             </div>
@@ -87,6 +86,10 @@ else
                             <li><strong>Priority:</strong> <span class="">@Model.TicketPriority!.Name</span></li>
                             @*Ticket status*@
                             <li><strong>Status:</strong> <span class="">@Model.Status!.Name</span></li>
+                             @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                    {
+                        <a class="btn btn-xs alert-primary me-2" style="font:small" asp-action="Edit" asp-controller="Tickets" asp-route-id="@Model.Id">Edit</a>
+                    }
                         </ul>
                     </div>
                 </div>
