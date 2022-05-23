@@ -53,11 +53,15 @@
                 <span asp-validation-for="Project!.ImageFormFile" class="text-danger"></span>
             </div>
             <label>Image Preview</label>
-            @if (Model.Project?.ImageFileData != null)
-            {
-                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px; height:80px" src="https://cdn.icon-icons.com/icons2/2331/PNG/512/task_software_platform_management_project_icon_142266.png"/>
-            }
-            @if (User.IsInRole(nameof(BTRole.Admin)))
+             @if (Model.Project?.ImageFileData != null)
+                            {
+                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="data:image/*;base64,@(Convert.ToBase64String(Model.Project.ImageFileData))">
+                            }
+                            else
+                            {
+                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="~/img/default_icon.png" />
+                            }
+                @if (User.IsInRole(nameof(BTRole.Admin)))
             {
                <div class="form-group">
                 <label class="control-label">Project Manager</label>
