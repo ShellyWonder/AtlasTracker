@@ -2,8 +2,8 @@
 @using Microsoft.AspNetCore.Identity
 @using AtlasTracker.Services.Interfaces
 @using AtlasTracker.Models.Enums
-@inject UserManager<BTUser> UserManager
 
+@inject UserManager<BTUser> UserManager
 @inject IBTProjectService ProjectService
 
 
@@ -44,7 +44,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="card-body">
-                                            <h5>Tickets by Status</h5>
+                                            <h3>Tickets by Status</h3>
                                             <p></p>
                                             <!-- ChartJS: Pie/Doughnut -->
                                             <div class="col-md-12">
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="card-body">
-                                            <h5>Tickets by Priority</h5>
+                                            <h3>Tickets by Priority</h3>
                                             <p></p>
                                             <!-- ChartJS: Pie/Doughnut -->
                                             <div class="col-md-12">
