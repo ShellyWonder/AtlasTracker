@@ -17,69 +17,50 @@
                 <h3>Are you sure you want to archive "@Model.Name" ?</h3>
             </header>
             <div class="card-body">
-                <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
-
-                    <dl class="row">
+                <div class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+                    <dl>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Name)
+                            Project Name
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Name)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Description)
+                           Ticket Description
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Description)
+                            @Model.Description
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.CreatedDate)
+                            Date Created
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.CreatedDate)
+                            @Model.CreatedDate.ToString("MM/dd/yyyy")
                         </dd>
+
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.StartDate)
+                            Priority
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.StartDate)
+                            @Model.ProjectPriority!.Name
                         </dd>
+                                                
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.EndDate)
+                           Deadline
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.EndDate)
+                            @Model.EndDate.ToString("MM/dd/yyyy")
                         </dd>
                         
-                        <dt class="col-sm-2">
-                            Image
-                        </dt>
-                        <dd class="col-sm-10">
-                            @if (Model.ImageFileData != null)
-                            {
-                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="data:image/*;base64,@(Convert.ToBase64String(Model.ImageFileData))">
-                            }
-                            else
-                            {
-                                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="/img/default_icon.png">
-                            }
-                        </dd>
-                        
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.ProjectPriority)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.ProjectPriority!.Name)
-                        </dd>
+                       
                     </dl>
-                </table>
+                </div>
                 <form asp-action="Archive">
                     <input type="hidden" asp-for="Id" />
-                    <input type="submit" value="Archive" class="btn btn-danger" /> |
-                    <a asp-action="AllProjects">Back to List</a>
+                    <input type="submit" value="Archive" class="btn btn-danger" />  |
+                    <a asp-action="AllTickets">Back to List</a>
                 </form>
             </div>
         </section>
     </div>
 </div>
-
