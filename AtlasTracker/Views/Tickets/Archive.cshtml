@@ -20,19 +20,19 @@
                 <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
                     <dl class="row">
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Title)
+                            Ticket Title
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Title)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Description)
+                           Ticket Description
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Description)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.CreatedDate)
+                            Date Created
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.CreatedDate)
@@ -45,40 +45,47 @@
                             @Html.DisplayFor(model => model.Status!.Name)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Project)
+                            Project
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Project!.Description)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.TicketPriority)
+                            Ticket Priority
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.TicketPriority!.Name)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.TicketType)
+                           Ticket Type
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.TicketType!.Name)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.OwnerUser)
+                            Owner
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.OwnerUser!.FullName)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.DeveloperUser)
+                            Developer
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.DeveloperUser!.FullName)
+                            @if (Model.DeveloperUserId != null)
+                            {
+                                @Html.DisplayFor(model => model.DeveloperUser!.FullName)
+                            }
+                            else
+                            {
+                                <p>Unassigned</p>                       
+                            }
                         </dd>
                     </dl>
                 </table>
                 <form asp-action="Archive">
                     <input type="hidden" asp-for="Id" />
-                    <input type="submit" value="Archive" class="btn btn-danger" /> |
+                    <input type="submit" value="Archive" class="btn btn-danger" />  |
                     <a asp-action="AllTickets">Back to List</a>
                 </form>
             </div>
