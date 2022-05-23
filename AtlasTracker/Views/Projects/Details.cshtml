@@ -21,6 +21,7 @@
 
 <h1>Project Details</h1>
 
+                        <a class="btn btn-xs alert-primary mb-2 " style="font:small" asp-action="Create" asp-controller="Projects" asp-route-id="@Model.Id">New Project</a>
 <div class="right-wrapper text-end">
 </div>
 <div class="row">
@@ -83,9 +84,11 @@
                     {
                         <li>Status:<span class="text-light"> Active </span></li>
                     }
+                    <li>Ticket Total: <span class="text-light"> @Model.Tickets!.Count()</span></li>
+
                     @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                     {
-                        <a class="btn btn-xs alert-primary me-2" style="font:small" asp-action="Edit" asp-controller="Projects" asp-route-id="@Model.Id">Edit</a>
+                        <a class="btn btn-xs alert-primary me-2" style="font:small" asp-action="Edit" asp-controller="Projects" asp-route-id="@Model.Id">Edit Project</a>
                     }
                 </ul>
 
@@ -144,7 +147,7 @@
     </div>
 
     <div class="col-6">
-        <section class="card">
+        <section class="card h-100">
             <header class="card-header">
                 <div class="card-actions">
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
@@ -170,8 +173,7 @@
 
                 </div>
             </div>
-            <div class="card-footer">
-            </div>
+           
         </section>
     </div>
 </div>
@@ -226,6 +228,8 @@
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                 </div> <h2 class="card-title">Ticket Activity</h2>
+                                        <a class="btn btn-xs alert-primary mt-2 " style="font:small" asp-action="Create" asp-controller="Tickets" asp-route-id="@Model.Id">New Project Ticket</a>
+
             </header>
             <div class="card-body">
                 <div class="table-responsive">
