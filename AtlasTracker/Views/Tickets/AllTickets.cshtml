@@ -49,37 +49,18 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>
-                                        <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id">@item.Title</a>
-                                    </td>
-                                    <td>
-                                        @item.Description
-                                    </td>
-                                    <td>
-                                        @item.CreatedDate.DateTime.ToString("MM/dd/yyyy")
-                                    </td>
-                                    <td>
-                                        @item.Archived
-                                    </td>
-
-                                    <td>
-                                        @item.ArchivedByProject
-                                    </td>
-                                    <td>
-                                        @item.Status!.Name
-                                    </td>
-                                    <td>
-                                        @item.Project!.Name
-                                    </td>
-                                    <td>
-                                        @item.TicketPriority!.Name
-                                    </td>
-                                    <td>
-                                        @item.TicketType!.Name
-                                    </td>
-                                    <td>
-                                        @item.OwnerUser!.FullName
-                                    </td>
+                                    <td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id">@item.Title</a></td>
+                                    
+                                       <td> @item.Description</td>
+                                       <td>@item.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                       <td>@item.Archived</td>
+                                       <td>@item.ArchivedByProject</td>
+                                       <td>@item.Status!.Name</td>
+                                       <td>@item.Project!.Name</td>
+                                       <td>@item.TicketPriority!.Name </td>
+                                       <td>@item.TicketType!.Name </td>
+                                       <td>@item.OwnerUser!.FullName </td>
+                                   
                                     <td>
                                         @if (item.DeveloperUserId != null)
                                         {
