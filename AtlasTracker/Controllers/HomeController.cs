@@ -16,15 +16,18 @@ namespace AtlasTracker.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBTCompanyInfoService _companyInfoService;
         private readonly IBTProjectService _projectService;
+        private readonly IBTTicketService _ticketService;
 
 
-        public HomeController(ILogger<HomeController> logger, 
-                                                IBTCompanyInfoService companyInfoService, 
-                                                IBTProjectService projectService)
+        public HomeController(ILogger<HomeController> logger,
+                                                IBTCompanyInfoService companyInfoService,
+                                                IBTProjectService projectService, 
+                                                IBTTicketService ticketService)
         {
             _logger = logger;
             _companyInfoService = companyInfoService;
             _projectService = projectService;
+            _ticketService = ticketService;
         }
 
         [HttpGet]   
@@ -90,6 +93,48 @@ namespace AtlasTracker.Controllers
             {
                 int priorityCount = (await _projectService.GetAllProjectsByPriorityAsync(companyId, priority)).Count();
                 chartData.Add(new object[] { priority, priorityCount });
+            }
+
+            return Json(chartData);
+        }
+
+        [HttpPost]
+        //Google Charts Implementation
+        public async Task<JsonResult> GglTicketPriority()
+        {
+            int companyId = User.Identity!.GetCompanyId();
+
+            List<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+
+            List<object> chartData = new();
+            chartData.Add(new object[] { "Priority", "Count" });
+
+
+            foreach (string priority in Enum.GetNames(typeof(BTTicketPriority)))
+            {
+                int priorityCount = (await _ticketService.GetAllTicketsByPriorityAsync(companyId, priority)).Count();
+                chartData.Add(new object[] { priority, priorityCount });
+            }
+
+            return Json(chartData);
+        }
+
+        [HttpPost]
+        //Google Charts Implementation
+        public async Task<JsonResult> GglTicketStatus()
+        {
+            int companyId = User.Identity!.GetCompanyId();
+
+            List<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+
+            List<object> chartData = new();
+            chartData.Add(new object[] { "Status", "Count" });
+
+
+            foreach (string status in Enum.GetNames(typeof(BTTicketStatus)))
+            {
+                int statusCount = (await _ticketService.GetAllTicketsByStatusAsync(companyId, status)).Count();
+                chartData.Add(new object[] { status, statusCount });
             }
 
             return Json(chartData);
