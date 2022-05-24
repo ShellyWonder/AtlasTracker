@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using AtlasTracker.Models.Enums;
+
  
 namespace AtlasTracker.Controllers
 {
@@ -30,7 +30,7 @@ namespace AtlasTracker.Controllers
             _projectService = projectService;
             _ticketService = ticketService;
         }
-
+        #region Dashboard
         [HttpGet]   
         [Authorize]
         public  async Task<IActionResult> Dashboard(string swalMessage = null!)
@@ -45,6 +45,7 @@ namespace AtlasTracker.Controllers
             ViewData["SwalMessage"] = swalMessage;
             return View(model);
         }
+        #endregion
         public IActionResult Landing()
         {
             return View();
@@ -59,6 +60,7 @@ namespace AtlasTracker.Controllers
         }
 
 
+        #region Google charts implementation
         [HttpPost]
         //Google Charts Implementation
         public async Task<JsonResult> GglProjectTickets()
@@ -77,7 +79,6 @@ namespace AtlasTracker.Controllers
 
             return Json(chartData);
         }
-
         [HttpPost]
         //Google Charts Implementation
         public async Task<JsonResult> GglProjectPriority()
@@ -140,6 +141,7 @@ namespace AtlasTracker.Controllers
 
             return Json(chartData);
         }
+        #endregion
         public IActionResult Default()
         {
             return View();

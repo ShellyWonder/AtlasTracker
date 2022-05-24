@@ -30,6 +30,8 @@ namespace AtlasTracker.Controllers
         private readonly IBTNotificationService notificationService;
         private readonly IBTHistoryService _historyService;
         private readonly IBTRolesService _rolesService;
+
+        #region Constructor
         public TicketsController(UserManager<BTUser> userManager,
                                  IBTTicketService ticketService,
                                  IBTCompanyInfoService companyInfoService,
@@ -51,7 +53,9 @@ namespace AtlasTracker.Controllers
             _historyService = historyService;
             _rolesService = rolesService;
         }
+        #endregion
 
+        #region My Tickets
         [HttpGet]
         public async Task<IActionResult> MyTickets()
         {
@@ -62,6 +66,9 @@ namespace AtlasTracker.Controllers
 
             return View(tickets);
         }
+        #endregion
+
+        #region All Tickets
         [HttpGet]
         public async Task<IActionResult> AllTickets()
         {
@@ -78,7 +85,9 @@ namespace AtlasTracker.Controllers
 
             return View(tickets);
         }
+        #endregion
 
+        #region Archived Tickets
         [HttpGet]
         public async Task<IActionResult> ArchivedTickets()
         {
@@ -87,11 +96,14 @@ namespace AtlasTracker.Controllers
 
             return View(tickets);
         }
+        #endregion
+
+        #region Unassigned Tickets
         [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> UnassignedTickets()
         {
-            int companyId = User.Identity.GetCompanyId();
+            int companyId = User.Identity!.GetCompanyId();
             string btUserId = _userManager.GetUserId(User);
             List<Ticket> tickets = await _ticketService.GetUnassignedTicketsAsync(companyId);
 
@@ -112,7 +124,9 @@ namespace AtlasTracker.Controllers
                 return View(pmTickets);
             }
         }
+        #endregion
 
+        #region Add Ticket Comment
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketComment([Bind("Id, TicketId,Comment")] TicketComment ticketComment)
@@ -140,8 +154,9 @@ namespace AtlasTracker.Controllers
             }
             return RedirectToAction("Details", new { id = ticketComment.TicketId });
         }
+        #endregion 
 
-        // GET: Tickets/Create
+        #region Tickets/Create
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -191,7 +206,6 @@ namespace AtlasTracker.Controllers
 
                 }
 
-
                 catch (Exception)
                 {
 
@@ -216,17 +230,17 @@ namespace AtlasTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
-        // GET: Tickets/Edit/5
+        #region Tickets/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id!.Value);
             if (id == null)
             {
                 return NotFound();
             }
-
 
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);
             ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name", ticket.TicketTypeId);
@@ -235,7 +249,7 @@ namespace AtlasTracker.Controllers
             return View(ticket);
         }
 
-        // POST: Tickets/Edit/5
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedDate,Archived,ArchivedByProject,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
@@ -324,8 +338,9 @@ namespace AtlasTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
-        //Get Tickets/Details/5
+        #region Tickets/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
@@ -341,8 +356,9 @@ namespace AtlasTracker.Controllers
             return View(ticket);
 
         }
+        #endregion
 
-        // Get: Tickets/Archive/5
+        #region Tickets/Archive/5
         [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Archive(int? id)
@@ -359,8 +375,7 @@ namespace AtlasTracker.Controllers
             return View(ticket);
 
         }
-
-        // POST: Tickets/Archive/5
+      
         [HttpPost, ActionName("Archive")]
         [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
@@ -371,8 +386,9 @@ namespace AtlasTracker.Controllers
 
             return RedirectToAction(nameof(AllTickets));
         }
+        #endregion
 
-        //GET: Tickets/AssignDeveloper
+        #region Tickets/AssignDeveloper
         [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> AssignDeveloper(int? id)
@@ -389,8 +405,7 @@ namespace AtlasTracker.Controllers
 
             return View(model);
         }
-
-        //POST: Tickets/AssignDeveloper
+        
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -437,9 +452,9 @@ namespace AtlasTracker.Controllers
             }
             return RedirectToAction(nameof(AssignDeveloper), new { id = model.Ticket?.Id });
         }
+        #endregion
 
-
-        // Get: Tickets/Restore/5
+        #region Tickets Restore
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpGet]
         public async Task<IActionResult> Restore(int? id)
@@ -468,7 +483,9 @@ namespace AtlasTracker.Controllers
 
             return RedirectToAction(nameof(AllTickets));
         }
+        #endregion
 
+        #region Add Ticket Attachment
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketAttachment([Bind("Id,ImageFormFile,Description,TicketId")] TicketAttachment ticketAttachment)
@@ -523,5 +540,6 @@ namespace AtlasTracker.Controllers
             Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
             return File(fileData, $"application/{ext}");
         }
+        #endregion
     }
 }
