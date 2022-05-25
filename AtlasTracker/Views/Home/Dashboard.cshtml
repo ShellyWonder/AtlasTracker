@@ -33,455 +33,474 @@
 <!-- start: page -->
 <div class="xfont-weighteighteightgetainer-fluid">
     <div class="row">
-        <div class="col-12">
-            <div class="row  row mt-1  bg-primary">
-                <div class="card col col-lg-3  m-1 p-2">
-                    <div class="card-body">
-                        <h5>Projects by Priority</h5>
-                        <div id="chart3D"></div>
-                    </div>
-                </div>
-                <div class="card col col-lg-3 m-1 p-2">
-                    <div class="card-body">
-                        <h5>Project Tickets Count (%)</h5>
-                        <div id="donut"></div>
-                    </div>
-                </div>
-                <div class="card col col-lg-3 m-1 p-2">
-                    <div class="card-body">
-                        <h5>Project Tickets by Priority</h5>
-                        <div id="chart3"></div>
-                    </div>
-                </div>
-                <div class="card col col-lg-3 m-1 p-2">
-                    <div class="card-body">
-                        <h5>Project Ticket by Status</h5>
-                        <div id="donut2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @*All Projects Widget*@
-    <div class="col-lg-6">
-        <div class="row mb-3 mt-3">
-            <div class="col-xl-6 h-100">
-                <section class="card card-featured-left card-featured-primary">
-                    <div class="card-body ">
-                        <div class="widget-summary">
-                            <div class="widget-summary-col widget-summary-col-icon">
-                                <div class="summary-icon bg-primary">
-                                    <i class="bx bx-coin-stack"></i>
-                                </div>
-                            </div>
-                            <div class="widget-summary-col">
-                                <div class="summary">
-                                    <h4 class="title">All Projects</h4>
-                                    <div class="info">
-                                        <strong class="amount">@Model.Projects.Count</strong>
-                                    </div>
-                                </div>
-                                <div class="summary-footer">
-                                    <a class="text-muted text-uppercase" asp-action="AllProjects" asp-controller="Projects">See All Projects</a>
-                                </div>
+        @*All Projects Widget*@
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <section class="card card-featured-left card-featured-primary">
+                <div class="card-body ">
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon bg-primary">
+                                <i class="bx bx-coin-stack"></i>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </div>
-            @*All tickets widget*@
-            <div class="col-xl-6">
-                <section class="card card-featured-left card-featured-tertiary mb-3">
-                    <div class="card-body">
-                        <div class="widget-summary">
-                            <div class="widget-summary-col widget-summary-col-icon">
-                                <div class="summary-icon bg-tertiary">
-                                    <i class="bx bx-file"></i>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">All Projects</h4>
+                                <div class="info">
+                                    <strong class="amount">@Model.Projects.Count</strong>
                                 </div>
                             </div>
-                            <div class="widget-summary-col">
-                                <div class="summary">
-                                    <h4 class="title">All Tickets</h4>
-                                    <div class="info">
-                                        <strong class="amount">@Model.Tickets.Count</strong>
-                                    </div>
-                                </div>
-                                <div class="summary-footer">
-                                    <a class="text-muted text-uppercase" asp-action="AllTickets" asp-controller="Tickets">See All Tickets</a>
-                                </div>
+                            <div class="summary-footer">
+                                <a class="text-uppercase" asp-action="AllProjects" asp-controller="Projects">See All Projects</a>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-        @*Team Members Drop Down*@
-        <div class="row row-flex mb-3">
-            <div class="col col-xl-6">
-                <section class="card h-100">
-                    <header class="card-header">
-                        <div class="card-actions">
-                            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                            <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                        </div>
-
-                            <h2 class="card-title">
-                                <span class="badge badge-primary font-weight-normal va-middle p-2 me-e">@Model.Members.Count()</span>
-                                <span class="va-middle">Team Members</span>
-                            </h2>
-                        </header>
-                        <div class="card-body">
-                            <div class="content">
-                                <ul class="simple-user-list">
-                                    @foreach (BTUser member in Model.Members!)
-                                    {
-                                        <li>
-                                            <span class="">@member.FullName</span>
-                                            <span class="" style="font-size:x-small">[@((await UserManager.GetRolesAsync(member)).FirstOrDefault())]</span>
-                                        </li>
-                                    }
-                                </ul>
-                                <hr class="dotted short">
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                @*MyProfile*@
-                <div class="col-xl-6">
-                    <section class="card">
-                        <header class="card-header">
-                            <div class="card-actions">
-                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                            </div>
-
-                            <h2 class="card-title">My Profile</h2>
-                        </header>
-                        <div class="card-body">
-                            <section class="card card-group">
-                                <header class="card-header bg-primary w-100">
-
-                                    <div class="widget-profile-info">
-                                        <div class="profile-picture">
-                                            @if (btUser.AvatarData != null)
-                                            {
-                                                <img id="avatarFileData" class="img-fluid img-thumbnail rounded" style="width:300px;height:300px;" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarData))" alt="" />
-                                            }
-                                            else
-                                            {
-                                                <img id="avatarFileData" class="img-fluid img-thumbnail rounded" style="width:300px;height:300px;" src="/img/avatar_icon.png" alt="Avatar Icon" />
-                                            }
-                                            <div class="profile-info">
-                                                <h4 class="name font-weight-semibold">@btUser.FullName</h4>
-
-                                                <h5 class="role">@((await UserManager.GetRolesAsync(btUser)).FirstOrDefault())</h5>
-                                                <div class="profile-footer ">
-                                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Edit Profile</a>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </header>
-
-                            </section>
-
-                    </div>
-                </section>
-            </div>
-        </div>
-    </div>
-
-    @*Project Activity*@
-    <div class="right-wrapper text-end mt-4">
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <section class="card">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                    </div> <h1 class="card-title">Project Activity</h1>
-                    @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
-                    {
-                        <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-controller="Projects" asp-action="Create">Create New Project</a>
-                    }
-                </header>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Start Date</th>
-                                    <th>Deadline</th>
-                                    <th>Priority</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (Project project in Model.Projects!.OrderByDescending(d => d.CreatedDate).Take(10))
-                                {
-                                    @if (!(project.Archived)
-                                   || (User.IsInRole(nameof(BTRole.Admin))
-                                   || (User.IsInRole(nameof(BTRole.Developer))
-                                   || (User.IsInRole(nameof(BTRole.ProjectManager))))))
-                                    {
-                                        <tr>
-                                            <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
-                                            <td>@project.Description</td>
-                                            <td>@project.StartDate.DateTime.ToString("MM/dd/yyyy")</td>
-                                            <td>@project.EndDate.DateTime.ToString("MM/dd/yyyy")</td>
-                                            <td>@project.ProjectPriority!.Name</td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </section>
         </div>
-    </div>
-    @*Most Recent Tickets*@
-    <div class="right-wrapper text-end mt-4">
-    </div>
-    <div class="row">
-        <div class="col">
-            <section class="card">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                    </div> <h2 class="card-title">Most Recent Tickets</h2>
-                    @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
-                    {
-                        <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-controller="Tickets" asp-action="Create">Create New Ticket</a>
-                    }
-                </header>
+        @*All tickets widget*@
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <section class="card card-featured-left card-featured-tertiary mb-3">
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
-
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Project</th>
-                                    <th>Created Date</th>
-                                    <th>Developer</th>
-                                    <th>Priority</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (Ticket ticket in Model.Tickets!.OrderByDescending(d => d.CreatedDate).Take(10))
-                                {
-                                    @if (!(ticket.Archived)
-                                   || (User.IsInRole(nameof(BTRole.Admin))
-                                   || (User.IsInRole(nameof(BTRole.Developer))
-                                   || (User.IsInRole(nameof(BTRole.ProjectManager))))))
-                                    {
-                                        <tr>
-                                            <td><a asp-controller="tickets" asp-action="Details" asp-route-id="@ticket.Id">@ticket.Title</a></td>
-                                            <td>@ticket.Description</td>
-                                            <td>@ticket.Project!.Name</td>
-                                            <td>@ticket.CreatedDate.ToString("MM/dd/yyyy")</td>
-                                            <td>
-                                                @if (ticket.DeveloperUserId != null)
-                                                {
-                                                    @ticket.DeveloperUser?.FullName
-                                                }
-                                                else
-                                                {
-                                                    if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
-                                                    {
-                                                        <a asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@ticket.Id">Assign Dev</a>
-                                                    }
-                                                }
-                                            </td>
-                                            <td>@ticket.TicketPriority!.Name</td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon bg-tertiary">
+                                <i class="bx bx-file"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">All Tickets</h4>
+                                <div class="info">
+                                    <strong class="amount">@Model.Tickets.Count</strong>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a class="text-uppercase" asp-action="AllTickets" asp-controller="Tickets">See All Tickets</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <a asp-action="AllTickets" asp-controller="Tickets">View All Tickets</a>
             </section>
+        </div>
 
+        @*Unassigned tickets widget*@
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <section class="card card-featured-left card-featured-tertiary mb-3">
+                <div class="card-body">
+                    <div class="widget-summary">
+                        <div class="widget-summary-col widget-summary-col-icon">
+                            <div class="summary-icon bg-warning">
+                                <i class="bx bx-door-open"></i>
+                            </div>
+                        </div>
+                        <div class="widget-summary-col">
+                            <div class="summary">
+                                <h4 class="title">Unassigned Tickets</h4>
+                                <div class="info">
+                                    <strong class="amount">@Model.Tickets.Where(t=> string.IsNullOrEmpty(t.DeveloperUserId)).Count()</strong>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a class="text-uppercase" asp-action="UnassignedTickets" asp-controller="Tickets">See All Unassigned Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 </div>
+@*Google Charts*@
+<div class="col-12">
+    <div class="row  row mt-1  bg-primary">
+        <div class="card col col-lg-3  m-1 p-2">
+            <div class="card-body">
+                <h5>Projects by Priority</h5>
+                <div id="chart3D"></div>
+            </div>
+        </div>
+        <div class="card col col-lg-3 m-1 p-2">
+            <div class="card-body">
+                <h5>Project Tickets Count (%)</h5>
+                <div id="donut"></div>
+            </div>
+        </div>
+        <div class="card col col-lg-3 m-1 p-2">
+            <div class="card-body">
+                <h5>Project Tickets by Priority</h5>
+                <div id="chart3"></div>
+            </div>
+        </div>
+        <div class="card col col-lg-3 m-1 p-2">
+            <div class="card-body">
+                <h5>Project Ticket by Status</h5>
+                <div id="donut2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+@*Team Members Drop Down*@
+<div class="row row-flex mb-3">
+    <div class="col col-xl-6">
+        <section class="card h-100">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div>
+
+                <h2 class="card-title">
+                    <span class="badge badge-primary font-weight-normal va-middle p-2 me-e">@Model.Members.Count()</span>
+                    <span class="va-middle">Team Members</span>
+                </h2>
+            </header>
+            <div class="card-body">
+                <div class="content">
+                    <ul class="simple-user-list">
+                        @foreach (BTUser member in Model.Members!)
+                        {
+                            <li>
+                                <span class="">@member.FullName</span>
+                                <span class="" style="font-size:x-small">[@((await UserManager.GetRolesAsync(member)).FirstOrDefault())]</span>
+                            </li>
+                        }
+                    </ul>
+                    <hr class="dotted short">
+                </div>
+            </div>
+        </section>
+    </div>
+    @*MyProfile*@
+    <div class="col-xl-6">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div>
+
+                <h2 class="card-title">My Profile</h2>
+            </header>
+            <div class="card-body">
+                <section class="card card-group">
+                    <header class="card-header bg-primary w-100">
+
+                        <div class="widget-profile-info">
+                            <div class="profile-picture">
+                                @if (btUser.AvatarData != null)
+                                {
+                                    <img id="avatarFileData" class="img-fluid img-thumbnail rounded" style="width:300px;height:300px;" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarData))" alt="" />
+                                }
+                                else
+                                {
+                                    <img id="avatarFileData" class="img-fluid img-thumbnail rounded" style="width:300px;height:300px;" src="/img/avatar_icon.png" alt="Avatar Icon" />
+                                }
+                                <div class="profile-info">
+                                    <h4 class="name font-weight-semibold">@btUser.FullName</h4>
+
+                                    <h5 class="role">@((await UserManager.GetRolesAsync(btUser)).FirstOrDefault())</h5>
+                                    <div class="profile-footer ">
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Edit Profile</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </header>
+
+                </section>
+
+            </div>
+        </section>
+    </div>
+</div>
+
+@*Project Activity*@
+<div class="right-wrapper text-end mt-4">
+</div>
+<div class="row">
+    <div class="col-12">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> <h1 class="card-title">Project Activity</h1>
+                @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                {
+                    <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-controller="Projects" asp-action="Create">Create New Project</a>
+                }
+            </header>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>Deadline</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Project project in Model.Projects!.OrderByDescending(d => d.CreatedDate).Take(10))
+                            {
+                                @if (!(project.Archived)
+                               || (User.IsInRole(nameof(BTRole.Admin))
+                               || (User.IsInRole(nameof(BTRole.Developer))
+                               || (User.IsInRole(nameof(BTRole.ProjectManager))))))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
+                                        <td>@project.Description</td>
+                                        <td>@project.StartDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                        <td>@project.EndDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                        <td>@project.ProjectPriority!.Name</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+@*Most Recent Tickets*@
+<div class="right-wrapper text-end mt-4">
+</div>
+<div class="row">
+    <div class="col">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> <h2 class="card-title">Most Recent Tickets</h2>
+                @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                {
+                    <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-controller="Tickets" asp-action="Create">Create New Ticket</a>
+                }
+            </header>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Project</th>
+                                <th>Created Date</th>
+                                <th>Developer</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Ticket ticket in Model.Tickets!.OrderByDescending(d => d.CreatedDate).Take(10))
+                            {
+                                @if (!(ticket.Archived)
+                               || (User.IsInRole(nameof(BTRole.Admin))
+                               || (User.IsInRole(nameof(BTRole.Developer))
+                               || (User.IsInRole(nameof(BTRole.ProjectManager))))))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="tickets" asp-action="Details" asp-route-id="@ticket.Id">@ticket.Title</a></td>
+                                        <td>@ticket.Description</td>
+                                        <td>@ticket.Project!.Name</td>
+                                        <td>@ticket.CreatedDate.ToString("MM/dd/yyyy")</td>
+                                        <td>
+                                            @if (ticket.DeveloperUserId != null)
+                                            {
+                                                @ticket.DeveloperUser?.FullName
+                                            }
+                                            else
+                                            {
+                                                if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                                {
+                                                    <a asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@ticket.Id">Assign Dev</a>
+                                                }
+                                            }
+                                        </td>
+                                        <td>@ticket.TicketPriority!.Name</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <a asp-action="AllTickets" asp-controller="Tickets">View All Tickets</a>
+        </section>
+
+    </div>
+</div>
+</div>
 @section scripts{
 
-<!-- *** Begin Google Charts Donut *** -->
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!-- *** Begin Google Charts Donut/3D *** -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-@*Projects Priority*@
-<script type="text/javascript">
-    google.load("visualization", "1", { packages: ["corechart"] });
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-        $.ajax({
-            type: "POST",
-            url: "/Home/GglProjectPriority",
-            data: '{}',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                var data = google.visualization.arrayToDataTable(result);
+    @*Projects Priority*@
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["corechart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/GglProjectPriority",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    var data = google.visualization.arrayToDataTable(result);
 
-                //3D Pie
-                var options = {
-                    title: 'Project Priority',
-                    is3D: true,
-                    chartArea: { left: 0,bottom: 15,width: '100%', height: '100%'},
-                    legend: { position: 'bottom' }
+                    //3D Pie
+                    var options = {
+                        title: 'Project Priority',
+                        is3D: true,
+                        chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
+                        legend: { position: 'bottom' }
 
-                };
+                    };
 
-                var chart = new google.visualization.PieChart($("#chart3D")[0]);
-                chart.draw(data, options);
-            },
-            failure: function (rresult) {
-                alert(result.d);
-            },
-            error: function (result) {
-                alert(result.d);
-            }
-        });
-    }
-</script>
+                    var chart = new google.visualization.PieChart($("#chart3D")[0]);
+                    chart.draw(data, options);
+                },
+                failure: function(rresult) {
+                    alert(result.d);
+                },
+                error: function(result) {
+                    alert(result.d);
+                }
+            });
+        }
+    </script>
 
-@*Tickets by Priority*@
-<script type="text/javascript">
-    google.load("visualization", "1", { packages: ["corechart"] });
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-        $.ajax({
-            type: "POST",
-            url: "/Home/GglTicketPriority",
-            data: '{}',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                var data = google.visualization.arrayToDataTable(result);
+    @*Tickets by Priority*@
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["corechart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/GglTicketPriority",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    var data = google.visualization.arrayToDataTable(result);
 
-                //3D Pie
-                var options = {
-                    title: 'Ticket Priority',
-                    is3D: true,
-                    chartArea: { left: 0,bottom: 15,width: '100%', height: '100%'},
-                    legend: { position: 'bottom' }
+                    //3D Pie
+                    var options = {
+                        title: 'Ticket Priority',
+                        is3D: true,
+                        chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
+                        legend: { position: 'bottom' }
 
-                };
+                    };
 
-                var chart = new google.visualization.PieChart($("#chart3")[0]);
-                chart.draw(data, options);
-            },
-            failure: function (rresult) {
-                alert(result.d);
-            },
-            error: function (result) {
-                alert(result.d);
-            }
-        });
-    }
-</script>
-@*Project Tickets Count(%)*@
-<script type="text/javascript">
-    google.load("visualization", "1", { packages: ["corechart"] });
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-        $.ajax({
-            type: "POST",
-            url: "/Home/GglProjectTickets",
-            data: '{}',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                var data = google.visualization.arrayToDataTable(result);
+                    var chart = new google.visualization.PieChart($("#chart3")[0]);
+                    chart.draw(data, options);
+                },
+                failure: function(rresult) {
+                    alert(result.d);
+                },
+                error: function(result) {
+                    alert(result.d);
+                }
+            });
+        }
+    </script>
+    @*Project Tickets Count(%)*@
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["corechart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/GglProjectTickets",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    var data = google.visualization.arrayToDataTable(result);
 
-                //Donut
-                var options = {
-                    title: 'Company Ticket Distribution',
-                    pieHole: 0.3,
-                    chartArea: { left: 0,bottom: 15,width: '100%', height: '100%'},
-                    legend: { position: 'bottom' }
-                };
-                var chart = new google.visualization.PieChart($("#donut")[0]);
-                chart.draw(data, options);
-            },
-            failure: function (rresult) {
-                alert(result.d);
-            },
-            error: function (result) {
-                alert(result.d);
-            }
-        });
-    }
-</script>
+                    //Donut
+                    var options = {
+                        title: 'Company Ticket Distribution',
+                        pieHole: 0.3,
+                        chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
+                        legend: { position: 'bottom' }
+                    };
+                    var chart = new google.visualization.PieChart($("#donut")[0]);
+                    chart.draw(data, options);
+                },
+                failure: function(rresult) {
+                    alert(result.d);
+                },
+                error: function(result) {
+                    alert(result.d);
+                }
+            });
+        }
+    </script>
 
-@*Tickets by Status*@
-<script type="text/javascript">
-    google.load("visualization", "1", { packages: ["corechart"] });
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-        $.ajax({
-            type: "POST",
-            url: "/Home/GglTicketStatus",
-            data: '{}',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                var data = google.visualization.arrayToDataTable(result);
+    @*Tickets by Status*@
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["corechart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/GglTicketStatus",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    var data = google.visualization.arrayToDataTable(result);
 
-                //Donut
-                var options = {
-                    title: 'Ticket Status',
-                    pieHole: 0.3,
-                    chartArea: { left: 0,bottom: 15,width: '100%', height: '100%'},
-                    legend: { position: 'bottom' }
-                };
+                    //Donut
+                    var options = {
+                        title: 'Ticket Status',
+                        pieHole: 0.3,
+                        chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
+                        legend: { position: 'bottom' }
+                    };
 
-                var chart = new google.visualization.PieChart($("#donut2")[0]);
-                chart.draw(data, options);
-            },
-            failure: function (rresult) {
-                alert(result.d);
-            },
-            error: function (result) {
-                alert(result.d);
-            }
-        });
-    }
-</script>
+                    var chart = new google.visualization.PieChart($("#donut2")[0]);
+                    chart.draw(data, options);
+                },
+                failure: function(rresult) {
+                    alert(result.d);
+                },
+                error: function(result) {
+                    alert(result.d);
+                }
+            });
+        }
+    </script>
 
-
-
-
-
-
-<!-- *** Begin SweetAlert *** -->
-<script>
-    var message = '@(ViewBag.SwalMessage)';
-    if(!message.includes("error")&& message != '')
-    {
-        Swal.fire({
-            icon: 'success',
-            title: message,
-            showConfirmButton: true
-        })
-    }else if(message.includes("error")){
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: message
-        })
-    }
-</script>
+    <!-- *** Begin SweetAlert *** -->
+    <script>
+        var message = '@(ViewBag.SwalMessage)';
+        if (!message.includes("error") && message != '') {
+            Swal.fire({
+                icon: 'success',
+                title: message,
+                showConfirmButton: true
+            })
+        } else if (message.includes("error")) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message
+            })
+        }
+    </script>
             }
