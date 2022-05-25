@@ -41,8 +41,8 @@ namespace AtlasTracker.Controllers
             _companyInfoService = companyInfoService;
             _fileService = fileService;
         }
- 
-        
+
+        #region My Projects       
         [HttpGet]
         public async Task<IActionResult> MyProjects()
         {
@@ -51,7 +51,9 @@ namespace AtlasTracker.Controllers
 
             return View(projects);
         }
+        #endregion
 
+        #region All Projects
         [HttpGet]
         public async Task<IActionResult> AllProjects()
         {
@@ -68,6 +70,9 @@ namespace AtlasTracker.Controllers
 
             return View(projects);
         }
+        #endregion
+
+        #region Archived Projects
 
         [HttpGet]
         public async Task<IActionResult> ArchivedProjects()
@@ -77,7 +82,9 @@ namespace AtlasTracker.Controllers
 
             return View(projects);
         }
-        
+        #endregion
+
+        #region Unassigned Projects
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnassignedProjects()
@@ -88,7 +95,9 @@ namespace AtlasTracker.Controllers
             return View(projects);
 
         }
-        
+        #endregion
+
+        #region Assign PM
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignPM(int? projectId)
@@ -119,7 +128,9 @@ namespace AtlasTracker.Controllers
             }
             return RedirectToAction(nameof(AssignPM), new { projectId = model.Project!.Id });
         }
+        #endregion
 
+        #region Assign Members
         [HttpGet]
         [Authorize(Roles ="Admin, ProjectManager")]
         public async Task<IActionResult> AssignMembers(int? id)
@@ -171,7 +182,9 @@ namespace AtlasTracker.Controllers
                 return RedirectToAction(nameof(AssignMembers), new { id = model.Project.Id });
 
         }
+        #endregion
 
+        #region Details
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
@@ -189,10 +202,11 @@ namespace AtlasTracker.Controllers
 
             return View(project);
         }
-        
+        #endregion
+
+        #region Projects/Create
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpGet]
-        // GET: Projects/Create
         public async Task<IActionResult> Create()
         {
             int companyId = User.Identity.GetCompanyId();
@@ -253,10 +267,11 @@ namespace AtlasTracker.Controllers
             model.PriorityList = new SelectList(await _lookupService.GetProjectPrioritiesAsync(), "Id", "Name");
             return View(model.Project);
         }
+        #endregion
 
+        #region Projects/Edit/5
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpGet]
-        // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -288,7 +303,6 @@ namespace AtlasTracker.Controllers
             return View(model);
         }
 
-        // POST: Projects/Edit/5
 
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
@@ -341,8 +355,10 @@ namespace AtlasTracker.Controllers
             model.PriorityList = new SelectList(await _lookupService.GetProjectPrioritiesAsync(), "Id", "Name");
             return View(model);
         }
+        #endregion
 
-        // GET: Projects/Archive
+
+        #region Projects/Archive
         [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Archive(int id)
@@ -366,8 +382,9 @@ namespace AtlasTracker.Controllers
 
             return RedirectToAction(nameof(AllProjects));
         }
+        #endregion
 
-        // GET: Projects/Restore/5
+        #region Projects/Restore/5
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpGet]
         public async Task<IActionResult> Restore(int id)
@@ -391,10 +408,15 @@ namespace AtlasTracker.Controllers
 
             return RedirectToAction(nameof(AllProjects));
         }
+        #endregion
+
+        #region Project Exists
         private async Task<bool> ProjectExists(int id)
         {
             int companyId = User.Identity.GetCompanyId();
             return (await _projectService.GetAllProjectsByCompanyAsync(companyId)).Any(p => p.Id == id);
         }
+        #endregion
     }
+
 }
