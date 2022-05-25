@@ -50,9 +50,7 @@ else
             <div class="row col-cols-2 mt-5 bg-dark">
                 <div class="card col m-1 p-2">
                     <div class="card-body">
-                        @*Title of Ticket*@
                         <h5>@Model.Title</h5>
-                        @*Description of Ticket*@
                         <p>@Model.Description</p>
                         <div class="progress-container progress-info m-b-25">
                             @*Project Name and information*@
@@ -76,15 +74,10 @@ else
                 <div class="card col m-1 p-2">
                     <div class="card-body">
                         <ul class="list-unstyled">
-                            @*Ticket date*@
                             <li><strong>Date Entered:</strong> <span class="">@Model.CreatedDate.ToString("MMM dd, yyyy")</</span></li>
-                            @*Project end date*@
                             <li><strong>Deadline:</strong> <span class="">@Model.Project.EndDate.ToString("MMM dd, yyyy")</</span></li>
-                            @*Ticket type*@
                             <li><strong>Type:</strong> <span class="">@Model.TicketType!.Name</span></li>
-                            @*Ticket priority*@
                             <li><strong>Priority:</strong> <span class="">@Model.TicketPriority!.Name</span></li>
-                            @*Ticket status*@
                             <li><strong>Status:</strong> <span class="">@Model.Status!.Name</span></li>
                              @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                     {
