@@ -56,8 +56,9 @@ namespace AtlasTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageUserRoles(UserRolesViewModel member) 
         {
-        int companyId = User.Identity.GetCompanyId();
-        //instantiate the btUser
+        int companyId = User.Identity!.GetCompanyId();
+       
+            //instantiate the btUser
         BTUser? btUser = (await _companyInfoService.GetAllMembersAsync(companyId))
                                                    .FirstOrDefault(u => u.Id == member.BTUser?.Id);
         IEnumerable<string> roles = await _rolesService.GetUserRolesAsync(btUser!);
@@ -68,11 +69,11 @@ namespace AtlasTracker.Controllers
         {
             if(await _rolesService.RemoveUserFromRolesAsync(btUser!, roles))
             {
-                await _rolesService.AddUserToRoleAsync(btUser, userRole);
+                await _rolesService.AddUserToRoleAsync(btUser!, userRole);
             }
         }
 
-        return RedirectToAction(nameof(ManageUserRoles));
+        return RedirectToAction("Dashboard", "Home");
         }
 
 
