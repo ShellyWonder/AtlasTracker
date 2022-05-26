@@ -15,7 +15,9 @@
 <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
 </div> <h2 class="card-title">Archived Projects</h2>
 </header>
-<div class="card-body"><table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+<div class="card-body">
+    <div class="table-responsive">
+    <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
     <thead>
         <tr>
             <th>
@@ -69,11 +71,11 @@
             <td>
                 @if (item.ImageFileData != null)
                     {
-                        <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))">
+                        <img id="imageFileData" class="img-fluid img-thumbnail"  src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))">
                     }
                     else
                     {
-                        <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="https://cdn.icon-icons.com/icons2/2331/PNG/512/task_software_platform_management_project_icon_142266.png">
+                        <img id="imageFileData" class="img-fluid img-thumbnail"  src="/img/default_icon.png">
                     }
 
             
@@ -98,6 +100,7 @@
 }
     </tbody>
 </table>
+</div>
 </div>
 </section>
 </div>
