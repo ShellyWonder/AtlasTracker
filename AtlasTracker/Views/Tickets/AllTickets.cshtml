@@ -2,7 +2,7 @@
 @using AtlasTracker.Services.Interfaces
 @using AtlasTracker.Models.Enums
 @using Microsoft.AspNetCore.Identity
- 
+
 @inject IBTRolesService BTRolesService;
 @inject UserManager<BTUser> UserManager;
 @{
@@ -20,7 +20,7 @@
                     <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                     <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                 </div> <h2 class="card-title">All Tickets</h2>
-                 @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                 {
                     <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-action="Create">Create New Ticket</a>
                 }
@@ -50,17 +50,17 @@
                             {
                                 <tr>
                                     <td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id">@item.Title</a></td>
-                                    
-                                       <td> @item.Description</td>
-                                       <td>@item.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
-                                       <td>@item.Archived</td>
-                                       <td>@item.ArchivedByProject</td>
-                                       <td>@item.Status!.Name</td>
-                                       <td>@item.Project!.Name</td>
-                                       <td>@item.TicketPriority!.Name </td>
-                                       <td>@item.TicketType!.Name </td>
-                                       <td>@item.OwnerUser!.FullName </td>
-                                   
+
+                                    <td> @item.Description</td>
+                                    <td>@item.CreatedDate.DateTime.ToString("MM/dd/yyyy")</td>
+                                    <td>@item.Archived</td>
+                                    <td>@item.ArchivedByProject</td>
+                                    <td>@item.Status!.Name</td>
+                                    <td>@item.Project!.Name</td>
+                                    <td>@item.TicketPriority!.Name </td>
+                                    <td>@item.TicketType!.Name </td>
+                                    <td>@item.OwnerUser!.FullName </td>
+
                                     <td>
                                         @if (item.DeveloperUserId != null)
                                         {
@@ -68,7 +68,7 @@
                                         }
                                         else
                                         {
-                                          if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                            if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
                                             {
                                                 <a asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-Id="@item.Id">Assign Dev</a>
                                             }
@@ -77,7 +77,11 @@
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                         @if (item.Archived == false)
+
+                                        @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                        {
+
+                                            @if (item.Archived == false)
                                             {
                                                 <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
 
@@ -85,8 +89,9 @@
                                             else
                                             {
                                                 <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                                                
+
                                             }
+                                        }
                                     </td>
                                 </tr>
                             }
