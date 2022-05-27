@@ -1,55 +1,45 @@
 ﻿@model IEnumerable<AtlasTracker.Models.Project>
+@using Microsoft.AspNetCore.Identity
 @using AtlasTracker.Services.Interfaces
+@using AtlasTracker.Models.Enums
+@inject UserManager<BTUser> UserManager;
 
 @inject IBTProjectService ProjectService;
 @{
     ViewData["Title"] = "My Projects";
+    BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
 <div class="right-wrapper text-end">
-    </div>
-    <div class="row">
-        <div class="col">
-            <section class="card">
-                <header class="card-header">
-                        <h2 class="card-title">My Projects</h2>
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
-                    </div>
-                </header>
-                <div class="card-body">
+</div>
+<div class="row">
+    <div class="col-12">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div> <h1 class="card-title">My Projects</h1>
+                @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                {
+                    <a class="btn btn-xs alert-primary mt-3" style="font:small" asp-action="Create">Create New Project</a>
+                }
+            </header>
+            <div class="card-body">
+                <div class="table-responsive">
                     <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
                         <thead>
                             <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Name)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Description)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.CreatedDate)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.StartDate)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.EndDate)
-                                </th>
-                                <th>
-                                    Image
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Archived)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ProjectPriority)
-                                </th>
-                                <th>
-                                    Project Manager
-                                </th>
-                                <th></th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Date Created</th>
+                                <th>Start Date</th>
+                                <th>Deadline</th>
+                                <th>Image</th>
+                                <th>Archived?</th>
+                                <th>Priority</th>
+                                <th>Project Manager</th>
+                                <th>Options</th>
                             </tr>
                         </thead>
 
@@ -58,7 +48,8 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Description)
@@ -75,11 +66,11 @@
                                     <td>
                                         @if (item.ImageFileData != null)
                                         {
-                                            <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))">
+                                            <img id="imageFileData" class="img-fluid img-thumbnail" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))">
                                         }
                                         else
                                         {
-                                            <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="https://cdn.icon-icons.com/icons2/2331/PNG/512/task_software_platform_management_project_icon_142266.png">
+                                            <img id="imageFileData" class="img-fluid img-thumbnail" src="/img/avatar_icon.png">
                                         }
 
                                     </td>
@@ -88,23 +79,29 @@
                                     </td>
 
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                        @Html.DisplayFor(modelItem => item.ProjectPriority!.Name)
                                     </td>
                                     <td>
                                         @((await ProjectService.GetProjectManagerAsync(item.Id))?.FullName)
                                     </td>
 
                                     <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+
+                                        @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+
+                                            <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                                        }
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </div>
+</div>
 
