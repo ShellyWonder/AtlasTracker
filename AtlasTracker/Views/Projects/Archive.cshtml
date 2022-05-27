@@ -35,8 +35,12 @@
                             Date Created
                         </dt>
                         <dd class="col-sm-10">
-                            @Model.CreatedDate.ToString("MM/dd/yyyy")
-                        </dd>
+                            @{
+                                //implemented to circumvent template runtime exception
+                                string CreatedDate = Model!.CreatedDate.ToString("MM/dd/yyyy");
+                            }
+                            @Html.DisplayFor(model => CreatedDate) 
+                            </dd>
 
                         <dt class="col-sm-2">
                             Priority
