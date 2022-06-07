@@ -302,7 +302,22 @@
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                                        
+
+                                         @if (User.IsInRole(nameof(BTRole.Admin)) || User.IsInRole(nameof(BTRole.ProjectManager)))
+                                        {
+
+                                            @if (item.Archived == false)
+                                            {
+                                                <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+
+                                            }
+                                        }
                                     </td>
                                 </tr>
                             }
