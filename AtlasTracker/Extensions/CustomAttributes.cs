@@ -12,7 +12,7 @@ namespace AtlasTracker.Extensions
 
 
         protected override ValidationResult IsValid(
-        object value, ValidationContext validationContext)
+        object? value, ValidationContext validationContext)
         {
             var file = value as IFormFile;
             if (file != null)
@@ -44,7 +44,7 @@ namespace AtlasTracker.Extensions
 
 
         protected override ValidationResult IsValid(
-        object value, ValidationContext validationContext)
+        object? value, ValidationContext validationContext)
         {
             var file = value as IFormFile;
             if (file != null)

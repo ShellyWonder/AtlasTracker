@@ -4,9 +4,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace AtlasTracker.Data.Migrations
+namespace AtlasTracker.Migrations
 {
-    public partial class intitial : Migration
+    public partial class Int : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,7 +78,7 @@ namespace AtlasTracker.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketStatus",
+                name: "TicketStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -87,7 +87,7 @@ namespace AtlasTracker.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketStatus", x => x.Id);
+                    table.PrimaryKey("PK_TicketStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -317,7 +317,7 @@ namespace AtlasTracker.Data.Migrations
                     CompanyId = table.Column<int>(type: "integer", nullable: false),
                     ProjectId = table.Column<int>(type: "integer", nullable: false),
                     InvitorId = table.Column<string>(type: "text", nullable: false),
-                    InviteeId = table.Column<string>(type: "text", nullable: false),
+                    InviteeId = table.Column<string>(type: "text", nullable: true),
                     InviteeEmail = table.Column<string>(type: "text", nullable: false),
                     InviteeFirstName = table.Column<string>(type: "text", nullable: false),
                     InviteeLastName = table.Column<string>(type: "text", nullable: false),
@@ -331,8 +331,7 @@ namespace AtlasTracker.Data.Migrations
                         name: "FK_Invites_AspNetUsers_InviteeId",
                         column: x => x.InviteeId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Invites_AspNetUsers_InvitorId",
                         column: x => x.InvitorId,
@@ -399,9 +398,9 @@ namespace AtlasTracker.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_TicketStatus_TicketStatusId",
+                        name: "FK_Tickets_TicketStatuses_TicketStatusId",
                         column: x => x.TicketStatusId,
-                        principalTable: "TicketStatus",
+                        principalTable: "TicketStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -422,11 +421,10 @@ namespace AtlasTracker.Data.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Message = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ReceipientId = table.Column<string>(type: "text", nullable: false),
+                    RecipientId = table.Column<string>(type: "text", nullable: false),
                     SenderId = table.Column<string>(type: "text", nullable: false),
                     Viewed = table.Column<bool>(type: "boolean", nullable: true),
-                    NotificationTypeId = table.Column<int>(type: "integer", nullable: false),
-                    RecipientId = table.Column<string>(type: "text", nullable: true)
+                    NotificationTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -435,7 +433,8 @@ namespace AtlasTracker.Data.Migrations
                         name: "FK_Notifications_AspNetUsers_RecipientId",
                         column: x => x.RecipientId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Notifications_AspNetUsers_SenderId",
                         column: x => x.SenderId,
@@ -461,9 +460,9 @@ namespace AtlasTracker.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TicketId = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    TicketId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     ImageFileName = table.Column<string>(type: "text", nullable: true),
                     ImageFileData = table.Column<byte[]>(type: "bytea", nullable: true),
@@ -519,12 +518,13 @@ namespace AtlasTracker.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TicketId = table.Column<int>(type: "integer", nullable: false),
                     PropertyName = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     OldValue = table.Column<string>(type: "text", nullable: true),
                     NewValue = table.Column<string>(type: "text", nullable: true),
-                    TicketId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -756,7 +756,7 @@ namespace AtlasTracker.Data.Migrations
                 name: "TicketPriorities");
 
             migrationBuilder.DropTable(
-                name: "TicketStatus");
+                name: "TicketStatuses");
 
             migrationBuilder.DropTable(
                 name: "TicketTypes");

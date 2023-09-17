@@ -14,14 +14,14 @@ namespace AtlasTracker.Models
         public int TicketId { get; set; }
         
 
-        [DisplayName("File Description")]
-        [StringLength(500)]
-        public string? Description { get; set; }
+            [DisplayName("File Description")]
+            [StringLength(500)]
+            public string? Description { get; set; }
 
-        [DataType(DataType.Date)]
-        [DisplayName("Date Added")]
+            [DataType(DataType.Date)]
+            [DisplayName("Date Added")]
 
-        public DateTimeOffset CreatedDate { get; set; }
+            public DateTimeOffset CreatedDate { get; set; }
 
         [Required]
         [DisplayName("Team Member")]

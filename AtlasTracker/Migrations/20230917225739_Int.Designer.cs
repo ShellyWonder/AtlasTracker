@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace AtlasTracker.Data.Migrations
+namespace AtlasTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220311044654_0013")]
-    partial class _0013
+    [Migration("20230917225739_Int")]
+    partial class Int
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,7 +158,6 @@ namespace AtlasTracker.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("InviteeId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("InviteeLastName")
@@ -477,6 +476,9 @@ namespace AtlasTracker.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTimeOffset?>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -727,9 +729,7 @@ namespace AtlasTracker.Data.Migrations
 
                     b.HasOne("AtlasTracker.Models.BTUser", "Invitee")
                         .WithMany()
-                        .HasForeignKey("InviteeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InviteeId");
 
                     b.HasOne("AtlasTracker.Models.BTUser", "Invitor")
                         .WithMany()

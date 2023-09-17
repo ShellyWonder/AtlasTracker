@@ -50,7 +50,7 @@ namespace AtlasTracker.Data
 
         public static async Task ManageDataAsync(IServiceProvider svcProvider)
         {
-            //Service: An instance of RoleManager
+            //Service: An instance of applicationDbContext
             var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
             //Service: An instance of RoleManager
             var roleManagerSvc = svcProvider.GetRequiredService<RoleManager<IdentityRole>>();
